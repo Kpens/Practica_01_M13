@@ -16,6 +16,30 @@ public class Usuari {
         this.nom_usu = nom_usu;
         this.password = password;
     }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getNom_usu() {
+        return nom_usu;
+    }
+
+    public void setNom_usu(String nom_usu) {
+        this.nom_usu = nom_usu;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     
     
 }
