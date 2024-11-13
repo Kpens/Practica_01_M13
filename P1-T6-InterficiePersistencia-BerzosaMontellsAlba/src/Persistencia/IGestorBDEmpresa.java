@@ -21,10 +21,10 @@ public interface IGestorBDEmpresa {
     /**
      * Funcions per la classe de Temporada
      * 
-     * Es retorna una llista d'equips quins estaràn filtrats per la temporada
+     * Es retorna una llista d'equips quins estaràn filtrats per la temporada indicada
      */
     
-    List<Equip> mostrar_equips_temp(Temporada t) ;
+    List<Equip> mostrar_equips_temp(Temporada t) throws GestorBDEmpresaException ;
     
     
     /**
@@ -34,12 +34,12 @@ public interface IGestorBDEmpresa {
     /**
      * Es retorna una llista d'equips quins estaràn filtrats per la categoria
      */
-    List<Equip> mostrar_equips_cate();
+    List<Equip> mostrar_equips_cate() throws GestorBDEmpresaException;
     
     /**
      * Es retorna una llista de jugadors quins estaràn filtrats per la categoria
      */
-    List<Jugador> mostrar_jugadors_cate();
+    List<Jugador> mostrar_jugadors_cate() throws GestorBDEmpresaException;
     
     
     /**
@@ -56,31 +56,31 @@ public interface IGestorBDEmpresa {
      * Es crea un nou equip
      */
     
-    void crear_equip(Equip e);
+    void crear_equip(Equip e) throws GestorBDEmpresaException;
     
     /**
      * Es afegeix un nou jugador a l'equip
      */
-    void afegir_jugadors(Equip e, Jugador j);
+    void afegir_jugadors(Equip e, Jugador j) throws GestorBDEmpresaException;
     
     /**
      * Es podràn eliminar els equips
      */
-    void eliminar_equips(Equip e);
+    void eliminar_equips(Equip e) throws GestorBDEmpresaException;
     
     /**
      * Es podràn eliminar els jugadors d'un equip en concret
      */    
-    void eliminar_jugadors(Equip e, Jugador j);
+    void eliminar_jugadors(Equip e, Jugador j) throws GestorBDEmpresaException;
     /**
      * Per a poder editar la informació de l'equip
      */
-    void modificar_equip(Equip e);
+    void modificar_equip(Equip e) throws GestorBDEmpresaException;
     
     /**
      * Una llista de jugadors de l'equip en concret
      */
-    List<Jugador> mostrar_jugadors_per_equip(Equip e);
+    List<Jugador> mostrar_jugadors_per_equip(Equip e) throws GestorBDEmpresaException;
     
     
     /**
@@ -89,11 +89,11 @@ public interface IGestorBDEmpresa {
      * Crear un jugador
      */
     
-    void crear_jugador();
+    void crear_jugador() throws GestorBDEmpresaException;
     
     /**
      * Una llista de tots els jugadors
      */
-    List<Jugador> mostrar_jugadors();
+    List<Jugador> mostrar_jugadors() throws GestorBDEmpresaException;
 }
 
