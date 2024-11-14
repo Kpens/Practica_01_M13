@@ -46,8 +46,10 @@ public interface IGestorBDEmpresa {
      * Funcions per la classe d'Usuari
      * 
      * Amb totes les dades de l'usuari es podrà entrar en l'aplicació
+     * 
+     * Ja que en aquesta aplicació només tindrem un usuari
      */
-    void login(Usuari u) throws GestorBDEmpresaException;
+    void login(String login, String contra) throws GestorBDEmpresaException;
     
     
     /**

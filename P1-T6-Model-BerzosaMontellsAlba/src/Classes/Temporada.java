@@ -18,12 +18,12 @@ public class Temporada {
     int anny;
     Map<Integer, Equip> equips = new HashMap<>();
 
-    public Temporada(int anny) throws Exception {
+    public Temporada(int anny){
         if(anny >=1900){
             this.anny = anny;
             
         }else{
-            throw new Exception("L'any és massa petit");
+            throw new IllegalArgumentException("L'any és massa petit");
         }
     }
     
@@ -43,4 +43,14 @@ public class Temporada {
             System.out.println(equi);
         }
     }
+
+    public int getAnny() {
+        return anny;
+    }
+
+    public void setAnny(int anny) {
+        this.anny = anny;
+    }
+    
+    
 }

@@ -8,6 +8,7 @@ import Classes.Equip;
 import Classes.Jugador;
 import Classes.Temporada;
 import Classes.Usuari;
+import Enums.Tipus_enum;
 import Persistencia.GestorBDEmpresaException;
 import Persistencia.IGestorBDEmpresa;
 import java.io.FileInputStream;
@@ -21,6 +22,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.sql.PreparedStatement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 
@@ -35,7 +39,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     public GestorBDEmpresaJdbc()  throws GestorBDEmpresaException {
         Properties p = new Properties();
         String url, user, pwd;
-        String nomFitxerPropietats = "ConnexioJDBC.properties";
+        String nomFitxerPropietats = "Connexio_JDBC.properties";
         try {
             p.load(new FileInputStream(nomFitxerPropietats));
             url = p.getProperty("url");
@@ -66,28 +70,39 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     @Override
     public List<Equip> mostrar_equips_temp(Temporada t) throws GestorBDEmpresaException {
         List<Equip> lequips = new ArrayList<>();
-        Statement q = null;
         try {
-            q = c.createStatement();
-            ResultSet rs = q.executeQuery("SELECT prod_num, descripcio FROM producte");
-            while (rs.next()) {
-                Integer codi = rs.getInt("prod_num");
-                String desc = rs.getString("descripcio");
-                Producte p = new Producte(codi, desc);
-                llProd.add(p);
-//                llProd.add(new Producte(rs.getInt("prod_num"), rs.getString("descripcio")));
-            }
-            rs.close();
-        } catch (SQLException ex) {
-            throw new GestorBDEmpresaException("Error en intentar recuperar la llista de productes.", ex);
-        } finally {
-            if (q != null) {
-                try {
-                    q.close();
-                } catch (SQLException ex) {
-                    throw new GestorBDEmpresaException("Error en intentar tancar la sentència que ha recuperat la llista de productes.", ex);
+            PreparedStatement ps = c.prepareStatement("select id_equip, nom, tipus, any_eq, cate from equip where any_eq = ?");
+            ps.setInt(1, t.getAnny());
+            ResultSet rs = ps.executeQuery();
+
+
+            while(rs.next()){
+                Tipus_enum tenum = Tipus_enum.H;
+                int id_equip = rs.getInt("id_equip");
+                String nom = rs.getString("nom");
+                String tipus = rs.getString("tipus");
+                if(Tipus_enum.D.toString().equals(tipus)){
+                    tenum = Tipus_enum.D;
+                }else if(Tipus_enum.M.toString().equals(tipus)){
+
+                    tenum = Tipus_enum.M;
+                }else{
+                    tenum = Tipus_enum.H;
+
                 }
+                int any_eq = rs.getInt("any_eq");
+                int cate = rs.getInt("cate");
+
+                System.out.println("Id_equip: " + id_equip + " Nom: " + nom + " Tipus: "+ tipus + " Any de l'equip: "+ any_eq+ " Categoria: "+cate);
+                Equip eq = new Equip(nom, tenum, any_eq, cate);
+                lequips.add(eq);
             }
+
+
+        } catch (SQLException ex) {
+            throw new GestorBDEmpresaException("Error en preparar sentència psInsertProduct", ex);
+        } catch (Exception ex) {
+            throw new GestorBDEmpresaException("", ex);
         }
         
         return lequips;
@@ -95,7 +110,44 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
 
     @Override
     public List<Equip> mostrar_equips_cate() throws GestorBDEmpresaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        List<Equip> lequips = new ArrayList<>();
+        try {
+            PreparedStatement ps = c.prepareStatement("select id_equip, nom, tipus, any_eq, cate from equip order by cate");
+            ResultSet rs = ps.executeQuery();
+
+
+            while(rs.next()){
+                Tipus_enum tenum = Tipus_enum.H;
+                int id_equip = rs.getInt("id_equip");
+                String nom = rs.getString("nom");
+                String tipus = rs.getString("tipus");
+                if(Tipus_enum.D.toString().equals(tipus)){
+                    tenum = Tipus_enum.D;
+                }else if(Tipus_enum.M.toString().equals(tipus)){
+
+                    tenum = Tipus_enum.M;
+                }else{
+                    tenum = Tipus_enum.H;
+
+                }
+                int any_eq = rs.getInt("any_eq");
+                int cate = rs.getInt("cate");
+
+                System.out.println("Id_equip: " + id_equip + " Nom: " + nom + " Tipus: "+ tipus + " Any de l'equip: "+ any_eq+ " Categoria: "+cate);
+                Equip eq = new Equip(nom, tenum, any_eq, cate);
+                lequips.add(eq);
+            }
+
+
+        } catch (SQLException ex) {
+            throw new GestorBDEmpresaException("Error en preparar sentència psInsertProduct", ex);
+        } catch (Exception ex) {
+            throw new GestorBDEmpresaException("", ex);
+        }
+        
+        return lequips;
+        
     }
 
     @Override
@@ -104,16 +156,16 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     }
 
     @Override
-    public void login(Usuari u) throws GestorBDEmpresaException {
+    public void login(String login, String contra) throws GestorBDEmpresaException {
         Properties p = new Properties();
-        String nom_usuari, contra;
-        String nomFitxerPropietats = "Login_usuari.properties";
+        String user, pwd;
+        String nomFitxerPropietats = "Connexio_JDBC.properties";
         try {
             p.load(new FileInputStream(nomFitxerPropietats));
-            nom_usuari = p.getProperty("user");
-            contra = p.getProperty("pwd");
+            user = p.getProperty("user");
+            pwd = p.getProperty("pwd");
             
-            if (!u.getLogin().equals(nom_usuari) || !u.getPassword().equals(contra) ) {
+            if (!login.equals(user) || !pwd.equals(contra) ) {
                 throw new GestorBDEmpresaException("Nom d'usuari o contrasenya incorrectes.");
             }
         } catch (FileNotFoundException ex) {
