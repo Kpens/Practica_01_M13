@@ -11,11 +11,11 @@ import Enums.Sexe_enum;
  * @author Alma
  */
 public class Jugador {
-    String adreca, cog, data_naix, foto, iban, id_legal, nom;
-    int id_jug, any_fi_rev;
+    String adreca, cog, data_naix, foto, iban, id_legal, nom, poblacio, provincia, pais;
+    int id_jug, any_fi_rev, codi_postal;
     Sexe_enum sexe;
 
-    public Jugador(String adreca, int any_fi_rev, String cog, String data_naix, String foto, String iban, String id_legal, String nom, Sexe_enum sexe) {
+    public Jugador(String adreca, int any_fi_rev, String cog, String data_naix, String foto, String iban, String id_legal, String nom, Sexe_enum sexe, int codi_postal, String poblacio, String provincia, String pais) {
         this.adreca = adreca;
         this.any_fi_rev = any_fi_rev;
         this.cog = cog;
@@ -25,11 +25,39 @@ public class Jugador {
         this.id_legal = id_legal;
         this.nom = nom;
         this.sexe = sexe;
+        this.codi_postal = codi_postal;
+        this.poblacio = poblacio;
+        this.provincia = provincia;
+        this.pais = pais;
     }
 
+    public int getId_jug() {
+        return id_jug;
+    }
+
+    public void setId_jug(int id_jug) {
+        this.id_jug = id_jug;
+    }
+
+    
     @Override
     public String toString() {
-        return "Jugador{" + "adreca=" + adreca + ", cog=" + cog + ", data_naix=" + data_naix + ", foto=" + foto + ", iban=" + iban + ", id_legal=" + id_legal + ", nom=" + nom + ", id_jug=" + id_jug + ", any_fi_rev=" + any_fi_rev + ", sexe=" + sexe + '}';
+        return "Jugador{" +
+                "\n\t adreca='" + adreca + '\'' +
+                "\n\t cog='" + cog + '\'' +
+                "\n\t data_naix='" + data_naix + '\'' +
+                "\n\t foto='" + foto + '\'' +
+                "\n\t iban='" + iban + '\'' +
+                "\n\t id_legal='" + id_legal + '\'' +
+                "\n\t nom='" + nom + '\'' +
+                "\n\t id_jug=" + id_jug +
+                "\n\t any_fi_rev=" + any_fi_rev +
+                "\n\t sexe=" + sexe +
+                "\n\t codi_postal=" + codi_postal +
+                "\n\t poblacio='" + poblacio + '\'' +
+                "\n\t provincia='" + provincia + '\'' +
+                "\n\t pais='" + pais + '\'' +
+                '}';
     }
     
 }

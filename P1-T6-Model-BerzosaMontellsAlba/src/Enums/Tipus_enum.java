@@ -9,7 +9,16 @@ package Enums;
  * @author Alma
  */
 public enum Tipus_enum {
-    D,
-    H,
-    M;
+    D('D'),
+    H('H'),
+    M('M');
+    private char value;
+
+    Tipus_enum(char value) {
+        this.value = value;
+    }
+
+    public char getValue() {
+        return value;
+    }
 }

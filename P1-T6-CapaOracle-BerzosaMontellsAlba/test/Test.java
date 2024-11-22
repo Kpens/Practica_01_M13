@@ -3,6 +3,8 @@ import CapaPers.GestorBDEmpresaJdbc;
 import Classes.Equip;
 import Classes.Temporada;
 import Classes.Usuari;
+import Enums.Cate_enum;
+import Enums.Tipus_enum;
 import Persistencia.GestorBDEmpresaException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,11 +57,43 @@ public class Test {
         
         try {
             System.out.println("Equips per categoria: ");
-            gBD.mostrar_jugadors_cate();
+            gBD.mostrar_equips_cate("desc");
         } catch (GestorBDEmpresaException ex) {
-            throw new GestorBDEmpresaException("Tot mal", ex);
+            throw new GestorBDEmpresaException("Tot mal: ", ex);
         }
         
+        try {
+            System.out.println("Jugadors ordenats per id: ");
+            gBD.mostrar_jugadors("desc");
+        } catch (GestorBDEmpresaException ex) {
+            throw new GestorBDEmpresaException("Tot mal: ", ex);
+        }
+        
+        
+        
+        try {
+            e = new Equip("aaa", Tipus_enum.D, 2024, Cate_enum.Alevi);
+        } catch (Exception ex) {
+            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        //String nom, String tipus, int any_eq, String cate
+        try {
+            System.out.println("Crear un equip: ");
+            gBD.crear_equip("Benjami Femeni", 'h', 2024, "Benjami");
+        } catch (GestorBDEmpresaException ex) {
+            throw new GestorBDEmpresaException("Tot mal: ", ex);
+        }
+        
+        /*try {
+            System.out.println("Afeguir un jugador en un equip: ");
+            if(gBD.agafar_equip("Benjami Femeni", 2024)==null){
+                System.out.println("No existeix aquest equip");
+            }
+        } catch (GestorBDEmpresaException ex) {
+            throw new GestorBDEmpresaException("Tot mal: ", ex);
+        }*/
        
     }
 }

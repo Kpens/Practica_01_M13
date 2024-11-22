@@ -4,6 +4,7 @@
  */
 package Classes;
 
+import Enums.Cate_enum;
 import Enums.Tipus_enum;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,11 +22,11 @@ public class Equip {
     String nom;
     Tipus_enum tipus;
     int any_eq;
-    int cate;//Potser seria millor cambiar el ddl i que no sigui un num
-    Map <String, Jugador> jug_mem = new HashMap<>();
-    Map <String, Character> jug_mem_titular = new HashMap<>();
+    Cate_enum cate;//Potser seria millor cambiar el ddl i que no sigui un num
+    Map <Integer, Jugador> jug_mem = new HashMap<>();
+    Map <Integer, Character> jug_mem_titular = new HashMap<>();
 
-    public Equip(String nom, Tipus_enum tipus, int any_eq, int cate) throws Exception {
+    public Equip(String nom, Tipus_enum tipus, int any_eq, Cate_enum cate) throws Exception {
         this.nom = nom;
         this.tipus = tipus;
         this.cate = cate;
@@ -37,12 +38,12 @@ public class Equip {
     }
 
     
-    public void afeguir_jugador(String id_jug, Jugador jug, char t) {
+    public void afegir_jugador(int id_jug, Jugador jug, char t) {//El caràcter marca si el jugador és titular
         jug_mem.put(id_jug, jug);
         jug_mem_titular.put(id_jug, t);
     }
     
-    public void eliminar_jugador(String id_jug) {
+    public void eliminar_jugador(int id_jug) {
         jug_mem.remove(id_jug);
         jug_mem_titular.remove(id_jug);
     }
@@ -52,18 +53,15 @@ public class Equip {
     }
     
     public void mostrar_jugadors(){
-        Iterator<String> it_jug_mem = jug_mem.keySet().iterator();
+        Iterator<Integer> it_jug_mem = jug_mem.keySet().iterator();
         List<Jugador> jugs = new ArrayList<>();
+        System.out.println("Jugadors de l'equip "+ nom+ ": ");
         while(it_jug_mem.hasNext()){
-            String key = it_jug_mem.next();
+            int key = it_jug_mem.next();
             Jugador jugador = jug_mem.get(key);
             char titular = jug_mem_titular.get(key);
             System.out.println(jugador.toString()+" Titular?: "+titular);
             jugs.add(jugador);
-        }
-        System.out.println("Jugadors de l'equip "+ nom+ ": ");
-        for (Jugador jug : jugs) {
-            System.out.println(jugs);
         }
     }
 
