@@ -66,9 +66,8 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
         
     }
 
+    List<Equip> llista_equips = new ArrayList<>();
     
-    
-    //NI IDEA
     @Override
     public List<Equip> mostrar_equips_temp(Temporada t) throws GestorBDEmpresaException {
         List<Equip> lequips = new ArrayList<>();
@@ -193,6 +192,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     @Override
     public Equip agafar_equip(String nom, int temporada) throws GestorBDEmpresaException {
         Equip eq = null;
+        boolean existeix=false;
         nom = nom.toUpperCase();
         try {
             PreparedStatement ps = c.prepareStatement("select e.id_equip, e.nom, e.tipus, e.any_eq , c.nom as cate\n" +
@@ -209,6 +209,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
 
             while(rs.next()){
                 Tipus_enum tenum = Tipus_enum.H;
+                existeix = true;
                 int id_equip = rs.getInt("id_equip");
                 String nom_e = rs.getString("nom");
                 String tipus = rs.getString("tipus");
@@ -240,10 +241,14 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
 
                 eq = new Equip(nom, tenum, any_eq, cat);
                 
+                
             }
-
-
-            return eq;
+            
+                if(existeix){//Existeix i retorna l'equip
+                    return eq;
+                }else{
+                    return null;
+                }
         } catch (SQLException ex) {
             throw new GestorBDEmpresaException("Error en preparar sentència psInsertProduct", ex);
         } catch (Exception ex) {
@@ -283,7 +288,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
 
                 // Creació del jugador
                 Jugador jug = new Jugador(
-                    adreca, any_fi_rev, cog, data_naix, foto, iban, id_legal, nom,
+                    id_jug, adreca, any_fi_rev, cog, data_naix, foto, iban, id_legal, nom,
                     sexe, codi_postal, poblacio, provincia, pais
                 );
 
@@ -360,13 +365,14 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
             return;
         }
         
-        if(agafar_equip(nom, any_eq) == null){
+        if(agafar_equip(nom, any_eq) != null){
             System.out.println("L'equip ja existeix");
             return;
         }else{
             try {
+                
                 Equip e = new Equip(nom, tipus, any_eq, cat);
-                System.out.println("Equip creat");
+                System.out.println("Equip creat: "+e.toString());
                 return;
             } catch (Exception ex) {
                 Logger.getLogger(GestorBDEmpresaJdbc.class.getName()).log(Level.SEVERE, null, ex);
@@ -375,9 +381,15 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     }
 
     @Override
-    public void afegir_jugadors(Equip e, int id_jug, char t) throws GestorBDEmpresaException {
+    public Jugador afegir_jugadors(Equip e, int id_jug, char t) throws GestorBDEmpresaException {
         boolean trobat = false;
+        Jugador  jug = null;
          try {
+            
+            if(agafar_equip(e.getNom(), e.getAny_eq())==null){
+                return null;
+            }
+             
             PreparedStatement ps = c.prepareStatement("select ID_JUG ,NOM ,COGNOMS,SEXE,DATA_NAIX ,ID_LEGAL ,IBAN  ,ANY_FI_REVISIO_MEDICA ,ADRECA ,CODI_POSTAL ,POBLACIO ,FOTO ,PROVINCIA, PAIS from jugador order by id_jug");
             //ps.setString(1, ordre); amb l'order by no es pot
             ResultSet rs = ps.executeQuery();
@@ -402,7 +414,8 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                     String pais = rs.getString("PAIS");
 
                     // Creació del jugador
-                    Jugador jug = new Jugador(
+                    jug = new Jugador(
+                            id_j, 
                         adreca, any_fi_rev, cog, data_naix, foto, iban, id_legal, nom,
                         sexe, codi_postal, poblacio, provincia, pais
                     );
@@ -414,7 +427,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 }
             
             }
-
+            return jug;
 
         } catch (SQLException ex) {
             throw new GestorBDEmpresaException("Error en preparar sentència psInsertProduct", ex);
@@ -449,5 +462,4 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    
 }

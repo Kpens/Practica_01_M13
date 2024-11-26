@@ -65,6 +65,15 @@ public class Equip {
         }
     }
 
+    public String getNom() {
+        return nom;
+    }
+
+    public int getAny_eq() {
+        return any_eq;
+    }
+
+    
     @Override
     public String toString() {
         return "Equip{" + "id_equip=" + id_equip + ", nom=" + nom + ", tipus=" + tipus + '}';

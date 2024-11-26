@@ -54,17 +54,17 @@ public interface IGestorBDEmpresa {
      * Es crea un nou equip
      */
     
-    void crear_equip(String nom, char tipus, int any_eq, String cate) throws GestorBDEmpresaException;//FET
+    void crear_equip(String nom, char tipus, int any_eq, String cate) throws GestorBDEmpresaException;//Has de inserir a BBDD
     
     /**
      * Es afegeix un nou jugador a l'equip i es diu si és el titular
      */
-    void afegir_jugadors(Equip e, int id_jug, char t) throws GestorBDEmpresaException;//Hauries de tindre en compte que el equip pot no existir
+    Jugador afegir_jugadors(Equip e, int id_jug, char t) throws GestorBDEmpresaException;//Hauries de tindre en compte que el equip pot no existir
     
     /**
      * Es podràn eliminar els equips
      */
-    void eliminar_equips(Equip e) throws GestorBDEmpresaException;
+    void eliminar_equips(Equip e) throws GestorBDEmpresaException;//Edita BBDD
     
     /**
      * Es retorna l'equip que sigui de la temporada especificada, i el nom espec.
@@ -75,11 +75,11 @@ public interface IGestorBDEmpresa {
     /**
      * Es podràn eliminar els jugadors d'un equip en concret
      */    
-    void eliminar_jugadors(Equip e, Jugador j) throws GestorBDEmpresaException;
+    void eliminar_jugadors(Equip e, Jugador j) throws GestorBDEmpresaException;//Eliminar a BBDD
     /**
      * Per a poder editar la informació de l'equip
      */
-    void modificar_equip(Equip e) throws GestorBDEmpresaException;
+    void modificar_equip(Equip e) throws GestorBDEmpresaException;//Editar BBDD
     
     /**
      * Una llista de jugadors de l'equip en concret
@@ -93,7 +93,7 @@ public interface IGestorBDEmpresa {
      * Crear un jugador
      */
     
-    void crear_jugador() throws GestorBDEmpresaException;
+    void crear_jugador() throws GestorBDEmpresaException;//Insert a BBDD
     
     /**
      * Una llista de tots els jugadors

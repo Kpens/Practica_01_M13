@@ -86,14 +86,14 @@ public class Test {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
         }
         
-        /*try {
+        try {
             System.out.println("Afeguir un jugador en un equip: ");
-            if(gBD.agafar_equip("Benjami Femeni", 2024)==null){
+            if(gBD.afegir_jugadors(e, 2, 'd')==null){
                 System.out.println("No existeix aquest equip");
             }
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
-        }*/
+        }
        
     }
 }

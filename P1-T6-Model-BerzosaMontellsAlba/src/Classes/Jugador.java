@@ -15,7 +15,8 @@ public class Jugador {
     int id_jug, any_fi_rev, codi_postal;
     Sexe_enum sexe;
 
-    public Jugador(String adreca, int any_fi_rev, String cog, String data_naix, String foto, String iban, String id_legal, String nom, Sexe_enum sexe, int codi_postal, String poblacio, String provincia, String pais) {
+    public Jugador(int id_jug, String adreca, int any_fi_rev, String cog, String data_naix, String foto, String iban, String id_legal, String nom, Sexe_enum sexe, int codi_postal, String poblacio, String provincia, String pais) {
+        this.id_jug = id_jug;
         this.adreca = adreca;
         this.any_fi_rev = any_fi_rev;
         this.cog = cog;
@@ -31,15 +32,7 @@ public class Jugador {
         this.pais = pais;
     }
 
-    public int getId_jug() {
-        return id_jug;
-    }
-
-    public void setId_jug(int id_jug) {
-        this.id_jug = id_jug;
-    }
-
-    
+        
     @Override
     public String toString() {
         return "Jugador{" +
