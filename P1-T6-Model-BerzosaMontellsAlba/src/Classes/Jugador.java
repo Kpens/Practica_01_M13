@@ -32,6 +32,15 @@ public class Jugador {
         this.pais = pais;
     }
 
+    public int getId_jug() {
+        return id_jug;
+    }
+
+    public String getId_legal() {
+        return id_legal;
+    }
+
+    
         
     @Override
     public String toString() {

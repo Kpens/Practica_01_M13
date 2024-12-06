@@ -40,4 +40,14 @@ public class Categoria {
         this.nom_cate = nom_cate;
     }
 
+    public int getId_cate(Cate_enum nom_cate) {
+        return id_cate;
+    }
+
+    public void setId_cate(int id_cate) {
+        this.id_cate = id_cate;
+    }
+    
+    
+
 }

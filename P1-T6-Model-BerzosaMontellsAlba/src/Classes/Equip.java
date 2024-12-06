@@ -73,7 +73,15 @@ public class Equip {
         return any_eq;
     }
 
-    
+    public int getId_equip() {
+        return id_equip;
+    }
+
+    public void setId_equip(int id_equip) {
+        this.id_equip = id_equip;
+    }
+
+        
     @Override
     public String toString() {
         return "Equip{" + "id_equip=" + id_equip + ", nom=" + nom + ", tipus=" + tipus + '}';

@@ -10,6 +10,7 @@ import Classes.Jugador;
 import Classes.Temporada;
 import Classes.Usuari;
 import Enums.Cate_enum;
+import Enums.Sexe_enum;
 import Enums.Tipus_enum;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface IGestorBDEmpresa {
      * Es retorna una llista d'equips quins estaràn filtrats per la temporada indicada
      */
     
-    List<Equip> mostrar_equips_temp(Temporada t) throws GestorBDEmpresaException ;//FET
+    /*List<Equip> mostrar_equips_temp(Temporada t) throws GestorBDEmpresaException;//FET*/
     
     
     /**
@@ -36,8 +37,20 @@ public interface IGestorBDEmpresa {
     /**
      * Es retorna una llista d'equips quins estaràn filtrats per la categoria
      */
-    List<Equip> mostrar_equips_cate(String ordre) throws GestorBDEmpresaException;//FET
+    /*List<Equip> mostrar_equips_cate(String ordre) throws GestorBDEmpresaException;//FET*/
         
+    
+    /**
+     * Es retorna una llista d'equips quins estaràn filtrats per la categoria, temporada, tipus i el nom. ordenats per temporada/cate. i ordre ascendent o descendent
+     * Si tipus és n significa que no s'ha seleccionat cap tipus
+     * Si temp és 0 significa que no s'ha seleccionat cap temp
+     */
+    List<Equip> mostrar_equips(String cate, int temp, char tipus, String nom, String ordre) throws GestorBDEmpresaException;//FET
+    /**
+     * S'actualitza la llista d'equips així no mostrant se en la consola
+     */
+    List<Equip> actualitzar_equips() throws GestorBDEmpresaException;//FET
+       
     
     /**
      * Funcions per la classe d'Usuari
@@ -54,17 +67,18 @@ public interface IGestorBDEmpresa {
      * Es crea un nou equip
      */
     
-    void crear_equip(String nom, char tipus, int any_eq, String cate) throws GestorBDEmpresaException;//Has de inserir a BBDD
+    Equip crear_equip(String nom, char tipus, int any_eq, String cate) throws GestorBDEmpresaException;//FET (en swing Revisa la cate)
     
     /**
      * Es afegeix un nou jugador a l'equip i es diu si és el titular
+     * Com es fa des de la configuració d'equip s'entra directament l'equip que estem creant, i com es selecciona el jugador de la taula també s'entra un Jugador
      */
-    Jugador afegir_jugadors(Equip e, int id_jug, char t) throws GestorBDEmpresaException;//Hauries de tindre en compte que el equip pot no existir
+    void afegir_jugadors(Equip e, Jugador j, boolean t) throws GestorBDEmpresaException;//Arregla-ho
     
     /**
-     * Es podràn eliminar els equips
+     * Es podràn eliminar l'equip
      */
-    void eliminar_equips(Equip e) throws GestorBDEmpresaException;//Edita BBDD
+    void eliminar_equip(Equip e) throws GestorBDEmpresaException;//Edita BBDD
     
     /**
      * Es retorna l'equip que sigui de la temporada especificada, i el nom espec.
@@ -93,11 +107,11 @@ public interface IGestorBDEmpresa {
      * Crear un jugador
      */
     
-    void crear_jugador() throws GestorBDEmpresaException;//Insert a BBDD
+    Jugador crear_jugador(String nom, String cog, Sexe_enum sexe, String data_naix, String id_legal, String iban, int any_fi_revisio, String adreca, int codi_postal, String poblacio, String foto, String provincia,String pais) throws GestorBDEmpresaException;//FET
     
     /**
      * Una llista de tots els jugadors
      */
-    List<Jugador> mostrar_jugadors(String ordre) throws GestorBDEmpresaException;
+    List<Jugador> llista_jugadors(String ordre) throws GestorBDEmpresaException;//Revisa el balsamiq
 }
 
