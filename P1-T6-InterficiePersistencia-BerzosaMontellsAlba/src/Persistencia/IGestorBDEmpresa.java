@@ -67,7 +67,7 @@ public interface IGestorBDEmpresa {
      * Es crea un nou equip
      */
     
-    Equip crear_equip(String nom, char tipus, int any_eq, String cate) throws GestorBDEmpresaException;//FET (en swing Revisa la cate)
+    Equip crear_equip(String nom, char tipus, int any_eq, String cate) throws GestorBDEmpresaException;//FET (en swing Revisa la inserció de cate)
     
     /**
      * Es afegeix un nou jugador a l'equip i es diu si és el titular
@@ -94,6 +94,10 @@ public interface IGestorBDEmpresa {
      * Per a poder editar la informació de l'equip
      */
     void modificar_equip(Equip e) throws GestorBDEmpresaException;//Editar BBDD
+    /**
+     * Per a poder editar la informació del jugador
+     */
+    void modificar_jugador(Jugador j) throws GestorBDEmpresaException;
     
     /**
      * Una llista de jugadors de l'equip en concret

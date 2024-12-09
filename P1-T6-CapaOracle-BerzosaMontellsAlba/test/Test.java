@@ -83,23 +83,17 @@ public class Test {
         
         */
         //String nom, String tipus, int any_eq, String cate
-        /*try {
+        try {
             System.out.println("Crear un equip: ");
-            e=gBD.crear_equip("Benjami fdsg", 'H', 2024, "Benjami");
+            e=gBD.crear_equip("Alevi fdsg", 'H', 2024, "Alevi");
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
         }
-        
-        
-        
-        
-        
-       
-        
+        /* */
         try {
             System.out.println("Crear jugador: ");
             //j = gBD.crear_jugador("Manolo", "Seguro", Sexe_enum.H, "2014-11-11", "ID99", "ES9121000418450200051330", 2025, "C/ carrer 6", 08700, "Igualada", "C:\\jugadors\\persona.jpg", "Barcelona", "Espanya");
-            j= gBD.crear_jugador("Manolo", "Seguro", Sexe_enum.H, "2014-11-11", "ID99", "ES9121000418450200051330", 2025,  "C/ carrer 6", Integer.parseInt("08700"), "Igualada", "C:\\jugadors\\persona.jpg", "Barcelona", "Espanya");
+            j= gBD.crear_jugador("Manolo", "Seguro", Sexe_enum.H, "2014-06-10", "ID100", "ES9121000418450200051330", 2025,  "C/ carrer 6", Integer.parseInt("08700"), "Igualada", "C:\\jugadors\\persona.jpg", "Barcelona", "Espanya");
             if (j == null) {
                 throw new GestorBDEmpresaException("No s'ha pòdut crear");
             }
@@ -115,7 +109,7 @@ public class Test {
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
         }
-        */
+       
         try {
             System.out.println("Mostrar equips: ");
             if(gBD.mostrar_equips(null, 2025, 'n', "b", "asc")==null){
@@ -144,6 +138,12 @@ public class Test {
             ex.printStackTrace();
         }
 */
+        try {
+            System.out.println("Eliminar un equip: ");
+            gBD.eliminar_equip(e);
+        } catch (GestorBDEmpresaException ex) {
+            throw new GestorBDEmpresaException("Tot mal: ", ex);
+        }
 
     }
 }

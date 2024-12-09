@@ -22,11 +22,13 @@ public class Equip {
     String nom;
     Tipus_enum tipus;
     int any_eq;
+    int num_jugadors =0;
     Cate_enum cate;//Potser seria millor cambiar el ddl i que no sigui un num
     Map <Integer, Jugador> jug_mem = new HashMap<>();
     Map <Integer, Character> jug_mem_titular = new HashMap<>();
 
-    public Equip(String nom, Tipus_enum tipus, int any_eq, Cate_enum cate) throws Exception {
+    public Equip(int id_equip, String nom, Tipus_enum tipus, int any_eq, Cate_enum cate) throws Exception {
+        this.id_equip = id_equip;
         this.nom = nom;
         this.tipus = tipus;
         this.cate = cate;
@@ -38,18 +40,40 @@ public class Equip {
     }
 
     
-    public void afegir_jugador(int id_jug, Jugador jug, char t) {//El caràcter marca si el jugador és titular
-        jug_mem.put(id_jug, jug);
-        jug_mem_titular.put(id_jug, t);
+    public void afegir_jugador(Jugador jug, char t) {//El caràcter marca si el jugador és titular
+        if (jug == null) {
+            System.out.println("El jugador és null. No s'afegeix.");
+            return;
+        }
+        jug_mem.put(jug.id_jug, jug);
+        jug_mem_titular.put(jug.id_jug, t);
+        num_jugadors++;
+        
+    }
+    public boolean agafar_jugador(Jugador jug) {
+        if (jug == null) {
+            System.out.println("El jugador és null. No existeix.");
+            return false;
+        }
+        if(jug_mem.containsKey(jug.getId_jug())){
+            System.out.println("true");
+            return true;
+        }else{
+            System.out.println("false");
+            return false;
+        }
+        
     }
     
     public void eliminar_jugador(int id_jug) {
         jug_mem.remove(id_jug);
         jug_mem_titular.remove(id_jug);
+        num_jugadors--;
     }
     public void eliminar_jugadors(){
         jug_mem.clear();
         jug_mem_titular.clear();
+        num_jugadors =0;
     }
     
     public void mostrar_jugadors(){
@@ -77,8 +101,12 @@ public class Equip {
         return id_equip;
     }
 
-    public void setId_equip(int id_equip) {
-        this.id_equip = id_equip;
+    public int getNum_jugadors() {
+        return num_jugadors;
+    }
+
+    public Map<Integer, Jugador> getJug_mem() {
+        return jug_mem;
     }
 
         
