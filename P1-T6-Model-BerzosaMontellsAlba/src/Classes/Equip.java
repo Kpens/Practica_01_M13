@@ -32,6 +32,7 @@ public class Equip {
         this.nom = nom;
         this.tipus = tipus;
         this.cate = cate;
+        this.num_jugadors =0;
         if(any_eq >= 1900){
             this.any_eq = any_eq;            
         }else{
@@ -45,6 +46,12 @@ public class Equip {
             System.out.println("El jugador és null. No s'afegeix.");
             return;
         }
+        for (Integer id : jug_mem.keySet()) {
+            if(jug.getId_jug() == id){
+                System.out.println("El jugador ja existeix. No s'afegeix.");
+                return;
+            }
+        }
         jug_mem.put(jug.id_jug, jug);
         jug_mem_titular.put(jug.id_jug, t);
         num_jugadors++;
@@ -55,13 +62,15 @@ public class Equip {
             System.out.println("El jugador és null. No existeix.");
             return false;
         }
-        if(jug_mem.containsKey(jug.getId_jug())){
-            System.out.println("true");
-            return true;
-        }else{
-            System.out.println("false");
-            return false;
+        for (Integer id : jug_mem.keySet()) {
+            if(jug.getId_jug() == id){
+                System.out.println("El jugador ja existeix. No s'afegeix.");
+                return true;
+            }
         }
+        System.out.println("false");
+        return false;
+        
         
     }
     
@@ -107,6 +116,10 @@ public class Equip {
 
     public Map<Integer, Jugador> getJug_mem() {
         return jug_mem;
+    }
+
+    public void setNum_jugadors(int num_jugadors) {
+        this.num_jugadors = num_jugadors;
     }
 
         

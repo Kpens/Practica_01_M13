@@ -41,13 +41,13 @@ public interface IGestorBDEmpresa {
         
     
     /**
-     * Es retorna una llista d'equips quins estaràn filtrats per la categoria, temporada, tipus i el nom. ordenats per temporada/cate. i ordre ascendent o descendent
+     * Es retorna una llista d'equips, sense els jugadors, quins estaràn filtrats per la categoria, temporada, tipus i el nom. ordenats per temporada/cate. i ordre ascendent o descendent
      * Si tipus és n significa que no s'ha seleccionat cap tipus
      * Si temp és 0 significa que no s'ha seleccionat cap temp
      */
     List<Equip> mostrar_equips(String cate, int temp, char tipus, String nom, String ordre) throws GestorBDEmpresaException;//FET
     /**
-     * S'actualitza la llista d'equips així no mostrant se en la consola
+     * S'actualitza la llista d'equips, amb els seus propis jugadors
      */
     List<Equip> actualitzar_equips() throws GestorBDEmpresaException;//FET
        
@@ -64,32 +64,38 @@ public interface IGestorBDEmpresa {
     /**
      * Funcions per la classe d'Equip
      * 
-     * Es crea un nou equip
+     * Es crea un nou equip, si ja existeix retorna l'equip
      */
     
     Equip crear_equip(String nom, char tipus, int any_eq, String cate) throws GestorBDEmpresaException;//FET (en swing Revisa la inserció de cate)
     
     /**
      * Es afegeix un nou jugador a l'equip i es diu si és el titular
-     * Com es fa des de la configuració d'equip s'entra directament l'equip que estem creant, i com es selecciona el jugador de la taula també s'entra un Jugador
+     * Com es fa des de la configuració d'equip s'entra directament l'equip que 
+     * estem creant, i com es selecciona el jugador de la taula també s'entra un Jugador, així que de per si no podrien esser nulls.
      */
-    void afegir_jugadors(Equip e, Jugador j, boolean t) throws GestorBDEmpresaException;//Arregla-ho
+    void afegir_jugadors(Equip e, Jugador j, boolean t) throws GestorBDEmpresaException;//FET
     
     /**
      * Es podràn eliminar l'equip
      */
-    void eliminar_equip(Equip e) throws GestorBDEmpresaException;//Edita BBDD
+    void eliminar_equip(Equip e) throws GestorBDEmpresaException;//Edita BBDD, per fer
     
     /**
      * Es retorna l'equip que sigui de la temporada especificada, i el nom espec.
      */
     Equip agafar_equip(String nom, int temporada) throws GestorBDEmpresaException;//FET
     
+    /**
+     * Es un jugador, quin pot ser demanat per la seva idLegal, o pel seu numero de jugador (per treure'l de membre amb menys linees)
+     */
+    Jugador agafar_jugador(String idLegal, Boolean esLegal) throws GestorBDEmpresaException;
+    
     
     /**
      * Es podràn eliminar els jugadors d'un equip en concret
      */    
-    void eliminar_jugadors(Equip e, Jugador j) throws GestorBDEmpresaException;//Eliminar a BBDD
+    void eliminar_jugadors(Equip e, Jugador j) throws GestorBDEmpresaException;//Eliminar a BBDD, per fer
     /**
      * Per a poder editar la informació de l'equip
      */
@@ -97,13 +103,12 @@ public interface IGestorBDEmpresa {
     /**
      * Per a poder editar la informació del jugador
      */
-    void modificar_jugador(Jugador j) throws GestorBDEmpresaException;
+    void modificar_jugador(Jugador j) throws GestorBDEmpresaException;//per fer
     
     /**
      * Una llista de jugadors de l'equip en concret
      */
-    List<Jugador> mostrar_jugadors_per_equip(Equip e) throws GestorBDEmpresaException;
-    
+    List<Jugador> mostrar_jugadors_per_equip() throws GestorBDEmpresaException;//per fer    
     
     /**
      * Funcions per la classe de Jugador
@@ -116,6 +121,6 @@ public interface IGestorBDEmpresa {
     /**
      * Una llista de tots els jugadors
      */
-    List<Jugador> llista_jugadors(String ordre) throws GestorBDEmpresaException;//Revisa el balsamiq
+    List<Jugador> llista_jugadors(Sexe_enum sexe, String nom) throws GestorBDEmpresaException;//FET
 }
 

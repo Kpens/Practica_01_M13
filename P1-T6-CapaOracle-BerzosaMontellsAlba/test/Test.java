@@ -82,30 +82,50 @@ public class Test {
         }
         
         */
+        /*
+        try {
+            List<Jugador> llistj = gBD.llista_jugadors(Sexe_enum.H, "");
+            if(llistj == null){
+                System.out.println("Flabergasted :O");
+            }else{
+                for (Jugador jugador : llistj) {
+                    System.out.println(jugador.toString());
+                }
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+       */  
         //String nom, String tipus, int any_eq, String cate
         try {
             System.out.println("Crear un equip: ");
             e=gBD.crear_equip("Alevi fdsg", 'H', 2024, "Alevi");
+            System.out.println(e.toString());
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
         }
-        /* */
+         
         try {
             System.out.println("Crear jugador: ");
-            //j = gBD.crear_jugador("Manolo", "Seguro", Sexe_enum.H, "2014-11-11", "ID99", "ES9121000418450200051330", 2025, "C/ carrer 6", 08700, "Igualada", "C:\\jugadors\\persona.jpg", "Barcelona", "Espanya");
-            j= gBD.crear_jugador("Manolo", "Seguro", Sexe_enum.H, "2014-06-10", "ID100", "ES9121000418450200051330", 2025,  "C/ carrer 6", Integer.parseInt("08700"), "Igualada", "C:\\jugadors\\persona.jpg", "Barcelona", "Espanya");
+            j= gBD.crear_jugador("Afhjs", "Seguro", Sexe_enum.H, "2014-06-10", "ID300", "ES9121000418450200051330", 2025,  "C/ carrer 6", Integer.parseInt("08700"), "Igualada", "C:\\jugadors\\persona.jpg", "Barcelona", "Espanya");
             if (j == null) {
-                throw new GestorBDEmpresaException("No s'ha pòdut crear");
+                throw new GestorBDEmpresaException("No s'ha pogut crear");
             }
+            System.out.println("Jugador: " + j.toString());
         } catch (GestorBDEmpresaException ex) {
             System.err.println("Error en crear jugador: " + ex.getMessage());
         }
         
+             
         
+
 
         try {
             System.out.println("Afeguir un jugador en un equip: ");
             gBD.afegir_jugadors(e, j, false);
+            
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
         }
@@ -118,7 +138,7 @@ public class Test {
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
         }
-       /*
+ /*      
         try {
             System.out.println("Eliminar un jugador d'un equip: ");
             gBD.eliminar_jugadors(e, j);
@@ -130,20 +150,31 @@ public class Test {
             List<Equip> equips = gBD.actualitzar_equips();
             System.out.println("Equips recuperats: " + equips.size());
             for (Equip equip : equips) {
-                System.out.println(equip);
+                System.out.println("\n"+equip);
+                
+                for (Jugador value : equip.getJug_mem().values()) {
+                    System.out.println("Jug num:"+ value.getId_jug() + "\n\t" + value.toString());
+                }
+                
             }
             
         } catch (Persistencia.GestorBDEmpresaException ex) {
             System.err.println("S'ha produït un error en actualitzar els equips: " + ex.getMessage());
             ex.printStackTrace();
         }
-*/
+  
         try {
             System.out.println("Eliminar un equip: ");
             gBD.eliminar_equip(e);
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
         }
+        try {
+            System.out.println("mostrar_jugadors_per_equip: ");
+            gBD.mostrar_jugadors_per_equip();
+        } catch (GestorBDEmpresaException ex) {
+            throw new GestorBDEmpresaException("Tot mal: ", ex);
+        }*/
 
     }
 }
