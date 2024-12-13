@@ -41,7 +41,8 @@ public interface IGestorBDEmpresa {
         
     
     /**
-     * Es retorna una llista d'equips, sense els jugadors, quins estaràn filtrats per la categoria, temporada, tipus i el nom. ordenats per temporada/cate. i ordre ascendent o descendent
+     * Es retorna una llista d'equips, sense els jugadors, quins estaràn filtrats per la categoria, temporada, 
+     * tipus i el nom. ordenats per temporada/cate. i ordre ascendent o descendent
      * Si tipus és n significa que no s'ha seleccionat cap tipus
      * Si temp és 0 significa que no s'ha seleccionat cap temp
      */
@@ -70,14 +71,17 @@ public interface IGestorBDEmpresa {
     Equip crear_equip(String nom, char tipus, int any_eq, String cate) throws GestorBDEmpresaException;//FET (en swing Revisa la inserció de cate)
     
     /**
-     * Es afegeix un nou jugador a l'equip i es diu si és el titular
+     * S'afegeix un nou jugador a l'equip i es diu si és el titular
      * Com es fa des de la configuració d'equip s'entra directament l'equip que 
-     * estem creant, i com es selecciona el jugador de la taula també s'entra un Jugador, així que de per si no podrien esser nulls.
+     * estem creant, i com es selecciona el jugador de la taula també s'entra un 
+     * Jugador, així que de per si no podrien esser nulls.
      */
     void afegir_jugadors(Equip e, Jugador j, boolean t) throws GestorBDEmpresaException;//FET
     
     /**
-     * Es podràn eliminar l'equip
+     * Es podrà eliminar l'equip, encara que si té jugadors no s'eliminarà, ja que 
+     * així es podrà demanar al usuari si vol eliminar tots els jugadors abans, si 
+     * diu que si es fa la funció eliminar_jugadors(), i desp aquesta
      */
     void eliminar_equip(Equip e) throws GestorBDEmpresaException;//Edita BBDD, per fer
     
@@ -95,15 +99,15 @@ public interface IGestorBDEmpresa {
     /**
      * Es podràn eliminar els jugadors d'un equip en concret
      */    
-    void eliminar_jugadors(Equip e, Jugador j) throws GestorBDEmpresaException;//Eliminar a BBDD, per fer
+    void eliminar_jugadors(Equip e, Jugador j,boolean tots) throws GestorBDEmpresaException;//Eliminar a BBDD, per fer
     /**
      * Per a poder editar la informació de l'equip
      */
-    void modificar_equip(Equip e) throws GestorBDEmpresaException;//Editar BBDD
+    Equip modificar_equip(Equip e) throws GestorBDEmpresaException;//Editar BBDD
     /**
      * Per a poder editar la informació del jugador
      */
-    void modificar_jugador(Jugador j) throws GestorBDEmpresaException;//per fer
+    Jugador modificar_jugador(Jugador j) throws GestorBDEmpresaException;//per fer
     
     /**
      * Una llista de jugadors de l'equip en concret

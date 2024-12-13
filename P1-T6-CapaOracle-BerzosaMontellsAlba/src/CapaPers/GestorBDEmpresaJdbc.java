@@ -268,8 +268,10 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
         char s;
         if(sexe_j == Sexe_enum.D){
             s='D';
-        }else{
+        }else if(sexe_j == Sexe_enum.H){
             s='H';
+        }else{
+            s='%';
         }
         try {
             PreparedStatement ps = c.prepareStatement("select ID_JUG ,NOM ,COGNOMS,SEXE,DATA_NAIX ,ID_LEGAL ,IBAN,ANY_FI_REVISIO_MEDICA ,ADRECA ,CODI_POSTAL ,POBLACIO ,FOTO ,PROVINCIA, PAIS from jugador where upper(sexe) like ? and upper(nom) like ? order by id_jug ");
@@ -564,17 +566,31 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     }
 
     @Override
-    public void eliminar_jugadors(Equip e, Jugador j) throws GestorBDEmpresaException {
+    public void eliminar_jugadors(Equip e, Jugador j, boolean tots) throws GestorBDEmpresaException {
+        actualitzar_equips();
         try{
-             
+            String jug = "";
+             if(tots){
+                 jug =" AND Id_jug_mem = ?";
+             }
             PreparedStatement pps = c.prepareStatement("DELETE FROM MEMBRE\n" +
-"WHERE Id_equip_mem = ? AND Id_jug_mem = ?");
+"WHERE Id_equip_mem = ?"+jug);
             pps.setInt(1, e.getId_equip());
-            pps.setInt(2, j.getId_jug());
+            if(tots){
+                 pps.setInt(2, j.getId_jug());
+            }
+            
             pps.execute();
             
-            e.eliminar_jugador(j.getId_jug());
+            if(!tots){
+                e.eliminar_jugador(j.getId_jug());
+            }else{
+                for (Jugador jugs : e.getJug_mem().values()) {
+                    e.eliminar_jugador(jugs.getId_jug());
+                }                
+            }            
             c.commit();
+            actualitzar_equips();
             System.out.println("Eliminat");
             
         } catch (SQLException ex) {
@@ -585,8 +601,29 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     }
 
     @Override
-    public void modificar_equip(Equip e) throws GestorBDEmpresaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Equip modificar_equip(Equip e) throws GestorBDEmpresaException {
+        
+        Equip ant_eq = null;
+        actualitzar_equips();
+        for (Equip eq : llista_equips) {
+            if(eq.getId_equip() == e.getId_equip()){
+                ant_eq = eq;
+            }
+        }
+        
+        if(ant_eq != null){
+            //UPDATE Jugador SET nom = 'NouNom', cognoms = 'NousCognoms', IBAN = 'ES9121000418450200051332', codi_postal = 08700, poblacio = 'NovaPoblacio', provincia = 'NovaProvincia', pais = 'NouPais', any_fi_revisio_medica = 2026, adreca = 'C/ nova adreça', foto = 'C:\nova_ruta\persona.jpg' WHERE id_legal = 'ID02';
+            char t;
+            
+            eliminar_equip(ant_eq);
+            crear_equip(e.getNom(), e.getTipus().toString().charAt(0), e.getAny_eq(), e.getCate().toString());
+            
+            actualitzar_equips();
+            return e;
+        }else{
+            throw new GestorBDEmpresaException("L'equip no existeix");
+        }
+    
     }
 
     @Override
@@ -845,8 +882,38 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     }
 
     @Override
-    public void modificar_jugador(Jugador j) throws GestorBDEmpresaException {
-        
+    public Jugador modificar_jugador(Jugador j) throws GestorBDEmpresaException {
+        if(agafar_jugador(j.getId_legal(), true) != null){
+            //UPDATE Jugador SET nom = 'NouNom', cognoms = 'NousCognoms', IBAN = 'ES9121000418450200051332', codi_postal = 08700, poblacio = 'NovaPoblacio', provincia = 'NovaProvincia', pais = 'NouPais', any_fi_revisio_medica = 2026, adreca = 'C/ nova adreça', foto = 'C:\nova_ruta\persona.jpg' WHERE id_legal = 'ID02';
+            Jugador jug=null;
+            PreparedStatement pst;
+            try {
+                pst = c.prepareStatement("UPDATE Jugador SET nom = ?, cognoms = ?, IBAN = ?, codi_postal = ?, poblacio = ?, provincia = ?, pais = ?, any_fi_revisio_medica = ?, adreca = ?, foto = ? WHERE id_legal = ?");
+
+                pst.setString(1, j.getNom());
+                pst.setString(2, j.getCog());
+                pst.setString(3, j.getIban());   
+                pst.setInt(4, j.getCodi_postal());  
+                pst.setString(5, j.getPoblacio());        
+                pst.setString(6, j.getProvincia());
+                pst.setString(7, j.getPais());
+                pst.setInt(8, j.getAny_fi_rev());  
+                pst.setString(9, j.getAdreca()); 
+                pst.setString(10, j.getFoto());  
+                pst.setString(11, j.getId_legal());  
+                pst.execute();
+                c.commit();
+            } catch (SQLException ex) {
+                System.out.println("Error: no es pot crear el jugador "+ex.getMessage());
+            }
+            
+                jug = new Jugador(j.getId_jug(), j.getAdreca(), j.getAny_fi_rev(), j.getCog(), j.getData_naix(), j.getFoto(), j.getIban(), j.getId_legal(), j.getNom(), j.getSexe(), j.getCodi_postal(), j.getPoblacio(), j.getProvincia(), j.getPais());
+                
+                actualitzar_equips();
+                return jug;
+        }else{
+            throw new GestorBDEmpresaException("El jugador no existeix");
+        }
     }
 
     @Override

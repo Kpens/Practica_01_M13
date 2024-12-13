@@ -122,6 +122,14 @@ public class Equip {
         this.num_jugadors = num_jugadors;
     }
 
+    public Tipus_enum getTipus() {
+        return tipus;
+    }
+
+    public Cate_enum getCate() {
+        return cate;
+    }
+
         
     @Override
     public String toString() {

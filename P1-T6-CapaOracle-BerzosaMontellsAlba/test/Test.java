@@ -82,9 +82,9 @@ public class Test {
         }
         
         */
-        /*
+        
         try {
-            List<Jugador> llistj = gBD.llista_jugadors(Sexe_enum.H, "");
+            List<Jugador> llistj = gBD.llista_jugadors(Sexe_enum.D, "");
             if(llistj == null){
                 System.out.println("Flabergasted :O");
             }else{
@@ -97,7 +97,7 @@ public class Test {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-       */  
+       
         //String nom, String tipus, int any_eq, String cate
         try {
             System.out.println("Crear un equip: ");
@@ -106,7 +106,7 @@ public class Test {
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
         }
-         
+          /* */
         try {
             System.out.println("Crear jugador: ");
             j= gBD.crear_jugador("Afhjs", "Seguro", Sexe_enum.H, "2014-06-10", "ID300", "ES9121000418450200051330", 2025,  "C/ carrer 6", Integer.parseInt("08700"), "Igualada", "C:\\jugadors\\persona.jpg", "Barcelona", "Espanya");
@@ -117,11 +117,22 @@ public class Test {
         } catch (GestorBDEmpresaException ex) {
             System.err.println("Error en crear jugador: " + ex.getMessage());
         }
-        
-             
-        
+        try {
+            
+            Jugador jug = new Jugador(j.getId_jug(), "Calle Falsa 123", 2025, "Gómez", "01/01/1990", "foto.jpg", "ES7620770024020000001234", j.getId_legal(), "Juan", Sexe_enum.H, 28080, "Madrid", "Madrid", "España");
 
-
+            
+          System.out.println("Modificar jugador: ");
+            j= gBD.modificar_jugador(jug);
+            if (j == null) {
+                throw new GestorBDEmpresaException("No s'ha pogut modificar");
+            }
+            System.out.println("Jugador: " + j.toString());
+        } catch (GestorBDEmpresaException ex) {
+            System.err.println("Error en crear jugador: " + ex.getMessage());
+        }
+        
+        
         try {
             System.out.println("Afeguir un jugador en un equip: ");
             gBD.afegir_jugadors(e, j, false);
@@ -129,7 +140,15 @@ public class Test {
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
         }
+        try {
+            System.out.println("Eliminar jugador d'un equip: ");
+            gBD.eliminar_jugadors(e, j, false);
+            
+        } catch (GestorBDEmpresaException ex) {
+            throw new GestorBDEmpresaException("Tot mal: ", ex);
+        }
        
+       /*
         try {
             System.out.println("Mostrar equips: ");
             if(gBD.mostrar_equips(null, 2025, 'n', "b", "asc")==null){
@@ -137,7 +156,7 @@ public class Test {
             }
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
-        }
+        }*/
  /*      
         try {
             System.out.println("Eliminar un jugador d'un equip: ");

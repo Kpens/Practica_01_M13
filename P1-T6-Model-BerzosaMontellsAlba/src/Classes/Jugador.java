@@ -40,6 +40,54 @@ public class Jugador {
         return id_legal;
     }
 
+    public String getAdreca() {
+        return adreca;
+    }
+
+    public String getCog() {
+        return cog;
+    }
+
+    public String getData_naix() {
+        return data_naix;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public String getPoblacio() {
+        return poblacio;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public int getAny_fi_rev() {
+        return any_fi_rev;
+    }
+
+    public int getCodi_postal() {
+        return codi_postal;
+    }
+
+    public Sexe_enum getSexe() {
+        return sexe;
+    }
+
     
         
     @Override
