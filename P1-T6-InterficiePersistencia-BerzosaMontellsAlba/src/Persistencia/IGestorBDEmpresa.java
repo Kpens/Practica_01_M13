@@ -60,7 +60,7 @@ public interface IGestorBDEmpresa {
      * 
      * Ja que en aquesta aplicació només tindrem un usuari
      */
-    void login(String login, String contra) throws GestorBDEmpresaException;
+    void login(String login, String contra) throws GestorBDEmpresaException;//FET
     
     /**
      * Funcions per la classe d'Equip
@@ -103,7 +103,7 @@ public interface IGestorBDEmpresa {
     /**
      * Per a poder editar la informació de l'equip
      */
-    Equip modificar_equip(Equip e) throws GestorBDEmpresaException;//Editar BBDD
+    //Equip modificar_equip(Equip e) throws GestorBDEmpresaException;//Editar BBDD
     /**
      * Per a poder editar la informació del jugador
      */
@@ -123,8 +123,13 @@ public interface IGestorBDEmpresa {
     Jugador crear_jugador(String nom, String cog, Sexe_enum sexe, String data_naix, String id_legal, String iban, int any_fi_revisio, String adreca, int codi_postal, String poblacio, String foto, String provincia,String pais) throws GestorBDEmpresaException;//FET
     
     /**
-     * Una llista de tots els jugadors
+     * Una llista de tots els jugadors, filtra per sexe i el nom de jugador
      */
-    List<Jugador> llista_jugadors(Sexe_enum sexe, String nom) throws GestorBDEmpresaException;//FET
+    List<Jugador> llista_jugadors_ant(Sexe_enum sexe, String nom) throws GestorBDEmpresaException;//FET 
+    
+    /**
+     * Una llista de tots els jugadors, filtra per sexe i el nom de jugador
+     */
+    List<Jugador> llista_jugadors(Sexe_enum sexe, String nom_j, String nif, String data_naix, Cate_enum cate) throws GestorBDEmpresaException;//FET
 }
 

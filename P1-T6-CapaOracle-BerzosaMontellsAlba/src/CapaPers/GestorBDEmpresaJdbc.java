@@ -26,8 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.sql.PreparedStatement;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.codec.digest.DigestUtils;
 
 
 
@@ -262,7 +268,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     }
 
     @Override
-    public List<Jugador> llista_jugadors(Sexe_enum sexe_j, String nom_j) throws GestorBDEmpresaException {
+    public List<Jugador> llista_jugadors_ant(Sexe_enum sexe_j, String nom_j) throws GestorBDEmpresaException {
         List<Jugador> ljugs = new ArrayList<>();
         boolean entrat=false;
         char s;
@@ -278,7 +284,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
             
             ps.setString(1, "%"+s+"%");
             
-            if(nom_j.equals("") || nom_j.equals(" ") ){
+            if(!nom_j.equals("") || !nom_j.equals(" ") ){
                 ps.setString(2, "%"+nom_j.toUpperCase()+"%");
             }else{
                 ps.setString(2, "%%");
@@ -330,25 +336,55 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     }
 
     @Override
-    public void login(String login, String contra) throws GestorBDEmpresaException {
-        Properties p = new Properties();
-        String user, pwd;
-        String nomFitxerPropietats = "Connexio_JDBC.properties";
-        try {
-            p.load(new FileInputStream(nomFitxerPropietats));
-            user = p.getProperty("user");
-            pwd = p.getProperty("pwd");
+public void login(String login, String contra) throws GestorBDEmpresaException {
+    boolean correcte = false;
+    Statement st = null;
+    try {
+        st = c.createStatement();
+        
+        List<Usuari> usu = new ArrayList<>();
+        String query = "SELECT * FROM usuari";
+        ResultSet rs = st.executeQuery(query);
+
+        contra = "SHA-1" + DigestUtils.sha1Hex(contra);
+        
+        while (rs.next()) {
+            String log = rs.getString("login");
+            String nom = rs.getString("nom_usu");
+            String pwd = rs.getString("password");
             
-            if (!login.equals(user) || !pwd.equals(contra) ) {
-                throw new GestorBDEmpresaException("Nom d'usuari o contrasenya incorrectes.");
+            if (!pwd.contains("SHA-1")) {
+                pwd = "SHA-1" + DigestUtils.sha1Hex(pwd);
             }
-        } catch (FileNotFoundException ex) {
-            System.out.println("No es troba el fitxer " + nomFitxerPropietats);
-            throw new GestorBDEmpresaException("Fitxer no trobat: " + nomFitxerPropietats, ex);
-        } catch (IOException ex) {
-            throw new GestorBDEmpresaException("Error accedint al fitxer: " + nomFitxerPropietats, ex);
+
+            PreparedStatement p = c.prepareStatement("UPDATE usuari SET password = ? WHERE upper(login) LIKE ?");
+            p.setString(1, pwd);
+            p.setString(2, log.toUpperCase());
+            p.executeUpdate(); // Canviem a executeUpdate()
+            
+            Usuari u = new Usuari(log, nom, pwd);
+            usu.add(u);
         }
+        
+        for (Usuari usuari : usu) {
+            if (usuari.getLogin().equals(login) && usuari.getPassword().equals(contra)) {
+                correcte = true;
+            }
+        }
+        if (!correcte) {
+            throw new GestorBDEmpresaException("Nom d'usuari o contrasenya incorrectes.");
+        }
+        c.commit();
+    } catch (Exception ex) {
+        try {
+            c.rollback();
+        } catch (SQLException ex1) {
+            Logger.getLogger(GestorBDEmpresaJdbc.class.getName()).log(Level.SEVERE, null, ex1);
+        }
+        throw new GestorBDEmpresaException("Nom d'usuari o contrasenya incorrectes.", ex);
     }
+}
+
 
     @Override
     public Equip crear_equip(String nom, char t, int any_eq, String cate) throws GestorBDEmpresaException {
@@ -356,6 +392,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
         
         for (Equip eq : llista_equips) {
             if(eq.getNom().equals(nom) && eq.getAny_eq() == any_eq ){
+                System.out.println("Ja existeix");
                 return eq;
             }
         }
@@ -471,9 +508,6 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
             System.out.println(e.getNum_jugadors());
             return;
         }else{
-            System.out.println("Aquest equip no conté aquest jugador");
-            System.out.println(e.getNum_jugadors());
-            System.out.println(e.getJug_mem().values());
         
             if(t){
                 tit='S';
@@ -485,7 +519,6 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 if(agafar_equip(e.getNom(), e.getAny_eq())==null){//Significa que l'equip no existeix
                     return;
                 }
-                 System.out.println("dghjk");
                  /*
                 PreparedStatement ps = c.prepareStatement("select ID_JUG ,NOM ,COGNOMS,SEXE,DATA_NAIX ,ID_LEGAL ,IBAN  ,ANY_FI_REVISIO_MEDICA ,ADRECA ,CODI_POSTAL ,POBLACIO ,FOTO ,PROVINCIA, PAIS from jugador order by id_jug");
                 //ps.setString(1, ordre); amb l'order by no es pot
@@ -537,10 +570,10 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                     pps.setString(3, t?"S":"N");
                     pps.execute();
                     c.commit();
-                    System.out.println("Commit efectuat");
+                    System.out.println("Jugador afegit a l'equip");
                 }catch(Exception ex){
                     c.rollback();
-                    throw new GestorBDEmpresaException("Molt probablement les dades són incorrectes", ex);
+                    throw new GestorBDEmpresaException("Dades són incorrectes", ex);
                 }
                 e.afegir_jugador(j, tit);
                 System.out.println("Afegit");
@@ -557,11 +590,21 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
 
     @Override
     public void eliminar_equip(Equip e) throws GestorBDEmpresaException {
-        
+        actualitzar_equips();
         if(e.getNum_jugadors()>0){
             throw new GestorBDEmpresaException("Error: Aquest equip conté jugadors");
         }else{
-            System.out.println("DFGHJKL");
+            try {
+                PreparedStatement pps = c.prepareStatement("DELETE FROM equip\n" +
+                        "WHERE id_equip = ?");
+                pps.setInt(1, e.getId_equip());
+                pps.execute();
+                c.commit();
+                System.out.println("Eliminat");
+
+            } catch (SQLException ex) {
+                Logger.getLogger(GestorBDEmpresaJdbc.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -599,11 +642,14 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
             throw new GestorBDEmpresaException("Error: ", ex);
         }       
     }
-
+/*
     @Override
     public Equip modificar_equip(Equip e) throws GestorBDEmpresaException {
         
         Equip ant_eq = null;
+        Map <Integer, Jugador> jug_mem = new HashMap<>();
+        Map <Integer, Character> jug_mem_titular = new HashMap<>();
+        boolean existeix = false, te_jugs = false;
         actualitzar_equips();
         for (Equip eq : llista_equips) {
             if(eq.getId_equip() == e.getId_equip()){
@@ -611,14 +657,35 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
             }
         }
         
-        if(ant_eq != null){
+        existeix= (ant_eq != null);
+        te_jugs = (ant_eq.getNum_jugadors()>0);
+        if(existeix){
             //UPDATE Jugador SET nom = 'NouNom', cognoms = 'NousCognoms', IBAN = 'ES9121000418450200051332', codi_postal = 08700, poblacio = 'NovaPoblacio', provincia = 'NovaProvincia', pais = 'NouPais', any_fi_revisio_medica = 2026, adreca = 'C/ nova adreça', foto = 'C:\nova_ruta\persona.jpg' WHERE id_legal = 'ID02';
             char t;
+            List<Jugador> jugs_eq = null;
             
+            if(te_jugs){
+                for (Integer key : ant_eq.getJug_mem().keySet()) {
+                    jug_mem.put(key, ant_eq.getJug_mem().get(key));
+                    jug_mem_titular.put(key, ant_eq.getJug_mem_titular().get(key));
+                }
+            }
             eliminar_equip(ant_eq);
-            crear_equip(e.getNom(), e.getTipus().toString().charAt(0), e.getAny_eq(), e.getCate().toString());
-            
             actualitzar_equips();
+            Equip eee = crear_equip(e.getNom(), e.getTipus().toString().charAt(0), e.getAny_eq(), e.getCate().toString());
+            if(te_jugs){
+                for (Integer key : jug_mem.keySet()) {
+                    boolean tit;
+                    if(ant_eq.getJug_mem_titular().get(key).equals('S')){
+                        tit = true;
+                    }else{
+                        tit=false;
+                    }
+                    afegir_jugadors(eee, ant_eq.getJug_mem().get(key), tit);
+                }
+            }
+            
+            //actualitzar_equips();
             return e;
         }else{
             throw new GestorBDEmpresaException("L'equip no existeix");
@@ -626,6 +693,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     
     }
 
+    */
     @Override
     public List<Jugador> mostrar_jugadors_per_equip() throws GestorBDEmpresaException {
         List<Equip> equips = actualitzar_equips();
@@ -646,7 +714,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
         Jugador j = null;
         int id_jug =0;
         boolean trobat = false;
-        List<Jugador> llista = llista_jugadors(sexe, nom);
+        List<Jugador> llista = llista_jugadors_ant(sexe, nom);
         
         
         if(agafar_jugador(id_legal, true)==null){
@@ -697,7 +765,11 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                     throw new GestorBDEmpresaException("Error: No es pot agafar la id de l'equip", exx);
                 }
 
-                j = new Jugador(id_jug, adreca, any_fi_revisio, cog, data_naix, foto, iban, id_legal, nom, sexe, codi_postal, poblacio, provincia, pais);
+                try {
+                    j = new Jugador(id_jug, adreca, any_fi_revisio, cog, data_naix, foto, iban, id_legal, nom, sexe, codi_postal, poblacio, provincia, pais);
+                } catch (Exception ex) {
+                    System.out.println("No es pot afegir el nou jugador");
+                }
 
                 llista.add(j);
             } catch (SQLException ex) {
@@ -713,20 +785,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     
     
     
-    
-//CAMBIA HO
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+  
     @Override
     public List<Equip> mostrar_equips(String cate, int temp, char tipus, String nom, String ordre) throws GestorBDEmpresaException {
         boolean entrat = false, existeix = false;
@@ -806,6 +865,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     public List<Equip> actualitzar_equips() throws GestorBDEmpresaException {
         List<Equip> lequips = new ArrayList<>();
         Statement q = null;
+        llista_equips = null;
         try {
             q = c.createStatement();
             String query = "select id_equip, nom, tipus, any_eq, cate from equip";
@@ -907,7 +967,11 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 System.out.println("Error: no es pot crear el jugador "+ex.getMessage());
             }
             
+            try {
                 jug = new Jugador(j.getId_jug(), j.getAdreca(), j.getAny_fi_rev(), j.getCog(), j.getData_naix(), j.getFoto(), j.getIban(), j.getId_legal(), j.getNom(), j.getSexe(), j.getCodi_postal(), j.getPoblacio(), j.getProvincia(), j.getPais());
+            } catch (Exception ex) {
+               throw new GestorBDEmpresaException("Les dades són incorrectes");
+            }
                 
                 actualitzar_equips();
                 return jug;
@@ -957,11 +1021,15 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 String provincia = rs.getString("PROVINCIA");
                 String pais = rs.getString("PAIS");
 
-                // Creació del jugador
-                j = new Jugador(
-                    id_jug, adreca, any_fi_rev, cog, data_naix, foto, iban, id_legal, nom,
-                    sexe, codi_postal, poblacio, provincia, pais
-                );
+                try {
+                    // Creació del jugador
+                    j = new Jugador(
+                            id_jug, adreca, any_fi_rev, cog, data_naix, foto, iban, id_legal, nom,
+                            sexe, codi_postal, poblacio, provincia, pais
+                    );
+                } catch (Exception ex) {
+                    throw new GestorBDEmpresaException("Dades incorrectes, probablement el iban o el nif");
+                }
                 
             }
             
@@ -969,6 +1037,117 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
             Logger.getLogger(GestorBDEmpresaJdbc.class.getName()).log(Level.SEVERE, null, ex);
         }
             return j;
+    }
+
+    @Override
+    public List<Jugador> llista_jugadors(Sexe_enum sexe_j, String nom_j, String nif, String data_naix_j, Cate_enum cate) throws GestorBDEmpresaException {
+        List<Jugador> ljugs = new ArrayList<>();
+        boolean entrat=false;
+        char s;
+        if(sexe_j == Sexe_enum.D){
+            s='D';
+        }else if(sexe_j == Sexe_enum.H){
+            s='H';
+        }else{
+            s='%';
+        }
+
+        
+        try {
+            
+            /*SELECT ID_JUG, NOM, COGNOMS, SEXE, DATA_NAIX, ID_LEGAL, IBAN, ANY_FI_REVISIO_MEDICA, ADRECA, CODI_POSTAL, POBLACIO, FOTO, PROVINCIA, PAIS,EXTRACT(YEAR FROM DATA_NAIX) AS anny FROM jugador
+WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'AND UPPER(DATA_NAIX) LIKE '%' ORDER BY ID_JUG;
+            
+            */
+            
+            PreparedStatement ps = c.prepareStatement("SELECT ID_JUG, NOM, COGNOMS, SEXE, DATA_NAIX, ID_LEGAL, IBAN, ANY_FI_REVISIO_MEDICA, ADRECA, CODI_POSTAL, POBLACIO, FOTO, PROVINCIA, PAIS,EXTRACT(YEAR FROM DATA_NAIX) AS anny FROM jugador\n" +
+"WHERE UPPER(SEXE) LIKE ? AND UPPER(NOM) LIKE ? AND UPPER(ID_LEGAL) LIKE ? AND UPPER(DATA_NAIX) LIKE ? ORDER BY ID_JUG ");
+            
+            ps.setString(1, "%"+s+"%");
+            
+            if(!nom_j.equals("") || !nom_j.equals(" ") ){
+                ps.setString(2, "%"+nom_j.toUpperCase()+"%");
+            }else{
+                ps.setString(2, "%%");
+                
+            }
+            if(!nif.equals("") || !nif.equals(" ") ){
+                ps.setString(3, "%"+nif+"%");
+            }else{
+                ps.setString(3, "%");
+                
+            }
+            if(!data_naix_j.equals("") || !data_naix_j.equals(" ") ){
+                ps.setString(4, "%"+data_naix_j+"%");
+            }else{
+                ps.setString(4, "%");
+                
+            }
+            
+            
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()){
+                entrat=true;
+                int id_jug = rs.getInt("ID_JUG");
+                String nom = rs.getString("NOM");
+                String cog = rs.getString("COGNOMS");
+                String sexeStr = rs.getString("SEXE");
+                Sexe_enum sexe = Sexe_enum.valueOf(sexeStr); // Assumint que el sexe és D, M o H.
+                String data_naix = rs.getString("DATA_NAIX");
+                String id_legal = rs.getString("ID_LEGAL");
+                String iban = rs.getString("IBAN");
+                int any_fi_rev = rs.getInt("ANY_FI_REVISIO_MEDICA");
+                String adreca = rs.getString("ADRECA");
+                int codi_postal = rs.getInt("CODI_POSTAL");
+                String poblacio = rs.getString("POBLACIO");
+                String foto = rs.getString("FOTO");
+                String provincia = rs.getString("PROVINCIA");
+                String pais = rs.getString("PAIS");
+                int anny = rs.getInt("anny");
+                int anyActual = (LocalDate.now().getYear())-anny;
+        
+                System.out.println("L'any actual és: " + (anyActual));
+                
+                
+                if(cate == null){
+                    Jugador jug = new Jugador(
+                        id_jug, adreca, any_fi_rev, cog, data_naix, foto, iban, id_legal, nom,
+                        sexe, codi_postal, poblacio, provincia, pais
+                    );
+
+                    ljugs.add(jug);
+                }else{
+                    if(cate.getEdatMinima()<=anyActual && anyActual <= cate.getEdatMaxima()){
+                    
+                        Jugador jug = new Jugador(
+                            id_jug, adreca, any_fi_rev, cog, data_naix, foto, iban, id_legal, nom,
+                            sexe, codi_postal, poblacio, provincia, pais
+                        );
+
+                        ljugs.add(jug);
+                    }
+                }
+                
+                
+                
+                
+
+
+            }
+            if(entrat==false){
+                return null;
+            }
+
+        } catch (SQLException ex) {
+            throw new GestorBDEmpresaException("Error en preparar sentència psInsertProduct", ex);
+        } catch (Exception ex) {
+            throw new GestorBDEmpresaException("Error: ", ex);
+        }
+        
+        return ljugs;
+        
+        
     }
 
 }

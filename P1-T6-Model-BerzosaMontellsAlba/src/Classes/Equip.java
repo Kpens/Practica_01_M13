@@ -118,6 +118,11 @@ public class Equip {
         return jug_mem;
     }
 
+    public Map<Integer, Character> getJug_mem_titular() {
+        return jug_mem_titular;
+    }   
+
+    
     public void setNum_jugadors(int num_jugadors) {
         this.num_jugadors = num_jugadors;
     }
