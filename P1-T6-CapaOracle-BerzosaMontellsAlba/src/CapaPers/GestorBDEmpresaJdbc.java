@@ -452,7 +452,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
                 ps.setString(2, ""+t);
                 ps.setInt(3, any_eq);
                 ps.setInt(4, id_cate);
-                ps.execute();
+                ps.executeUpdate();
                 c.commit();
                 System.out.println("Inserit a la BBDD");
             } catch (Exception ex) {
@@ -568,7 +568,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
                     pps.setInt(1, e.getId_equip());
                     pps.setInt(2, j.getId_jug());
                     pps.setString(3, t?"S":"N");
-                    pps.execute();
+                    pps.executeUpdate();
                     c.commit();
                     System.out.println("Jugador afegit a l'equip");
                 }catch(Exception ex){
@@ -598,7 +598,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
                 PreparedStatement pps = c.prepareStatement("DELETE FROM equip\n" +
                         "WHERE id_equip = ?");
                 pps.setInt(1, e.getId_equip());
-                pps.execute();
+                pps.executeUpdate();
                 c.commit();
                 System.out.println("Eliminat");
 
@@ -623,7 +623,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
                  pps.setInt(2, j.getId_jug());
             }
             
-            pps.execute();
+            pps.executeUpdate();
             
             if(!tots){
                 e.eliminar_jugador(j.getId_jug());
@@ -748,7 +748,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
                 pst.setInt(11, any_fi_revisio);
                 pst.setString(12, adreca);
                 pst.setString(13, foto);
-                pst.execute();
+                pst.executeUpdate();
 
                  try {
 
@@ -788,6 +788,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
   
     @Override
     public List<Equip> mostrar_equips(String cate, int temp, char tipus, String nom, String ordre) throws GestorBDEmpresaException {
+       actualitzar_equips();
         boolean entrat = false, existeix = false;
         List<Equip> lequips = new ArrayList<>();
         int i = 0;
@@ -961,7 +962,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
                 pst.setString(9, j.getAdreca()); 
                 pst.setString(10, j.getFoto());  
                 pst.setString(11, j.getId_legal());  
-                pst.execute();
+                pst.executeUpdate();
                 c.commit();
             } catch (SQLException ex) {
                 System.out.println("Error: no es pot crear el jugador "+ex.getMessage());
@@ -1061,7 +1062,7 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
             */
             
             PreparedStatement ps = c.prepareStatement("SELECT ID_JUG, NOM, COGNOMS, SEXE, DATA_NAIX, ID_LEGAL, IBAN, ANY_FI_REVISIO_MEDICA, ADRECA, CODI_POSTAL, POBLACIO, FOTO, PROVINCIA, PAIS,EXTRACT(YEAR FROM DATA_NAIX) AS anny FROM jugador\n" +
-"WHERE UPPER(SEXE) LIKE ? AND UPPER(NOM) LIKE ? AND UPPER(ID_LEGAL) LIKE ? AND UPPER(DATA_NAIX) LIKE ? ORDER BY ID_JUG ");
+"WHERE UPPER(SEXE) LIKE ? AND UPPER(NOM) LIKE ? AND UPPER(ID_LEGAL) LIKE ? AND TO_CHAR(data_naix, 'YYYY-MM-DD') LIKE ? ORDER BY cognoms ");
             
             ps.setString(1, "%"+s+"%");
             
@@ -1072,13 +1073,13 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
                 
             }
             if(!nif.equals("") || !nif.equals(" ") ){
-                ps.setString(3, "%"+nif+"%");
+                ps.setString(3, "%"+nif.toUpperCase()+"%");
             }else{
                 ps.setString(3, "%");
                 
             }
             if(!data_naix_j.equals("") || !data_naix_j.equals(" ") ){
-                ps.setString(4, "%"+data_naix_j+"%");
+                ps.setString(4, "%"+data_naix_j.toUpperCase()+"%");
             }else{
                 ps.setString(4, "%");
                 
@@ -1107,7 +1108,7 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
                 int anny = rs.getInt("anny");
                 int anyActual = (LocalDate.now().getYear())-anny;
         
-                System.out.println("L'any actual és: " + (anyActual));
+                System.out.println("L'edat de "+nom+" "+cog+" actual és: " + (anyActual));
                 
                 
                 if(cate == null){
@@ -1148,6 +1149,31 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
         return ljugs;
         
         
+    }
+
+    @Override
+    public Temporada crear_temporada(int anny) throws GestorBDEmpresaException {
+        Temporada temp=null;
+        
+        try {
+            PreparedStatement ps = c.prepareStatement("SELECT * from temporada where anny like ?");
+            ps.setInt(1, anny);
+
+            ResultSet rs = ps.executeQuery();
+
+            if(!rs.next()){
+                PreparedStatement pss = c.prepareStatement("INSERT INTO Temporada (anny) VALUES (?)");
+                pss.setInt(1, anny);
+
+                pss.executeUpdate();
+                c.commit();
+                System.out.println("Temporada creada");
+            }
+
+        }catch(SQLException ex){
+            throw new GestorBDEmpresaException("Error en buscar les temporades");
+        }
+        return temp;
     }
 
 }

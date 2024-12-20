@@ -27,4 +27,24 @@ public class Funcions {
         boto.setBackground(Color.LIGHT_GRAY);
         boto.setFont(new Font("Arial", Font.PLAIN, 16));
     }
+    static void agafar_gest_jugs(){
+        Gestio_jugs mp = new Gestio_jugs();
+        JFrame mpFrame = mp.gestio_jugs();
+        mpFrame.setVisible(true);
+    }
+    static void crear_jug(){
+        Crear_jugador mp = new Crear_jugador();
+        JFrame mpFrame = mp.Crear_jugador();
+        mpFrame.setVisible(true);
+    }
+    static void gest_equips(){
+        Gestio_equips mp = new Gestio_equips();
+        JFrame mpFrame = mp.gestio_equips();
+        mpFrame.setVisible(true);
+    }
+    static void gest_temporades(){
+        Gestio_temporades mp = new Gestio_temporades();
+        JFrame mpFrame = mp.crear_temporada();
+        mpFrame.setVisible(true);
+    }
 }

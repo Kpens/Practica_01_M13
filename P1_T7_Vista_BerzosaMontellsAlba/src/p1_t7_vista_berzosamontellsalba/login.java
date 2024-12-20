@@ -39,7 +39,7 @@ public class Login extends JFrame {
 
         f.setLayout(null);
         f.setSize(800, 530);
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.setResizable(false);
 
         ltext = new JLabel("Nom d'usuari: ");
@@ -93,6 +93,7 @@ public class Login extends JFrame {
                     try {
                         gestor.login(ltf_nom.getText(), pf_contra.getText());
 
+                        f.dispose();
                         Funcions.agafar_menu_principal();
                     } catch (GestorBDEmpresaException ex) {
                         pf_contra.setBackground(Color.RED);

@@ -100,6 +100,7 @@ public interface IGestorBDEmpresa {
      * Es podràn eliminar els jugadors d'un equip en concret
      */    
     void eliminar_jugadors(Equip e, Jugador j,boolean tots) throws GestorBDEmpresaException;//Eliminar a BBDD, per fer
+    
     /**
      * Per a poder editar la informació de l'equip
      */
@@ -130,6 +131,10 @@ public interface IGestorBDEmpresa {
     /**
      * Una llista de tots els jugadors, filtra per sexe i el nom de jugador
      */
-    List<Jugador> llista_jugadors(Sexe_enum sexe, String nom_j, String nif, String data_naix, Cate_enum cate) throws GestorBDEmpresaException;//FET
+    List<Jugador> llista_jugadors(Sexe_enum sexe, String nom_j, String id_legal, String data_naix, Cate_enum cate) throws GestorBDEmpresaException;//FET
+    /**
+     * Crear una temporada (si no existeix)
+     */
+    Temporada crear_temporada(int anny) throws GestorBDEmpresaException;//FET
 }
 

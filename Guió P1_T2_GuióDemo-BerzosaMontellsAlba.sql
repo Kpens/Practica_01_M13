@@ -4,13 +4,15 @@ INSERT INTO Temporada (anny) VALUES (2025);
 
 INSERT INTO usuari (login, nom_usu, password) VALUES ('usuari', 'usuari','usuari'); 
 
+INSERT INTO usuari (login, nom_usu, password) VALUES ('Alba', 'Alba','123456789'); 
+
 -- Insert categories
 INSERT INTO Categoria (nom, edat_min, edat_max) VALUES ('Benjami', 7, 8);
 INSERT INTO Categoria (nom, edat_min, edat_max) VALUES ('Alevi', 9, 11);
 INSERT INTO Categoria (nom, edat_min, edat_max) VALUES ('Infantil', 12, 13);
 INSERT INTO Categoria (nom, edat_min, edat_max) VALUES ('Cadet', 14, 15);
 INSERT INTO Categoria (nom, edat_min, edat_max) VALUES ('Juvenil', 16, 17);
-INSERT INTO Categoria (nom, edat_min, edat_max) VALUES ('Senior', 18, 21);
+INSERT INTO Categoria (nom, edat_min, edat_max) VALUES ('Senior', 18, 101);
 
 
 -- Insert equips
@@ -102,7 +104,7 @@ INSERT INTO Jugador (nom, cognoms, sexe, data_naix, id_legal, IBAN, codi_postal,
 VALUES ('Dani', 'Moreno', 'H', TO_DATE('2010-02-10', 'YYYY-MM-DD'), '48855508N', 'ES3904878825242142952965', 08700, 'Igualada', 'Barcelona', 'Espanya', 2024, 'C/ carrer 13', 'C:\jugadors\llop.jpg'); -- 15
 
 INSERT INTO Jugador (nom, cognoms, sexe, data_naix, id_legal, IBAN, codi_postal, poblacio, provincia, pais, any_fi_revisio_medica, adreca, foto)
-VALUES ('Adrian ', 'Navarro', 'H', TO_DATE('2010-08-14', 'YYYY-MM-DD'), '10243043Q', 'ES5020954776828486169896', 08700, 'Igualada', 'Barcelona', 'Espanya', 2024, 'C/ carrer 14', 'C:\jugadors\nam.jpg'); -- 15
+VALUES ('Adrian', 'Navarro', 'H', TO_DATE('2010-08-14', 'YYYY-MM-DD'), '10243043Q', 'ES5020954776828486169896', 08700, 'Igualada', 'Barcelona', 'Espanya', 2024, 'C/ carrer 14', 'C:\jugadors\nam.jpg'); -- 15
 
 INSERT INTO Jugador (nom, cognoms, sexe, data_naix, id_legal, IBAN, codi_postal, poblacio, provincia, pais, any_fi_revisio_medica, adreca, foto)
 VALUES ('Toni', 'Camps', 'H', TO_DATE('2011-12-02', 'YYYY-MM-DD'), '75853280Q', 'ES2414653622698262596722', 08700, 'Igualada', 'Barcelona', 'Espanya', 2024, 'C/ carrer 15', 'C:\jugadors\rocky.jpg'); -- 15
@@ -112,7 +114,7 @@ INSERT INTO Jugador (nom, cognoms, sexe, data_naix, id_legal, IBAN, codi_postal,
 VALUES ('Xavi', 'Bermidez', 'H', TO_DATE('2009-01-11', 'YYYY-MM-DD'), '33902640L', 'ES4004878815514117979794', 08700, 'Igualada', 'Barcelona', 'Espanya', 2024, 'C/ carrer 16', 'C:\jugadors\persona.jpg'); -- 17
 
 INSERT INTO Jugador (nom, cognoms, sexe, data_naix, id_legal, IBAN, codi_postal, poblacio, provincia, pais, any_fi_revisio_medica, adreca, foto)
-VALUES ('Ruben', 'LÃ³pez', 'H', TO_DATE('2009-04-15', 'YYYY-MM-DD'), '46028777G', 'ES1121006845875313856193', 08700, 'Igualada', 'Barcelona', 'Espanya', 2024, 'C/ carrer 17', 'C:\jugadors\ogroids.jpg'); -- 17
+VALUES ('Ruben', 'Lopez', 'H', TO_DATE('2009-04-15', 'YYYY-MM-DD'), '46028777G', 'ES1121006845875313856193', 08700, 'Igualada', 'Barcelona', 'Espanya', 2024, 'C/ carrer 17', 'C:\jugadors\ogroids.jpg'); -- 17
 
 INSERT INTO Jugador (nom, cognoms, sexe, data_naix, id_legal, IBAN, codi_postal, poblacio, provincia, pais, any_fi_revisio_medica, adreca, foto)
 VALUES ('Pablo', 'Roca', 'H', TO_DATE('2009-10-20', 'YYYY-MM-DD'), '82842739M', 'ES4120801565318977228727', 08700, 'Igualada', 'Barcelona', 'Espanya', 2024, 'C/ carrer 18', 'C:\jugadors\llop.jpg'); -- 17

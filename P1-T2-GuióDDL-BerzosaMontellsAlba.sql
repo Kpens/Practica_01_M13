@@ -57,7 +57,7 @@ CREATE TABLE MEMBRE(
 CREATE TABLE Usuari (
     login VARCHAR(50) PRIMARY KEY,
     nom_usu VARCHAR(50) NOT NULL,
-    password VARCHAR(40) NOT NULL,
+    password VARCHAR(60) NOT NULL,
     CONSTRAINT ck_password CHECK (LENGTH(password) >= 6)
 );
 
@@ -149,7 +149,7 @@ BEGIN
     FROM JUGADOR j
     WHERE j.id_jug = :NEW.Id_jug_mem;
 
-    -- Obtenir les edats mÌnima i m‡xima de la categoria de l'equip
+    -- Obtenir les edats m√≠nima i m√†xima de la categoria de l'equip
     SELECT c.edat_min, c.edat_max
     INTO v_edat_min, v_edat_max
     FROM EQUIP e
@@ -157,13 +157,13 @@ BEGIN
     WHERE e.id_equip = :NEW.Id_equip_mem;
 
     if :new.titular = 'S' then
-    -- Comprovar si l'edat del jugador est‡ dins del rang permËs
+    -- Comprovar si l'edat del jugador est√† dins del rang perm√®s
         IF v_edat_jug < v_edat_min OR v_edat_jug > v_edat_max THEN
             RAISE_APPLICATION_ERROR(-20001, 'L''edat del jugador no correspon a la categoria de l''equip');
         END IF;
     else
         IF v_edat_jug > v_edat_max THEN
-            RAISE_APPLICATION_ERROR(-20001, 'L''edat del jugador no correspon a la categoria de l''equip. Ès massa gran');
+            RAISE_APPLICATION_ERROR(-20001, 'L''edat del jugador no correspon a la categoria de l''equip. √©s massa gran');
         END IF;
     
     end if;
@@ -187,9 +187,9 @@ BEGIN
     
     
     IF v_anys < 0 THEN
-        RAISE_APPLICATION_ERROR(-20006, 'L''any Ès massa gran.');
+        RAISE_APPLICATION_ERROR(-20006, 'L''any √©s massa gran.');
     ELSIF :NEW.any_fi_revisio_medica < v_any_actual THEN
-        RAISE_APPLICATION_ERROR(-20007, 'L''any de la revisiÛ mËdica Ès inferior a l''any actual.');
+        RAISE_APPLICATION_ERROR(-20007, 'L''any de la revisi√≥ m√®dica √©s inferior a l''any actual.');
     
     END IF;
 END;

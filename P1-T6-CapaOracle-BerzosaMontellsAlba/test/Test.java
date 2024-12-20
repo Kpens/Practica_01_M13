@@ -43,7 +43,7 @@ public class Test {
         }
         
         try {
-            gBD.login("Alba", "123456789");
+            gBD.login("usuari", "usuari");
             System.out.println("Usuari creat");
         } catch (GestorBDEmpresaException ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,7 +96,7 @@ public class Test {
         } catch (Exception ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
         }
-        */
+        
         
         try {
             List<Jugador> llistj = gBD.llista_jugadors(Sexe_enum.D, "", "", "", Cate_enum.Benjami);
@@ -111,7 +111,7 @@ public class Test {
         } catch (Exception ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        */
        
         //String nom, String tipus, int any_eq, String cate
         /*try {
@@ -190,7 +190,16 @@ public class Test {
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
         }
-          
+          */
+        
+         try {
+            System.out.println("Crear una temporada: ");
+            gBD.crear_temporada(2026);
+        } catch (GestorBDEmpresaException ex) {
+            throw new GestorBDEmpresaException("Tot mal: ", ex);
+        }
+        
+        /*
         try {
             System.out.println("Actualitzar llista d'equips");
             List<Equip> equips = gBD.actualitzar_equips();

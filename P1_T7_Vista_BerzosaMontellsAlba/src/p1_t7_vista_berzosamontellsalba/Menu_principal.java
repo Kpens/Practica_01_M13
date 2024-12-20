@@ -13,86 +13,79 @@ import java.awt.event.ActionListener;
  * @author Alma
  */
 public class Menu_principal {
+    static private JLabel ltitol;
+    static JFrame f = new JFrame("El nostre club");
     public JFrame menu_principal() {
         JFrame f = new JFrame("El nostre club");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.setSize(800, 600);
 
-        JPanel pan_principal = new JPanel(new BorderLayout());
-
-        JPanel barraNavegacio = crearBarraNavegacio();
-        pan_principal.add(barraNavegacio, BorderLayout.PAGE_START);
-
-        JPanel pan_central = new JPanel(new BorderLayout());
-        JLabel titol = new JLabel("El nostre club", JLabel.CENTER);
-        titol.setFont(new Font("Arial", Font.BOLD, 40));
-
-        pan_central.add(titol, BorderLayout.NORTH);
-
-        pan_principal.add(pan_central, BorderLayout.CENTER);
-
-        f.add(pan_principal);
-        f.setVisible(true);
+        f.setLayout(null);
+        f.setSize(1000, 530);
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        f.setResizable(false);
+        
+        crearBarraNavegacio(f);
+        
+        ltitol = new JLabel("Crear un Jugador ");
+        ltitol.setBounds(200,50, 600, 30);
+        ltitol.setFont(new Font("Arial", Font.BOLD, 40));
+        f.add(ltitol);
+        
         
         return f;
     }
+    
+    /*
+    * La barra superior on estàn els botons que connecten als diferents gestors
+    */
 
-    private static JPanel crearBarraNavegacio() {
-        JPanel barra = new JPanel(new BorderLayout());
-        barra.setBackground(Color.LIGHT_GRAY);
-
-        //Un panell per a poder agrupar els botons de l'esquerra a la barra i poder separar-los del de filtrar
-        JPanel pan_bot_esquerra = new JPanel(new FlowLayout(FlowLayout.LEFT, 30, 5));
-        pan_bot_esquerra.setBackground(Color.LIGHT_GRAY);
-
+    private static void crearBarraNavegacio(JFrame f) {
+        
         JButton bJugadors = new JButton("Jugadors");
+        bJugadors.setBounds(10, 10, 100, 30);
         JButton bEquips = new JButton("Equips");
+        bEquips.setBounds(120, 10, 100, 30);
         JButton bTemporades = new JButton("Temporades");
-
+        bTemporades.setBounds(270, 10, 140, 30);
+        
         bJugadors.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Pestanya jugs");
+                f.dispose();
+                Funcions.agafar_gest_jugs();
             }
             
         });
         bEquips.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Pestanya eqs");
+                f.dispose();
+                Funcions.gest_equips();
             }
             
         });
         bTemporades.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Pestanya temporades");
+                f.dispose();
+                Funcions.gest_temporades();
             }
             
         });
-        
+
         Funcions.nav_boto_estil(bJugadors);
         Funcions.nav_boto_estil(bEquips);
         Funcions.nav_boto_estil(bTemporades);
 
-        pan_bot_esquerra.add(bJugadors);
-        pan_bot_esquerra.add(bEquips);
-        pan_bot_esquerra.add(bTemporades);
+        f.add(bJugadors);
+        f.add(bEquips);
+        f.add(bTemporades);
 
         JButton bFiltrar = new JButton("Filtrar");
+        bFiltrar.setBounds(f.getWidth()-120, 10, 100, 30);
         Funcions.nav_boto_estil(bFiltrar);
+        bFiltrar.addActionListener(e -> System.out.println("Pestanya filtrar"));
 
-        bFiltrar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Pestanya filtrar");
-            }
-            
-        });
-        barra.add(pan_bot_esquerra, BorderLayout.WEST);
-        barra.add(bFiltrar, BorderLayout.EAST);
-
-        return barra;
+        f.add(bFiltrar);
     }
 
     
