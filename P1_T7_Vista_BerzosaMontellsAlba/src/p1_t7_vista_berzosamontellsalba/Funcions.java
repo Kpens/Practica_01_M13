@@ -4,6 +4,7 @@
  */
 package p1_t7_vista_berzosamontellsalba;
 
+import Classes.Jugador;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -54,6 +55,11 @@ public class Funcions {
     static void gest_temporades(){
         Gestio_temporades mp = new Gestio_temporades();
         JFrame mpFrame = mp.crear_temporada();
+        mpFrame.setVisible(true);
+    }
+    static void modificar_jug(Jugador j){
+        Modificar_jug mp = new Modificar_jug();
+        JFrame mpFrame = mp.Modificar_jug(j);
         mpFrame.setVisible(true);
     }
     

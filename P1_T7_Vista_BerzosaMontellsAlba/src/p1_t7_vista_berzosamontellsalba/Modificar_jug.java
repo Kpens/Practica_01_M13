@@ -67,7 +67,7 @@ public class Modificar_jug {
         Funcions.crearBarraNavegacio(f, 'j');
 
                
-        ltitol = new JLabel("Crear un Jugador ");
+        ltitol = new JLabel("Modificar un Jugador ");
         ltitol.setBounds(200,50, 600, 30);
         ltitol.setFont(new Font("Arial", Font.BOLD, 40));
         f.add(ltitol);
@@ -78,7 +78,7 @@ public class Modificar_jug {
         ltext.setFont(new Font("Arial", Font.BOLD, 20));
         f.add(ltext);
 
-        ltf_nom = new JTextField();
+        ltf_nom = new JTextField(j.getNom());
         ltf_nom.setBounds(380, 105, 200, 30);
         ltf_nom.setFont(new Font("Arial", Font.PLAIN, 20));
         f.add(ltf_nom);
@@ -89,7 +89,7 @@ public class Modificar_jug {
         f.add(lcog);
 
         
-        ltf_cog = new JTextField();
+        ltf_cog = new JTextField(j.getCog());
         ltf_cog.setBounds(380, 145, 200, 30);
         ltf_cog.setFont(new Font("Arial", Font.PLAIN, 20));
         f.add(ltf_cog);
@@ -100,7 +100,7 @@ public class Modificar_jug {
         f.add(liban);
 
         
-        ltf_iban = new JTextField();
+        ltf_iban = new JTextField(j.getIban());
         ltf_iban.setBounds(380, 185, 300, 30);
         ltf_iban.setFont(new Font("Arial", Font.PLAIN, 20));
         f.add(ltf_iban);
@@ -118,7 +118,14 @@ public class Modificar_jug {
         ButtonGroup grupSexe = new ButtonGroup();
         grupSexe.add(rbHome);
         grupSexe.add(rbDona);
-        rbHome.setSelected(true);
+        
+        if(j.getSexe().equals(Sexe_enum.H)){
+            rbHome.setSelected(true);
+            rbDona.setSelected(false);
+        }else{
+            rbHome.setSelected(false);
+            rbDona.setSelected(true);
+        }
         
         f.add(rbHome);
         
@@ -141,7 +148,7 @@ public class Modificar_jug {
         f.add(lnif);
 
         
-        ltf_nif = new JTextField();
+        ltf_nif = new JTextField(j.getId_legal());
         ltf_nif.setBounds(380, 305, 200, 30);
         ltf_nif.setFont(new Font("Arial", Font.PLAIN, 20));
         f.add(ltf_nif);
@@ -159,7 +166,7 @@ public class Modificar_jug {
         cb_anys = new JComboBox<>(anys);
         cb_anys.setBounds(420, 345, 100, 30);
         cb_anys.setFont(new Font("Arial", Font.PLAIN, 20));
-        
+        cb_anys.setSelectedItem(j.getAny_fi_rev());
         f.add(cb_anys);
         
         
@@ -169,7 +176,7 @@ public class Modificar_jug {
         f.add(ladreca);
 
         
-        ltf_adreca = new JTextField();
+        ltf_adreca = new JTextField(j.getAdreca());
         ltf_adreca.setBounds(380, 385, 200, 30);
         ltf_adreca.setFont(new Font("Arial", Font.PLAIN, 20));
         f.add(ltf_adreca);
@@ -180,7 +187,7 @@ public class Modificar_jug {
         f.add(lcod_postal);
 
         
-        ltf_cod_postal = new JTextField();
+        ltf_cod_postal = new JTextField(j.getCodi_postal()+"");
         ltf_cod_postal.setBounds(720, 385, 200, 30);
         ltf_cod_postal.setFont(new Font("Arial", Font.PLAIN, 20));
         f.add(ltf_cod_postal);
@@ -191,7 +198,7 @@ public class Modificar_jug {
         f.add(lpoblacio);
 
         
-        ltf_poblacio = new JTextField();
+        ltf_poblacio = new JTextField(j.getPoblacio());
         ltf_poblacio.setBounds(720, 345, 200, 30);
         ltf_poblacio.setFont(new Font("Arial", Font.PLAIN, 20));
         f.add(ltf_poblacio);
@@ -202,7 +209,7 @@ public class Modificar_jug {
         f.add(lprovincia);
 
         
-        ltf_provincia = new JTextField();
+        ltf_provincia = new JTextField(j.getPoblacio());
         ltf_provincia.setBounds(720, 305, 200, 30);
         ltf_provincia.setFont(new Font("Arial", Font.PLAIN, 20));
         f.add(ltf_provincia);
@@ -213,12 +220,12 @@ public class Modificar_jug {
         f.add(lpais);
 
         
-        ltf_pais = new JTextField();
+        ltf_pais = new JTextField(j.getPais());
         ltf_pais.setBounds(720, 265, 200, 30);
         ltf_pais.setFont(new Font("Arial", Font.PLAIN, 20));
         f.add(ltf_pais);
         
-        bcrear_jug = new JButton("Crear");
+        bcrear_jug = new JButton("Modificar");
         bcrear_jug.setBounds(860, 425, 125, 30);
         Funcions.boto_estil(bcrear_jug);
         f.add(bcrear_jug);
@@ -334,7 +341,7 @@ public class Modificar_jug {
 
                             }else{
                                 //System.out.println(outputFile.getPath());
-                                gestor.crear_jugador(ltf_nom.getText().trim(), ltf_cog.getText().trim(), Sexe_enum.H, data_naix, ltf_nif.getText().trim(), ltf_iban.getText().trim(), Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_adreca.getText().trim(),  Integer.parseInt(ltf_cod_postal.getText().trim()), ltf_poblacio.getText().trim(), img_path, ltf_provincia.getText().trim(), ltf_pais.getText().trim());
+                                //gestor.crear_jugador(ltf_nom.getText().trim(), ltf_cog.getText().trim(), Sexe_enum.H, data_naix, ltf_nif.getText().trim(), ltf_iban.getText().trim(), Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_adreca.getText().trim(),  Integer.parseInt(ltf_cod_postal.getText().trim()), ltf_poblacio.getText().trim(), img_path, ltf_provincia.getText().trim(), ltf_pais.getText().trim());
                                
                                 try {
                                     ImageIO.write(img, "png", outputFile);

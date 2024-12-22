@@ -121,7 +121,7 @@ public interface IGestorBDEmpresa {
      * Crear un jugador
      */
     
-    Jugador crear_jugador(String nom, String cog, Sexe_enum sexe, String data_naix, String id_legal, String iban, int any_fi_revisio, String adreca, int codi_postal, String poblacio, String foto, String provincia,String pais) throws GestorBDEmpresaException;//FET
+    Jugador crear_jugador(String nom, String cog, Sexe_enum sexe, String data_naix, String id_legal, String iban, int any_fi_revisio, String adreca, String codi_postal, String poblacio, String foto, String provincia,String pais) throws GestorBDEmpresaException;//FET
     
     /**
      * Una llista de tots els jugadors, filtra per sexe i el nom de jugador

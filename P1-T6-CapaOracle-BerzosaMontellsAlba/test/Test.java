@@ -137,7 +137,7 @@ public class Test {
          */  
         try {
             System.out.println("Crear jugador: ");
-            j= gBD.crear_jugador("Afhjs", "Seguro", Sexe_enum.H, "2014-06-10", "50072973H", "ES9121000418450200051330", 2025,  "C/ carrer 6", Integer.parseInt("08700"), "Igualada", "C:\\jugadors\\persona.jpg", "Barcelona", "Espanya");
+            j= gBD.crear_jugador("Afhjs", "Seguro", Sexe_enum.H, "2014-06-10", "50072973H", "ES9121000418450200051330", 2025,  "C/ carrer 6", "08700", "Igualada", "C:\\jugadors\\persona.jpg", "Barcelona", "Espanya");
             if (j == null) {
                 throw new GestorBDEmpresaException("No s'ha pogut crear");
             }

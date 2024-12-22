@@ -304,7 +304,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 String iban = rs.getString("IBAN");
                 int any_fi_rev = rs.getInt("ANY_FI_REVISIO_MEDICA");
                 String adreca = rs.getString("ADRECA");
-                int codi_postal = rs.getInt("CODI_POSTAL");
+                String codi_postal = rs.getString("CODI_POSTAL");
                 String poblacio = rs.getString("POBLACIO");
                 String foto = rs.getString("FOTO");
                 String provincia = rs.getString("PROVINCIA");
@@ -710,7 +710,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
     }
 
     @Override
-    public Jugador crear_jugador(String nom, String cog, Sexe_enum sexe, String data_naix, String id_legal, String iban, int any_fi_revisio, String adreca, int codi_postal, String poblacio, String foto, String provincia,String pais) throws GestorBDEmpresaException {
+    public Jugador crear_jugador(String nom, String cog, Sexe_enum sexe, String data_naix, String id_legal, String iban, int any_fi_revisio, String adreca, String codi_postal, String poblacio, String foto, String provincia,String pais) throws GestorBDEmpresaException {
         Jugador j = null;
         int id_jug =0;
         boolean trobat = false;
@@ -752,7 +752,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
                 pst.setString(4, data_naix);
                 pst.setString(5, id_legal);
                 pst.setString(6, iban);     
-                pst.setInt(7, codi_postal);  
+                pst.setString(7, codi_postal);  
                 pst.setString(8, poblacio);   
                 pst.setString(9, provincia); 
                 pst.setString(10, pais);
@@ -966,7 +966,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
                 pst.setString(1, j.getNom());
                 pst.setString(2, j.getCog());
                 pst.setString(3, j.getIban());   
-                pst.setInt(4, j.getCodi_postal());  
+                pst.setString(4, j.getCodi_postal());  
                 pst.setString(5, j.getPoblacio());        
                 pst.setString(6, j.getProvincia());
                 pst.setString(7, j.getPais());
@@ -1028,7 +1028,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
                 String iban = rs.getString("IBAN");
                 int any_fi_rev = rs.getInt("ANY_FI_REVISIO_MEDICA");
                 String adreca = rs.getString("ADRECA");
-                int codi_postal = rs.getInt("CODI_POSTAL");
+                String codi_postal = rs.getString("CODI_POSTAL");
                 String poblacio = rs.getString("POBLACIO");
                 String foto = rs.getString("FOTO");
                 String provincia = rs.getString("PROVINCIA");
@@ -1112,7 +1112,7 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
                 String iban = rs.getString("IBAN");
                 int any_fi_rev = rs.getInt("ANY_FI_REVISIO_MEDICA");
                 String adreca = rs.getString("ADRECA");
-                int codi_postal = rs.getInt("CODI_POSTAL");
+                String codi_postal = rs.getString("CODI_POSTAL");
                 String poblacio = rs.getString("POBLACIO");
                 String foto = rs.getString("FOTO");
                 String provincia = rs.getString("PROVINCIA");

@@ -29,6 +29,8 @@ public class Gestio_jugs {
     private static List<Jugador> llistaJugadors; 
     static JFrame f = new JFrame("Gestió de jugadors");
     static JLabel error = new JLabel("Error", JLabel.CENTER);
+    static Jugador jugador_seleccionat;
+    static JButton b_modificar_jug = new JButton("Modificar un jugador");
     public static JFrame gestio_jugs() {
         
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -179,8 +181,12 @@ public class Gestio_jugs {
                 if (!e.getValueIsAdjusting()) {
                     int filaSeleccionada = taula.getSelectedRow();
                     if (filaSeleccionada != -1) {
-                        Jugador jugadorSeleccionat = llistaJugadors.get(filaSeleccionada);
+                        jugador_seleccionat = llistaJugadors.get(filaSeleccionada);
 
+                        b_modificar_jug.setEnabled(true);
+                    }else{
+                        
+                        b_modificar_jug.setEnabled(false);
                     }
                 }
             }
@@ -199,7 +205,7 @@ public class Gestio_jugs {
         panellBotons.setLayout(new FlowLayout());
         JButton b_crear_jug = new JButton("Crear un jugador");
         JButton b_endarrere = new JButton("Endarrere");
-        JButton b_modificar_jug = new JButton("Modificar un jugador");
+        b_modificar_jug.setEnabled(false);
         JButton b_exportar_dades = new JButton("Exportar dades");
         
         b_crear_jug.addActionListener(new ActionListener() {
@@ -214,6 +220,14 @@ public class Gestio_jugs {
             public void actionPerformed(ActionEvent e) {
                f.dispose();
                 Funcions.agafar_menu_principal();
+            }
+        });
+        b_modificar_jug.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               f.dispose();
+               // Si un jugador és seleccionat, el passem a modificar, i es podrà premer el botó
+               Funcions.modificar_jug(jugador_seleccionat);
             }
         });
         b_exportar_dades.addActionListener(new ActionListener() {

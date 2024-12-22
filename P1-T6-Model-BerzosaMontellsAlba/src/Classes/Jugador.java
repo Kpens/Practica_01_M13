@@ -15,17 +15,23 @@ import java.util.regex.Pattern;
  * @author Alma
  */
 public class Jugador {
-    String adreca, cog, data_naix, foto, iban, id_legal, nom, poblacio, provincia, pais;
-    int id_jug, any_fi_rev, codi_postal;
+    String adreca, cog, data_naix, foto, iban, id_legal, nom, poblacio, provincia, pais, codi_postal;
+    int id_jug, any_fi_rev;
     Sexe_enum sexe;
 
-    public Jugador(int id_jug, String adreca, int any_fi_rev, String cog, String data_naix, String foto, String iban, String id_legal, String nom, Sexe_enum sexe, int codi_postal, String poblacio, String provincia, String pais) throws Exception{        
+    public Jugador(int id_jug, String adreca, int any_fi_rev, String cog, String data_naix, String foto, String iban, String id_legal, String nom, Sexe_enum sexe, String codi_postal, String poblacio, String provincia, String pais) throws Exception{        
         if(iban_valid(iban)){
             this.iban = iban;
         }else{
             throw new Exception("El iban és incorrecte");
             
         }
+        try {
+            Integer.parseInt(codi_postal);
+        } catch (NumberFormatException e) {
+            throw new Exception("El codi postal no és un nombre vàlid: " + codi_postal);
+        }
+        
         if(nif_valid(id_legal)){
             this.id_legal = id_legal;
         }else{
@@ -94,7 +100,7 @@ public class Jugador {
         return any_fi_rev;
     }
 
-    public int getCodi_postal() {
+    public String getCodi_postal() {
         return codi_postal;
     }
 

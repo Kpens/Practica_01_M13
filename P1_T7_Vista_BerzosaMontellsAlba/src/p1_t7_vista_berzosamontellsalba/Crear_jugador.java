@@ -335,6 +335,13 @@ public class Crear_jugador {
                             JOptionPane.showMessageDialog(f, "Iban incorrecte!");
                             return;
                         }
+                        
+                        try {
+                            int cod_postal = Integer.parseInt(ltf_cod_postal.getText().trim());
+                        } catch (NumberFormatException nfe) {
+                            throw new GestorBDEmpresaException("El codi postal no és un nombre vàlid");
+                        }
+                        
                         if(dch_data_naix.getDate() != null){
                             data_naix = dch_data_naix.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
                                 
@@ -344,7 +351,7 @@ public class Crear_jugador {
 
                             }else{
                                 //System.out.println(outputFile.getPath());
-                                gestor.crear_jugador(ltf_nom.getText().trim(), ltf_cog.getText().trim(), Sexe_enum.H, data_naix, ltf_nif.getText().trim(), ltf_iban.getText().trim(), Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_adreca.getText().trim(),  Integer.parseInt(ltf_cod_postal.getText().trim()), ltf_poblacio.getText().trim(), img_path, ltf_provincia.getText().trim(), ltf_pais.getText().trim());
+                                gestor.crear_jugador(ltf_nom.getText().trim(), ltf_cog.getText().trim(), Sexe_enum.H, data_naix, ltf_nif.getText().trim(), ltf_iban.getText().trim(), Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_adreca.getText().trim(), ltf_cod_postal.getText().trim(), ltf_poblacio.getText().trim(), img_path, ltf_provincia.getText().trim(), ltf_pais.getText().trim());
                                
                                 try {
                                     ImageIO.write(img, "png", outputFile);
