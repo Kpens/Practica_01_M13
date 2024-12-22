@@ -22,7 +22,8 @@ public class Menu_principal {
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.setResizable(false);
         
-        crearBarraNavegacio(f);
+        
+        Funcions.crearBarraNavegacio(f, 'm');
         
         ltitol = new JLabel("El nostre club");
         ltitol.setBounds(200,50, 600, 30);
@@ -37,55 +38,4 @@ public class Menu_principal {
     * La barra superior on estàn els botons que connecten als diferents gestors
     */
 
-    private static void crearBarraNavegacio(JFrame f) {
-        
-        JButton bJugadors = new JButton("Jugadors");
-        bJugadors.setBounds(10, 10, 100, 30);
-        JButton bEquips = new JButton("Equips");
-        bEquips.setBounds(120, 10, 100, 30);
-        JButton bTemporades = new JButton("Temporades");
-        bTemporades.setBounds(270, 10, 140, 30);
-        
-        bJugadors.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                f.dispose();
-                Funcions.agafar_gest_jugs();
-            }
-            
-        });
-        bEquips.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                f.dispose();
-                Funcions.gest_equips();
-            }
-            
-        });
-        bTemporades.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                f.dispose();
-                Funcions.gest_temporades();
-            }
-            
-        });
-
-        Funcions.nav_boto_estil(bJugadors);
-        Funcions.nav_boto_estil(bEquips);
-        Funcions.nav_boto_estil(bTemporades);
-
-        f.add(bJugadors);
-        f.add(bEquips);
-        f.add(bTemporades);
-
-        JButton bFiltrar = new JButton("Filtrar");
-        bFiltrar.setBounds(f.getWidth()-120, 10, 100, 30);
-        Funcions.nav_boto_estil(bFiltrar);
-        bFiltrar.addActionListener(e -> System.out.println("Pestanya filtrar"));
-
-        f.add(bFiltrar);
-    }
-
-    
 }

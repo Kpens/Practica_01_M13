@@ -50,7 +50,8 @@ public class Gestio_temporades {
         f.setResizable(false);
 
         
-        crearBarraNavegacio(f);
+        
+        Funcions.crearBarraNavegacio(f, 't');
         
         ltemp = new JLabel("Escriu l'any de la temporada: ");
         ltemp.setBounds(100, 100, 300, 40);
@@ -102,56 +103,4 @@ public class Gestio_temporades {
         return f;
     }
 
-    private static void crearBarraNavegacio(JFrame f) {
-        
-               
-        JButton bCasa = new JButton("Casa");
-        bCasa.setBounds(10, 10, 100, 30);
-        JButton bEquips = new JButton("Equips");
-        bEquips.setBounds(120, 10, 100, 30);
-        JButton bJugadors = new JButton("Jugadors");
-        bJugadors.setBounds(270, 10, 140, 30);
-
-
-        bCasa.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                f.dispose();
-                Funcions.agafar_menu_principal();
-            }
-            
-        });
-        bEquips.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                f.dispose();
-                Funcions.gest_equips();
-            }
-            
-        });
-        bJugadors.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                f.dispose();
-                Funcions.agafar_gest_jugs();
-            }
-            
-        });
-        
-        
-        Funcions.nav_boto_estil(bCasa);
-        Funcions.nav_boto_estil(bEquips);
-        Funcions.nav_boto_estil(bJugadors);
-
-        f.add(bCasa);
-        f.add(bEquips);
-        f.add(bJugadors);
-
-        JButton bFiltrar = new JButton("Filtrar");
-        bFiltrar.setBounds(f.getWidth()-100, 10, 100, 30);
-        Funcions.nav_boto_estil(bFiltrar);
-        bFiltrar.addActionListener(e -> System.out.println("Pestanya filtrar"));
-
-        f.add(bFiltrar);
-    }
 }

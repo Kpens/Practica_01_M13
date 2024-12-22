@@ -9,20 +9,9 @@ import Classes.Jugador;
 import Enums.Sexe_enum;
 import Persistencia.GestorBDEmpresaException;
 import com.toedter.calendar.JDateChooser;
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -38,15 +27,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
 /**
  *
  * @author Alma
  */
-public class Crear_jugador {
+public class Modificar_jug {
     static private String nomClassePersistencia = null;
     static private JLabel ltext, lcog, lEnllaç,lsexe, lnif, ldata_naix, liban, lany_rev_medica, ladreca, lcod_postal, lpoblacio, lprovincia, lpais, ltitol;
     static private JTextField ltf_nom, ltf_cog, ltf_nif, ltf_iban, ltf_adreca, ltf_cod_postal, ltf_poblacio, ltf_provincia, ltf_pais;
@@ -59,7 +47,7 @@ public class Crear_jugador {
     BufferedImage img = null;
     File outputFile;
 
-    public JFrame Crear_jugador() {
+    public JFrame Modificar_jug(Jugador j) {
         
         JFrame f = new JFrame("El nostre club");
 
@@ -68,12 +56,14 @@ public class Crear_jugador {
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.setResizable(false);
         
-        go(f);
+        go(f, j);
         return f;
     }
 
-    void go(JFrame f) {
 
+    void go(JFrame f, Jugador j) {
+
+        
         Funcions.crearBarraNavegacio(f, 'j');
 
                

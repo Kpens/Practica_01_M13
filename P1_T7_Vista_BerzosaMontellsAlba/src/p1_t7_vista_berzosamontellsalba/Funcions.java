@@ -6,6 +6,8 @@ package p1_t7_vista_berzosamontellsalba;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import p1_t7_vista_berzosamontellsalba.Menu_principal;
@@ -53,5 +55,97 @@ public class Funcions {
         Gestio_temporades mp = new Gestio_temporades();
         JFrame mpFrame = mp.crear_temporada();
         mpFrame.setVisible(true);
+    }
+    
+    
+    /*
+    * si el char temp_eq_o_jug diu 't' es treurà el de temporada i es posarà el d'equip, així amb cada un.
+    * Podent ser 't' temporada 'e' equip 'j' jugador  o un altre que comptem que es el menú principal o algún altre que no hi hagui caigut ara
+    */
+    static void crearBarraNavegacio(JFrame f, char temp_eq_o_jug) {
+        
+        
+        
+        JButton bnum1 = new JButton();
+        bnum1.setBounds(10, 10, 100, 30);
+        JButton bnum2 = new JButton();
+        bnum2.setBounds(120, 10, 100, 30);
+        JButton bnum3 = new JButton();
+        bnum3.setBounds(270, 10, 140, 30);
+        switch (temp_eq_o_jug) {
+            case 't':
+                bnum1.setText("Casa");
+                bnum2.setText("Jugadors");
+                bnum3.setText("Equips");
+                break;
+            case 'e':
+                bnum1.setText("Casa");
+                bnum2.setText("Jugadors");
+                bnum3.setText("Temporades");
+                break;
+            case 'j':
+                bnum1.setText("Casa");
+                bnum2.setText("Equips");
+                bnum3.setText("Temporades");
+                break;
+            default:
+                bnum1.setText("Jugadors");
+                bnum2.setText("Equips");
+                bnum3.setText("Temporades");
+                break;
+        }
+
+        bnum1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+                if(temp_eq_o_jug != 'j'&&temp_eq_o_jug != 't'&&temp_eq_o_jug != 'e'){
+                    Funcions.agafar_gest_jugs();
+                }else{
+                    Funcions.agafar_menu_principal();
+                }
+                
+            }
+            
+        });
+        bnum2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+                if(temp_eq_o_jug == 't' || temp_eq_o_jug=='e'){
+                    Funcions.agafar_gest_jugs();
+                }else{
+                    Funcions.gest_equips();
+                }
+            }
+            
+        });
+        bnum3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+                if(temp_eq_o_jug == 't'){
+                    Funcions.gest_equips();
+                }else{
+                    Funcions.gest_temporades();
+                }
+            }
+            
+        });
+
+        Funcions.nav_boto_estil(bnum1);
+        Funcions.nav_boto_estil(bnum2);
+        Funcions.nav_boto_estil(bnum3);
+
+        f.add(bnum1);
+        f.add(bnum2);
+        f.add(bnum3);
+
+        JButton bFiltrar = new JButton("Filtrar");
+        bFiltrar.setBounds(f.getWidth()-120, 10, 100, 30);
+        Funcions.nav_boto_estil(bFiltrar);
+        bFiltrar.addActionListener(e -> System.out.println("Pestanya filtrar"));
+
+        f.add(bFiltrar);
     }
 }
