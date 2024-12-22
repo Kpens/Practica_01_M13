@@ -65,7 +65,7 @@ public class Gestio_equips {
         pan_bot_esquerra.setBackground(Color.LIGHT_GRAY);
 
         JButton bCasa = new JButton("Casa");
-        JButton bEquips = new JButton("Equips");
+        JButton bJugadors = new JButton("Jugadors");
         JButton bTemporades = new JButton("Temporades");
 
         bCasa.addActionListener(new ActionListener() {
@@ -76,27 +76,29 @@ public class Gestio_equips {
             }
             
         });
-        bEquips.addActionListener(new ActionListener() {
+        bJugadors.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Pestanya eqs");
+                f.dispose();
+                Funcions.agafar_gest_jugs();
             }
             
         });
         bTemporades.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Pestanya temporades");
+                f.dispose();
+                Funcions.gest_temporades();
             }
             
         });
         
         Funcions.nav_boto_estil(bCasa);
-        Funcions.nav_boto_estil(bEquips);
+        Funcions.nav_boto_estil(bJugadors);
         Funcions.nav_boto_estil(bTemporades);
 
         pan_bot_esquerra.add(bCasa);
-        pan_bot_esquerra.add(bEquips);
+        pan_bot_esquerra.add(bJugadors);
         pan_bot_esquerra.add(bTemporades);
 
         JButton bFiltrar = new JButton("Filtrar");
@@ -174,16 +176,20 @@ public class Gestio_equips {
 
         JPanel panellBotons = new JPanel();
         panellBotons.setLayout(new FlowLayout());
-        JButton b_crear_jug = new JButton("Crear un jugador");
+        JButton b_crear_eq = new JButton("Crear un equip");
+        Funcions.boto_estil(b_crear_eq);
         JButton b_endarrere = new JButton("Endarrere");
+        Funcions.boto_estil(b_endarrere);
         JButton b_modificar_jug = new JButton("Modificar un jugador");
+        Funcions.boto_estil(b_modificar_jug);
         JButton b_exportar_dades = new JButton("Exportar dades");
+        Funcions.boto_estil(b_exportar_dades);
         
-        b_crear_jug.addActionListener(new ActionListener() {
+        b_crear_eq.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                f.dispose();
-                Funcions.crear_jug();
+                //f.dispose();
+                //Funcions.crear_equip(); //encara no he fet la classe
             }
         }); 
         b_endarrere.addActionListener(new ActionListener() {
@@ -197,12 +203,13 @@ public class Gestio_equips {
             @Override
             public void actionPerformed(ActionEvent e) {
                f.dispose();
-               //JDom
-               //JOptionPane.showMessageDialog(f, "S'han exportat les dades \n\n", "Alerta", JOptionPane.WARNING_MESSAGE);
+               //Classe amb les dues op
+               //1 op  xml = JDom
+               //JOptionPane.showMessageDialog(f, "S'han exportat les dades \n\n");
             }
         });
         
-        panellBotons.add(b_crear_jug);
+        panellBotons.add(b_crear_eq);
         panellBotons.add(b_endarrere);
         panellBotons.add(b_modificar_jug);
 
@@ -211,6 +218,7 @@ public class Gestio_equips {
 
         
         JButton bFiltrar = new JButton("Filtrar");
+        Funcions.boto_estil(bFiltrar);
         bFiltrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

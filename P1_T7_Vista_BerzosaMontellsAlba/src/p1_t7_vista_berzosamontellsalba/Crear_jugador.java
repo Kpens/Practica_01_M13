@@ -53,9 +53,11 @@ public class Crear_jugador {
     static private JButton bcrear_jug;
     static private JDateChooser dch_data_naix; 
     static private JComboBox cb_anys; 
-    static private JButton bSeleccionar_img;
+    static private JButton bSeleccionar_img, b_endarrere;
     static private File imageFile;
     static private String img_path;
+    BufferedImage img = null;
+    File outputFile;
 
     public JFrame Crear_jugador() {
         
@@ -153,16 +155,16 @@ public class Crear_jugador {
         ltf_cog.setFont(new Font("Arial", Font.PLAIN, 20));
         f.add(ltf_cog);
 
-        lnif = new JLabel("NIF: ");
-        lnif.setBounds(200, 180, 160, 40);
-        lnif.setFont(new Font("Arial", Font.BOLD, 20));
-        f.add(lnif);
+        liban = new JLabel("IBAN: ");
+        liban.setBounds(200, 180, 160, 40);
+        liban.setFont(new Font("Arial", Font.BOLD, 20));
+        f.add(liban);
 
         
-        ltf_nif = new JTextField();
-        ltf_nif.setBounds(380, 185, 200, 30);
-        ltf_nif.setFont(new Font("Arial", Font.PLAIN, 20));
-        f.add(ltf_nif);
+        ltf_iban = new JTextField();
+        ltf_iban.setBounds(380, 185, 300, 30);
+        ltf_iban.setFont(new Font("Arial", Font.PLAIN, 20));
+        f.add(ltf_iban);
 
         
         lsexe = new JLabel("Sexe: ");
@@ -194,16 +196,16 @@ public class Crear_jugador {
         dch_data_naix.setFont(new Font("Arial", Font.PLAIN, 20));
         f.add(dch_data_naix);
         
-        liban = new JLabel("IBAN: ");
-        liban.setBounds(200, 300, 160, 40);
-        liban.setFont(new Font("Arial", Font.BOLD, 20));
-        f.add(liban);
+        lnif = new JLabel("NIF: ");
+        lnif.setBounds(200, 300, 160, 40);
+        lnif.setFont(new Font("Arial", Font.BOLD, 20));
+        f.add(lnif);
 
         
-        ltf_iban = new JTextField();
-        ltf_iban.setBounds(380, 305, 200, 30);
-        ltf_iban.setFont(new Font("Arial", Font.PLAIN, 20));
-        f.add(ltf_iban);
+        ltf_nif = new JTextField();
+        ltf_nif.setBounds(380, 305, 200, 30);
+        ltf_nif.setFont(new Font("Arial", Font.PLAIN, 20));
+        f.add(ltf_nif);
         
         
         lany_rev_medica = new JLabel("Any_revisió mèdica: ");
@@ -279,15 +281,27 @@ public class Crear_jugador {
         
         bcrear_jug = new JButton("Crear");
         bcrear_jug.setBounds(860, 425, 125, 30);
-        bcrear_jug.setFont(new Font("Arial", Font.PLAIN, 20));
+        Funcions.boto_estil(bcrear_jug);
         f.add(bcrear_jug);
+        
+        b_endarrere = new JButton("Endarrere");
+        b_endarrere.setBounds(160, 425, 125, 30);
+        Funcions.boto_estil(b_endarrere);
+        f.add(b_endarrere);
         
         
         bSeleccionar_img = new JButton("Seleccionar Imatge");
         bSeleccionar_img.setBounds(600, 100, 200, 40);
         bSeleccionar_img.setFont(new Font("Arial", Font.PLAIN, 20));
-        Funcions.nav_boto_estil(bSeleccionar_img);
-     
+        Funcions.boto_estil(bSeleccionar_img);//Funcions.nav_boto_estil(bSeleccionar_img);
+
+        b_endarrere.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               f.dispose();
+                Funcions.agafar_gest_jugs();
+            }
+        });
         /*
         * S'agafa la imatge i es guarda a la carpeta amb el nif com a manera de trobar-la, 
         * si no s'ha popsat el nif no es pot seleccionar, i si existeix un jugador amb aquest tampoc
@@ -322,11 +336,9 @@ public class Crear_jugador {
                             
                             imageFile = fileChooser.getSelectedFile();
                             try {
-                                BufferedImage image = ImageIO.read(imageFile);
+                                img = ImageIO.read(imageFile);
                                 String nif = ltf_nif.getText();
-                                File outputFile = new File("D:/jugador/" + nif + ".png");
-                                ImageIO.write(image, "png", outputFile);
-                                JOptionPane.showMessageDialog(f, "Imatge guardada en: " + outputFile.getPath());
+                                outputFile = new File("D:/jugador/" + nif + ".png");
                                 img_path = outputFile.getPath();
                             } catch (IOException ex) {
                                 JOptionPane.showMessageDialog(f, "Error: No s'ha pogut guardar la imatge");
@@ -359,17 +371,48 @@ public class Crear_jugador {
                     gestor = new GestorBDEmpresaJdbc();
                     System.out.println("Capa de persistència creada");
                     System.out.println("");
-                    if(dch_data_naix.getDate() != null){
-                        data_naix = dch_data_naix.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
-                    }
-                    if(img_path == null){
-                        System.out.println(dch_data_naix.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString());
-                        JOptionPane.showMessageDialog(f, "Afegeix una imatge abans de continuar");
-                    }else{
-                        gestor.crear_jugador(ltf_nom.getText().trim(), ltf_cog.getText().trim(), Sexe_enum.H, data_naix, ltf_nif.getText().trim(), ltf_iban.getText().trim(), Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_adreca.getText().trim(),  Integer.parseInt(ltf_cod_postal.getText().trim()), ltf_poblacio.getText().trim(), img_path, ltf_provincia.getText().trim(), ltf_pais.getText().trim());
+                    
+                    /*
+                    * Reviso que s'haguin omplert tots els espais abans de revisar si són correctes
+                    */
+                    if (!ltf_nom.getText().trim().isEmpty() && !ltf_cog.getText().trim().isEmpty() && !ltf_nif.getText().trim().isEmpty() && grupSexe.getSelection() != null && dch_data_naix.getDate() != null && !ltf_iban.getText().trim().isEmpty() && cb_anys.getSelectedItem() != null && !ltf_adreca.getText().trim().isEmpty() && !ltf_cod_postal.getText().trim().isEmpty() && !ltf_poblacio.getText().trim().isEmpty() && !ltf_provincia.getText().trim().isEmpty() && !ltf_pais.getText().trim().isEmpty()) {
 
-                    }
+                        
+                        if(!Jugador.nif_valid(ltf_nif.getText().trim())){
+                            JOptionPane.showMessageDialog(f, "NIF incorrecte!");
+                            return;
+                        }
+                        if(!Jugador.iban_valid(ltf_iban.getText().trim())){
+                            JOptionPane.showMessageDialog(f, "Iban incorrecte!");
+                            return;
+                        }
+                        if(dch_data_naix.getDate() != null){
+                            data_naix = dch_data_naix.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
+                                
+                            if(img_path == null){
+                                //System.out.println(dch_data_naix.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString());
+                                JOptionPane.showMessageDialog(f, "Afegeix una imatge abans de continuar");
 
+                            }else{
+                                //System.out.println(outputFile.getPath());
+                                gestor.crear_jugador(ltf_nom.getText().trim(), ltf_cog.getText().trim(), Sexe_enum.H, data_naix, ltf_nif.getText().trim(), ltf_iban.getText().trim(), Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_adreca.getText().trim(),  Integer.parseInt(ltf_cod_postal.getText().trim()), ltf_poblacio.getText().trim(), img_path, ltf_provincia.getText().trim(), ltf_pais.getText().trim());
+                               
+                                try {
+                                    ImageIO.write(img, "png", outputFile);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Crear_jugador.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                JOptionPane.showMessageDialog(f, "Jugador creat i imatge afegida");
+                                
+                            }
+
+                        }else{
+                            JOptionPane.showMessageDialog(f, "Afegeix una data de naixement abans de continuar");
+
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(f, "Omple tots els camps!", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                     
                 } catch (GestorBDEmpresaException ex) {
                         JOptionPane.showMessageDialog(f, "No s'ha pogut crear el jugador");
@@ -378,6 +421,6 @@ public class Crear_jugador {
         });
 
         f.setVisible(true);
-        System.out.println("El JFrame s'ha mostrat correctament.");
     }
+   
 }

@@ -27,6 +27,13 @@ public class Funcions {
         boto.setBackground(Color.LIGHT_GRAY);
         boto.setFont(new Font("Arial", Font.PLAIN, 16));
     }
+     static void boto_estil(JButton boto) {//Els altres botons
+        boto.setFocusPainted(false);
+        boto.setBorderPainted(false);
+        boto.setBackground(new Color(0xDFF5F6));
+        boto.setBorderPainted(true);
+        boto.setFont(new Font("Arial", Font.PLAIN, 16));
+    }
     static void agafar_gest_jugs(){
         Gestio_jugs mp = new Gestio_jugs();
         JFrame mpFrame = mp.gestio_jugs();

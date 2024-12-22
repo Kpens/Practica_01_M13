@@ -44,7 +44,7 @@ public class Test {
         
         try {
             gBD.login("usuari", "usuari");
-            System.out.println("Usuari creat");
+            System.out.println("Usuari connectat");
         } catch (GestorBDEmpresaException ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -81,8 +81,8 @@ public class Test {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        */
-        /*
+        
+        
         try {
             List<Jugador> llistj = gBD.llista_jugadors_ant(Sexe_enum.D, "Rita");
             if(llistj == null){
@@ -95,7 +95,7 @@ public class Test {
             
         } catch (Exception ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*//*
         
         
         try {
@@ -134,17 +134,17 @@ public class Test {
         } catch(Exception ex){
             throw new GestorBDEmpresaException("Equip és null", ex);
         }
-           */
-        /*  try {
+         */  
+        try {
             System.out.println("Crear jugador: ");
-            j= gBD.crear_jugador("Afhjs", "Seguro", Sexe_enum.H, "2014-06-10", "ID300", "ES9121000418450200051330", 2025,  "C/ carrer 6", Integer.parseInt("08700"), "Igualada", "C:\\jugadors\\persona.jpg", "Barcelona", "Espanya");
+            j= gBD.crear_jugador("Afhjs", "Seguro", Sexe_enum.H, "2014-06-10", "50072973H", "ES9121000418450200051330", 2025,  "C/ carrer 6", Integer.parseInt("08700"), "Igualada", "C:\\jugadors\\persona.jpg", "Barcelona", "Espanya");
             if (j == null) {
                 throw new GestorBDEmpresaException("No s'ha pogut crear");
             }
             System.out.println("Jugador: " + j.toString());
         } catch (GestorBDEmpresaException ex) {
             System.err.println("Error en crear jugador: " + ex.getMessage());
-        }
+        } 
        /* try {
             
             Jugador jug = new Jugador(j.getId_jug(), "Calle Falsa 123", 2025, "Gómez", "01/01/1990", "foto.jpg", "ES7620770024020000001234", j.getId_legal(), "Juan", Sexe_enum.H, 28080, "Madrid", "Madrid", "España");

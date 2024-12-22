@@ -221,9 +221,14 @@ public class Gestio_jugs {
             public void actionPerformed(ActionEvent e) {
                f.dispose();
                //JDom --> exportar XML
-               //JOptionPane.showMessageDialog(f, "S'han exportat les dades \n\n", "Alerta", JOptionPane.WARNING_MESSAGE);
+               //JOptionPane.showMessageDialog(f, "S'han exportat les dades \n\n");
             }
         });
+        
+        Funcions.boto_estil(b_crear_jug);
+        Funcions.boto_estil(b_endarrere);
+        Funcions.boto_estil(b_modificar_jug);
+        Funcions.boto_estil(b_exportar_dades);
         
         panellBotons.add(b_crear_jug);
         panellBotons.add(b_endarrere);
@@ -232,6 +237,7 @@ public class Gestio_jugs {
         panellContingut.add(panellBotons, BorderLayout.SOUTH);
 
         JButton bFiltrar = new JButton("Filtrar");
+        Funcions.boto_estil(bFiltrar);
         bFiltrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

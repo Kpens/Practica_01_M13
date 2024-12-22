@@ -70,7 +70,7 @@ public class Gestio_temporades {
         
         bCrear_temp= new JButton("Crear");
         bCrear_temp.setBounds(435, 225, 125, 30);
-        bCrear_temp.setFont(new Font("Arial", Font.PLAIN, 20));
+        Funcions.boto_estil(bCrear_temp);
         f.add(bCrear_temp);
         
         bCrear_temp.addActionListener(new ActionListener() {
@@ -86,18 +86,15 @@ public class Gestio_temporades {
                         
                         gestor.crear_temporada(anny);
                     } catch (NumberFormatException exx) {
-                        missatge.setText("Error: Num invàlid");
-                        missatge.setVisible(true);
+                        JOptionPane.showMessageDialog(f, "Numero incorrecte: " + exx.getMessage(), "Incorrecte", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
                     
-                    missatge.setForeground(Color.green);
-                    missatge.setText("Inserit");
-                    missatge.setVisible(true);
+                    JOptionPane.showMessageDialog(f, "Temporada inserida");
+                
 
                 } catch (GestorBDEmpresaException ex) {
-                    missatge.setText("Error: "+ex);
-                    missatge.setVisible(true);
+                    JOptionPane.showMessageDialog(f, "Error al intentar crear la temporada: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

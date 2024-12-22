@@ -20,13 +20,13 @@ public class Jugador {
     Sexe_enum sexe;
 
     public Jugador(int id_jug, String adreca, int any_fi_rev, String cog, String data_naix, String foto, String iban, String id_legal, String nom, Sexe_enum sexe, int codi_postal, String poblacio, String provincia, String pais) throws Exception{        
-        if(isValidIban(iban)){
+        if(iban_valid(iban)){
             this.iban = iban;
         }else{
             throw new Exception("El iban és incorrecte");
             
         }
-        if(isValidNif(id_legal)){
+        if(nif_valid(id_legal)){
             this.id_legal = id_legal;
         }else{
             throw new Exception("El NIF/id_legal és incorrecte");
@@ -102,13 +102,11 @@ public class Jugador {
         return sexe;
     }
 
-    public static boolean isValidIban(String iban) {
-        // Validar que el IBAN té una longitud mínima i màxima
+    public static boolean iban_valid(String iban) {
         if (iban == null || iban.length() < 15 || iban.length() > 34) {
             return false;
         }
         
-        // Regex per validar el format del IBAN (només per verificar la sintaxi)
         String regex = "^[A-Z]{2}[0-9]{2}[A-Z0-9]{1,30}$";
         Pattern pat = Pattern.compile(regex);
         Matcher matcher = pat.matcher(iban.toUpperCase());
@@ -116,25 +114,25 @@ public class Jugador {
         return matcher.matches();
     }
         
-     public static boolean isValidNif(String nif) {
-        // Comprova que el NIF no sigui nul ni buit
-        if (nif == null || nif.isEmpty()) {
+     public static boolean nif_valid(String nif) {
+        if (nif == null || nif.length() != 9) {
             return false;
         }
 
-        // Regex per validar el NIF
-        // Format per a persones físiques: 8 dígits + 1 lletra
-        // Format per a persones jurídiques: 1 lletra + 8 dígits
-        String regexPersonaFisica = "^[0-9]{8}[A-Z]$";
-        String regexPersonaJuridica = "^[A-Z]{1}[0-9]{8}$";
-        
-        Pattern patternFisica = Pattern.compile(regexPersonaFisica);
-        Pattern patternJuridica = Pattern.compile(regexPersonaJuridica);
+        String numbers = nif.substring(0, 8);
+        char letter = Character.toUpperCase(nif.charAt(8));
 
-        // Comprova si el NIF coincideix amb algun dels dos formats
-        return patternFisica.matcher(nif.toUpperCase()).matches() || patternJuridica.matcher(nif.toUpperCase()).matches();
+        if (!numbers.matches("\\d{8}")) {
+            return false;
+        }
+
+        String validLetters = "TRWAGMYFPDXBNJZSQVHLCKE";
+        int dniNumber = Integer.parseInt(numbers);
+        char expectedLetter = validLetters.charAt(dniNumber % 23);
+
+        return letter == expectedLetter;
     }
-    
+
     @Override
     public String toString() {
         return "Jugador{" +

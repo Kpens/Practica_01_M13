@@ -284,11 +284,11 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
             
             ps.setString(1, "%"+s+"%");
             
-            if(!nom_j.equals("") || !nom_j.equals(" ") ){
-                ps.setString(2, "%"+nom_j.toUpperCase()+"%");
-            }else{
+            if (nom_j==null||nom_j.equals("") || nom_j.equals(" ") ){
                 ps.setString(2, "%%");
-                
+                System.out.println("fg");
+            }else{
+                ps.setString(2, "%"+nom_j.toUpperCase()+"%");
             }
             ResultSet rs = ps.executeQuery();
 
@@ -714,10 +714,21 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
         Jugador j = null;
         int id_jug =0;
         boolean trobat = false;
+        /*
         List<Jugador> llista = llista_jugadors_ant(sexe, nom);
+        if(llista_jugadors_ant(sexe, nom) == null){
+            llista = new ArrayList<>();
+        }*/
         
         
         if(agafar_jugador(id_legal, true)==null){
+            
+            if(!Jugador.nif_valid(id_legal)){
+                throw new GestorBDEmpresaException("NIF incorrecte");
+            }
+            if(!Jugador.iban_valid(iban)){
+                throw new GestorBDEmpresaException("Iban incorrecte");
+            }
             String sex;
             switch (sexe) {
                 case D:
@@ -767,16 +778,17 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
 
                 try {
                     j = new Jugador(id_jug, adreca, any_fi_revisio, cog, data_naix, foto, iban, id_legal, nom, sexe, codi_postal, poblacio, provincia, pais);
+                    System.out.println("Creat");
                 } catch (Exception ex) {
                     System.out.println("No es pot afegir el nou jugador");
                 }
 
-                llista.add(j);
+                //llista.add(j);
             } catch (SQLException ex) {
                 System.out.println("Error: no es pot crear el jugador "+ex.getMessage());
             }
-            System.out.println("dfsghjk");
         }else{
+            System.out.println("Ja existeix");
             j = agafar_jugador(id_legal, true);
         }
         return j;

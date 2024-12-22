@@ -16,7 +16,6 @@ public class Menu_principal {
     static private JLabel ltitol;
     static JFrame f = new JFrame("El nostre club");
     public JFrame menu_principal() {
-        JFrame f = new JFrame("El nostre club");
 
         f.setLayout(null);
         f.setSize(1000, 530);
@@ -25,7 +24,7 @@ public class Menu_principal {
         
         crearBarraNavegacio(f);
         
-        ltitol = new JLabel("Crear un Jugador ");
+        ltitol = new JLabel("El nostre club");
         ltitol.setBounds(200,50, 600, 30);
         ltitol.setFont(new Font("Arial", Font.BOLD, 40));
         f.add(ltitol);

@@ -64,7 +64,7 @@ public class Login extends JFrame {
 
         bNom_usu = new JButton("Accedir");
         bNom_usu.setBounds(435, 225, 125, 30);
-        bNom_usu.setFont(new Font("Arial", Font.PLAIN, 20));
+        Funcions.boto_estil(bNom_usu);
         f.add(bNom_usu);
         
         lEnllaç = new JLabel("<HTML><U>Has oblidat la contrasenya?</U></HTML>");
@@ -76,7 +76,7 @@ public class Login extends JFrame {
         lEnllaç.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                JOptionPane.showMessageDialog(f, "Si us plau avisa al teu administrador:\n  aberzosa1@milaifontanals.org\n\n", "Alerta", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(f, "Si us plau avisa al teu administrador:\n  aberzosa1@milaifontanals.org\n\n");
             }
         });
 
