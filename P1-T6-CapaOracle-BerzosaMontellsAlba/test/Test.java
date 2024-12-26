@@ -80,7 +80,7 @@ public class Test {
         } catch (Exception ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+       
         
         
         try {
@@ -95,7 +95,7 @@ public class Test {
             
         } catch (Exception ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-        }*//*
+        } 
         
         
         try {
@@ -110,8 +110,8 @@ public class Test {
             
         } catch (Exception ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        */
+        }*/
+        /**/
        
         //String nom, String tipus, int any_eq, String cate
         /*try {
@@ -181,16 +181,28 @@ public class Test {
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
         }
-       
+       */
         try {
+            System.out.println("Mostrar temporada: ");
+            List<Temporada> temp;
+            if((temp =gBD.llista_temporades())==null){
+                System.out.println("No es troba cap temporada");
+            }
+            for (Temporada temporada : temp) {
+                System.out.println(temporada.getAnny());
+            }
+            
+        } catch (GestorBDEmpresaException ex) {
+            throw new GestorBDEmpresaException("Tot mal: ", ex);
+        }
+        /*try {
             System.out.println("Mostrar equips: ");
-            if(gBD.mostrar_equips(null, 2025, 'n', "b", "asc")==null){
+            if(gBD.mostrar_equips("Benjami", 0, 'n', "", "asc")==null){
                 System.out.println("No existeix aquest equip");
             }
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
         }
-          */
         
          try {
             System.out.println("Crear una temporada: ");
@@ -199,7 +211,8 @@ public class Test {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
         }
         
-        /*
+        
+        
         try {
             System.out.println("Actualitzar llista d'equips");
             List<Equip> equips = gBD.actualitzar_equips();

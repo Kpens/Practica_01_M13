@@ -136,5 +136,7 @@ public interface IGestorBDEmpresa {
      * Crear una temporada (si no existeix)
      */
     Temporada crear_temporada(int anny) throws GestorBDEmpresaException;//FET
+    
+    List<Temporada> llista_temporades() throws GestorBDEmpresaException;
 }
 

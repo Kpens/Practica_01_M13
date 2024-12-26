@@ -505,7 +505,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
         if (e.agafar_jugador(j)) {
             System.out.println("Aquest equip ja conté aquest jugador");
             System.out.println(e.getJug_mem().values());
-            System.out.println(e.getNum_jugadors());
+            System.out.println(e.getJug_mem().size());
             return;
         }else{
         
@@ -591,7 +591,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
     @Override
     public void eliminar_equip(Equip e) throws GestorBDEmpresaException {
         actualitzar_equips();
-        if(e.getNum_jugadors()>0){
+        if(!e.getJug_mem().isEmpty()){
             throw new GestorBDEmpresaException("Error: Aquest equip conté jugadors");
         }else{
             try {
@@ -800,7 +800,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
   
     @Override
     public List<Equip> mostrar_equips(String cate, int temp, char tipus, String nom, String ordre) throws GestorBDEmpresaException {
-       actualitzar_equips();
+        actualitzar_equips();//Entenc que no fa res
         boolean entrat = false, existeix = false;
         List<Equip> lequips = new ArrayList<>();
         int i = 0;
@@ -872,6 +872,7 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
             throw new GestorBDEmpresaException("Error general", ex);
         }
 
+        aff_jugador_al_map_d_equip(lequips);
         return lequips;
     }
     @Override
@@ -918,33 +919,9 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
 
                 Equip eq = new Equip(id_equip, nom, tenum, any_eq, cat);
                 
-                
-                 try {
-                    PreparedStatement ps = c.prepareStatement("select * from membre where id_equip_mem = ?");
-                    ps.setInt(1, eq.getId_equip());
-                    
-                    ResultSet rss = ps.executeQuery();
-
-                    while (rss.next()) {
-                        
-
-                        Jugador j = agafar_jugador(rss.getString("id_jug_mem"), false);
-                        char titular = rss.getString("titular").charAt(0);
-                        eq.afegir_jugador(j, titular);
-                        llista_jugs_eq.add(j);
-                        num++;
-                    }
-                    if(num >0){
-                        eq.setNum_jugadors(num);
-
-                    }
-                    lequips.add(eq);
-                 }catch(SQLException ex) {
-                    throw new GestorBDEmpresaException("Error en el select de jugadors de l'equip", ex);
-                } catch (Exception ex) {
-                    throw new GestorBDEmpresaException("Actualitzar els usuaris dins de l'equip fan una excepció: ", ex);
-                } 
+                lequips.add(eq);
             }
+            aff_jugador_al_map_d_equip(lequips);
             llista_equips = lequips;
             return lequips;
         } catch (SQLException ex) {
@@ -952,6 +929,35 @@ public void login(String login, String contra) throws GestorBDEmpresaException {
         } catch (Exception ex) {
             throw new GestorBDEmpresaException("Es fa una excepció en l'agregació de l'equip: ", ex);
         } 
+    }
+    /*
+    *   Els afegeixo externament perquè és més útil en el gestor d'equips (m'asseguro que tenen tots els jugadors)
+    */
+    void aff_jugador_al_map_d_equip(List<Equip> equip) throws GestorBDEmpresaException{
+        try {
+            for (Equip eq : equip) {
+                PreparedStatement ps = c.prepareStatement("select * from membre where id_equip_mem = ?");
+                ps.setInt(1, eq.getId_equip());
+
+                ResultSet rss = ps.executeQuery();
+
+                while (rss.next()) {
+
+                    Jugador j = agafar_jugador(rss.getString("id_jug_mem"), false);
+                    char titular = rss.getString("titular").charAt(0);
+                    eq.afegir_jugador(j, titular);
+                    llista_jugs_eq.add(j);
+                }
+                 System.out.println("Num jugadors: "+eq.getJug_mem().size());
+
+
+            }
+        }catch(SQLException ex) {
+            throw new GestorBDEmpresaException("Error en el select de jugadors de l'equip", ex);
+        } catch (Exception ex) {
+            throw new GestorBDEmpresaException("Actualitzar els usuaris dins de l'equip fan una excepció: ", ex);
+        }  
+        
     }
 
     @Override
@@ -1186,6 +1192,32 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
             throw new GestorBDEmpresaException("Error en buscar les temporades");
         }
         return temp;
+    }
+
+    @Override
+    public List<Temporada> llista_temporades() throws GestorBDEmpresaException {
+        Statement st = null;
+        try {
+            st = c.createStatement();
+
+            List<Temporada> temp = new ArrayList<>();
+            String query = "select * from temporada";
+            ResultSet rs = st.executeQuery(query);
+
+
+            while (rs.next()) {
+                temp.add(new Temporada(rs.getInt("anny")));
+            }
+
+        return temp;
+        } catch (Exception ex) {
+            try {
+                c.rollback();
+            } catch (SQLException ex1) {
+                Logger.getLogger(GestorBDEmpresaJdbc.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            throw new GestorBDEmpresaException("No es pot trobar la temporada", ex);
+        }
     }
 
 }

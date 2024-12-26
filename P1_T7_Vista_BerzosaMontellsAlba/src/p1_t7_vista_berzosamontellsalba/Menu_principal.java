@@ -26,8 +26,8 @@ public class Menu_principal {
         Funcions.crearBarraNavegacio(f, 'm');
         
         ltitol = new JLabel("El nostre club");
-        ltitol.setBounds(200,50, 600, 30);
-        ltitol.setFont(new Font("Arial", Font.BOLD, 40));
+        ltitol.setBounds(200,50, 600, 40);
+        ltitol.setFont(new Font("Arial", Font.BOLD, 38));
         f.add(ltitol);
         
         

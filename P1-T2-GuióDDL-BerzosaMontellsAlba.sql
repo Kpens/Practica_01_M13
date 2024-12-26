@@ -37,7 +37,7 @@ CREATE TABLE Jugador (
     IBAN VARCHAR(34) NOT NULL,
     any_fi_revisio_medica INT constraint any_ck_jugador CHECK (any_fi_revisio_medica >= 1900)  NOT NULL,
     adreca VARCHAR(200) NOT NULL,
-    codi_postal NUMBER(5) NOT NULL,
+    codi_postal VARCHAR(5) NOT NULL,
     poblacio VARCHAR(200) NOT NULL,
     foto VARCHAR(200) NOT NULL,
     provincia VARCHAR(200) NOT NULL,

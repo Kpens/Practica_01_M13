@@ -22,7 +22,6 @@ public class Equip {
     String nom;
     Tipus_enum tipus;
     int any_eq;
-    int num_jugadors =0;
     Cate_enum cate;//Potser seria millor cambiar el ddl i que no sigui un num
     Map <Integer, Jugador> jug_mem = new HashMap<>();
     Map <Integer, Character> jug_mem_titular = new HashMap<>();
@@ -32,7 +31,6 @@ public class Equip {
         this.nom = nom;
         this.tipus = tipus;
         this.cate = cate;
-        this.num_jugadors =0;
         if(any_eq >= 1900){
             this.any_eq = any_eq;            
         }else{
@@ -54,7 +52,6 @@ public class Equip {
         }
         jug_mem.put(jug.id_jug, jug);
         jug_mem_titular.put(jug.id_jug, t);
-        num_jugadors++;
         
     }
     public boolean agafar_jugador(Jugador jug) {
@@ -77,12 +74,10 @@ public class Equip {
     public void eliminar_jugador(int id_jug) {
         jug_mem.remove(id_jug);
         jug_mem_titular.remove(id_jug);
-        num_jugadors--;
     }
     public void eliminar_jugadors(){
         jug_mem.clear();
         jug_mem_titular.clear();
-        num_jugadors =0;
     }
     
     public void mostrar_jugadors(){
@@ -110,10 +105,6 @@ public class Equip {
         return id_equip;
     }
 
-    public int getNum_jugadors() {
-        return num_jugadors;
-    }
-
     public Map<Integer, Jugador> getJug_mem() {
         return jug_mem;
     }
@@ -122,11 +113,7 @@ public class Equip {
         return jug_mem_titular;
     }   
 
-    
-    public void setNum_jugadors(int num_jugadors) {
-        this.num_jugadors = num_jugadors;
-    }
-
+   
     public Tipus_enum getTipus() {
         return tipus;
     }
