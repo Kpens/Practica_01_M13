@@ -651,17 +651,29 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
 
     */
     @Override
-    public List<Jugador> mostrar_jugadors_per_equip() throws GestorBDEmpresaException {
+    public List<Jugador> mostrar_jugadors_per_equip(int id_equip) throws GestorBDEmpresaException {
         List<Equip> equips = actualitzar_equips();
         List<Jugador> jugs = new ArrayList<>();
-        for (Equip equip : equips) {
-            System.out.println("\n"+equip);
+        if(id_equip==-1){
+            for (Equip equip : equips) {
+                System.out.println("\n"+equip);
 
-            for (Jugador value : equip.getJug_mem().values()) {
-                System.out.println("Jug num:"+ value.getId_jug() + "\n\t" + value.toString());
-                jugs.add(value);
+                for (Jugador value : equip.getJug_mem().values()) {
+                    System.out.println("Jug num:"+ value.getId_jug() + "\n\t" + value.toString());
+                    jugs.add(value);
+                }
+            } 
+        }else{
+            for (Equip equip : equips) {
+                if(equip.getId_equip()==id_equip){
+                    for (Jugador value : equip.getJug_mem().values()) {
+                        System.out.println("Jug num:"+ value.getId_jug() + "\n\t" + value.toString());
+                        jugs.add(value);
+                    }
+                }
             }
         }
+        
         return jugs;
     }
 

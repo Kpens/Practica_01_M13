@@ -120,7 +120,7 @@ public interface IGestorBDEmpresa {
     /**
      * Una llista de jugadors de l'equip en concret
      */
-    List<Jugador> mostrar_jugadors_per_equip() throws GestorBDEmpresaException;//per fer    
+    List<Jugador> mostrar_jugadors_per_equip(int id_equip) throws GestorBDEmpresaException;//per fer    
     
     /**
      * Funcions per la classe de Jugador
