@@ -172,7 +172,7 @@ public class Gestio_equips {
         } else {
             System.out.println("La llista de temporades és buida.");
         }        
-       String[] cates = new String[Cate_enum.values().length +1];
+        String[] cates = new String[Cate_enum.values().length +1];
         int i=1;
         cates[0] = "Qualsevol";
         for (Cate_enum cat : Cate_enum.values()) {
@@ -271,10 +271,10 @@ public class Gestio_equips {
                 }else{
                     cate_select=null;
                 }*/
-                System.out.println(cate_select);
+                //System.out.println(cate_select);
                 String selectedItem = (String) cb_temp.getSelectedItem();
                 int temporada;
-                System.out.println(cb_temp.getSelectedItem());
+                //System.out.println(cb_temp.getSelectedItem());
                 if(cb_temp.getSelectedItem().equals("Qualsevol")){
                     temporada=0;
                 }else{
@@ -306,7 +306,7 @@ public class Gestio_equips {
                 String busc_nom = ltf_nom.getText().trim();
                 try {
                     // Es filtra la llista de jugadors
-                    llista_d_equips = new GestorBDEmpresaJdbc().mostrar_equips(cate_select, temporada, tipus_eq, busc_nom, "asc");
+                    llista_d_equips = new GestorBDEmpresaJdbc().llistar_equips(cate_select, temporada, tipus_eq, busc_nom, "asc");
                                         
                     actualitzarTaula(taula);
                 } catch (Exception ex) {

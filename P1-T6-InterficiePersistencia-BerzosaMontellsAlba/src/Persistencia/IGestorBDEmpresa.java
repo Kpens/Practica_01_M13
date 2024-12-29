@@ -46,7 +46,7 @@ public interface IGestorBDEmpresa {
      * Si tipus és n significa que no s'ha seleccionat cap tipus
      * Si temp és 0 significa que no s'ha seleccionat cap temp
      */
-    List<Equip> mostrar_equips(String cate, int temp, char tipus, String nom, String ordre) throws GestorBDEmpresaException;//FET
+    List<Equip> llistar_equips(String cate, int temp, char tipus, String nom, String ordre) throws GestorBDEmpresaException;//FET
     /**
      * S'actualitza la llista d'equips, amb els seus propis jugadors
      */
@@ -69,6 +69,13 @@ public interface IGestorBDEmpresa {
      */
     
     Equip crear_equip(String nom, char tipus, int any_eq, String cate) throws GestorBDEmpresaException;//FET (en swing Revisa la inserció de cate)
+    
+    
+    /**
+     * Tanca la connexió
+     *
+     */
+    void tancarCapa() throws GestorBDEmpresaException;
     
     /**
      * S'afegeix un nou jugador a l'equip i es diu si és el titular

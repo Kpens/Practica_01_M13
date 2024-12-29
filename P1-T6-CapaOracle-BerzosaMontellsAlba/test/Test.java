@@ -111,16 +111,34 @@ public class Test {
         } catch (Exception ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
         }*/
-        /**/
-       
-        //String nom, String tipus, int any_eq, String cate
-        /*try {
+        
+        try {
+            System.out.println("Agafar jugador: ");
+            j= gBD.agafar_jugador("1", false);
+            System.out.println(j.getNom());
+        } catch (GestorBDEmpresaException ex) {
+            throw new GestorBDEmpresaException("Tot mal: ", ex);
+        } 
+        
+        
+        try {
+            System.out.println("Crear jugador: ");
+            j= gBD.crear_jugador("Afhjs", "Seguro", Sexe_enum.H, "2014-06-10", "47121803R", "ES9121000418450200051330", 2025,  "C/ carrer 6", "08700", "Igualada", "C:\\jugadors\\persona.jpg", "Barcelona", "Espanya");
+            if (j == null) {
+                throw new GestorBDEmpresaException("No s'ha pogut crear");
+            }
+            System.out.println("Jugador: " + j.toString());
+        } catch (GestorBDEmpresaException ex) {
+            System.err.println("Error en crear jugador: " + ex.getMessage());
+        } 
+     /*  //String nom, String tipus, int any_eq, String cate
+      try {
             System.out.println("Crear un equip: ");
             e=gBD.crear_equip("Alevi fdsg", 'H', 2024, "Alevi");
             System.out.println(e.toString());
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
-        }
+        }  *//*
         try {
             Equip q = new Equip(e.getId_equip(), "DUYWEGB fdsg", Tipus_enum.H, 2024, Cate_enum.Alevi);
             System.out.println("Modificar un equip: ");
@@ -135,16 +153,6 @@ public class Test {
             throw new GestorBDEmpresaException("Equip és null", ex);
         }
          */  
-        try {
-            System.out.println("Crear jugador: ");
-            j= gBD.crear_jugador("Afhjs", "Seguro", Sexe_enum.H, "2014-06-10", "50072973H", "ES9121000418450200051330", 2025,  "C/ carrer 6", "08700", "Igualada", "C:\\jugadors\\persona.jpg", "Barcelona", "Espanya");
-            if (j == null) {
-                throw new GestorBDEmpresaException("No s'ha pogut crear");
-            }
-            System.out.println("Jugador: " + j.toString());
-        } catch (GestorBDEmpresaException ex) {
-            System.err.println("Error en crear jugador: " + ex.getMessage());
-        } 
        /* try {
             
             Jugador jug = new Jugador(j.getId_jug(), "Calle Falsa 123", 2025, "Gómez", "01/01/1990", "foto.jpg", "ES7620770024020000001234", j.getId_legal(), "Juan", Sexe_enum.H, 28080, "Madrid", "Madrid", "España");
