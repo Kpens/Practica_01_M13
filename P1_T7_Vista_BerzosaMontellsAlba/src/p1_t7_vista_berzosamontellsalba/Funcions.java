@@ -147,10 +147,19 @@ public class Funcions {
         f.add(bnum2);
         f.add(bnum3);
 
-        JButton bFiltrar = new JButton("Filtrar");
+        JButton bFiltrar = new JButton("Log out");
         bFiltrar.setBounds(f.getWidth()-120, 10, 100, 30);
         Funcions.nav_boto_estil(bFiltrar);
-        bFiltrar.addActionListener(e -> System.out.println("Pestanya filtrar"));
+        bFiltrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                f.dispose();
+                Login mp = new Login();
+                JFrame mpFrame = mp.go();
+                mpFrame.setVisible(true);
+            }
+            
+        });
 
         f.add(bFiltrar);
     }

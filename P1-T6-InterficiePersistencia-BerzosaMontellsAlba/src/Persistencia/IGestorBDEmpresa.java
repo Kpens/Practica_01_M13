@@ -47,6 +47,11 @@ public interface IGestorBDEmpresa {
      * Si temp és 0 significa que no s'ha seleccionat cap temp
      */
     List<Equip> llistar_equips(String cate, int temp, char tipus, String nom, String ordre) throws GestorBDEmpresaException;//FET
+    
+    /*
+    *
+    */
+    List<Equip> equips_on_son_els_jug(int id_jug) throws GestorBDEmpresaException;
     /**
      * S'actualitza la llista d'equips, amb els seus propis jugadors
      */
@@ -122,6 +127,10 @@ public interface IGestorBDEmpresa {
      */
     List<Jugador> mostrar_jugadors_per_equip(int id_equip) throws GestorBDEmpresaException;//per fer    
     
+    /**
+     * Retorna M si el jugador està en només equips mixtes, D si esta almenys en un de femeni i igual amb H
+     */
+    Tipus_enum equip_mes_restrictiu_del_jug(int id_jug) throws GestorBDEmpresaException;
     /**
      * Funcions per la classe de Jugador
      * 

@@ -936,7 +936,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 ps.setInt(1, eq.getId_equip());
 
                 rs = ps.executeQuery();
-int i=0;
+                int i=0;
                 while (rs.next()) {
 
                     Jugador j = agafar_jugador(rs.getString("id_jug_mem"), false);
@@ -962,12 +962,97 @@ int i=0;
     }
 
     @Override
+    public List<Equip> equips_on_son_els_jug(int id_jug) throws GestorBDEmpresaException{
+        List<Equip> equips = new ArrayList<>();
+        /*
+        select e.* from equip e 
+join membre m on m.id_equip_mem = e.id_equip
+where m.id_jug_mem = 1
+        
+        */
+        
+         try {
+            ps = c.prepareStatement("select e.* from equip e \n" +
+"join membre m on m.id_equip_mem = e.id_equip\n" +
+"where m.id_jug_mem =?");
+            ps.setInt(1, id_jug);
+
+            rs = ps.executeQuery();
+             while(rs.next()){
+                Tipus_enum tenum = Tipus_enum.H;
+                int id_equip = rs.getInt("id_equip");
+                String nom_e = rs.getString("nom");
+                String tipus = rs.getString("tipus");
+                if(Tipus_enum.D.toString().equals(tipus)){
+                    tenum = Tipus_enum.D;
+                }else if(Tipus_enum.M.toString().equals(tipus)){
+
+                    tenum = Tipus_enum.M;
+                }else{
+                    tenum = Tipus_enum.H;
+
+                }
+                int any_eq = rs.getInt("any_eq");
+                String cate = rs.getString("cate");
+                Cate_enum cat =null;
+                if(Cate_enum.Alevi.toString().equals(cate)){
+                    cat = Cate_enum.Alevi;
+                }else if(Cate_enum.Benjami.toString().equals(cate)){
+                    cat = Cate_enum.Benjami;
+                }else if(Cate_enum.Cadet.toString().equals(cate)){
+                    cat = Cate_enum.Cadet;
+                }else if(Cate_enum.Infantil.toString().equals(cate)){
+                    cat = Cate_enum.Infantil;
+                }else if(Cate_enum.Juvenil.toString().equals(cate)){
+                    cat = Cate_enum.Juvenil;
+                }else if(Cate_enum.Senior.toString().equals(cate)){
+                    cat = Cate_enum.Senior;
+                }
+
+                Equip eq = new Equip(id_equip, nom_e, tenum, any_eq, cat);
+                
+                equips.add(eq);
+                
+            }
+            
+        }catch(SQLException ex) {
+            throw new GestorBDEmpresaException("Error en el select dels equips del jugador", ex);
+        } catch (Exception ex) {
+            throw new GestorBDEmpresaException("Error: ", ex);
+        }  finally {
+            try {
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        
+        
+        return equips;
+    }
+    
+    @Override
+    public Tipus_enum equip_mes_restrictiu_del_jug(int id_jug) throws GestorBDEmpresaException{
+        
+        List<Equip> equips= equips_on_son_els_jug(id_jug);
+        for (Equip equip : equips) {
+            if(equip.getTipus().getValue() =='D'){
+                return equip.getTipus();
+            }else if(equip.getTipus().getValue() =='H'){
+                return equip.getTipus();
+            }
+        }
+        
+        return Tipus_enum.M;
+    }
+    @Override
     public Jugador modificar_jugador(Jugador j) throws GestorBDEmpresaException {
         if(agafar_jugador(j.getId_legal(), true) != null){
             //UPDATE Jugador SET nom = 'NouNom', cognoms = 'NousCognoms', IBAN = 'ES9121000418450200051332', codi_postal = 08700, poblacio = 'NovaPoblacio', provincia = 'NovaProvincia', pais = 'NouPais', any_fi_revisio_medica = 2026, adreca = 'C/ nova adreça', foto = 'C:\nova_ruta\persona.jpg' WHERE id_legal = 'ID02';
             Jugador jug=null;
             try {
-                ps = c.prepareStatement("UPDATE Jugador SET nom = ?, cognoms = ?, IBAN = ?, codi_postal = ?, poblacio = ?, provincia = ?, pais = ?, any_fi_revisio_medica = ?, adreca = ?, foto = ? WHERE id_legal = ?");
+                ps = c.prepareStatement("UPDATE Jugador SET nom = ?, cognoms = ?, IBAN = ?, codi_postal = ?, poblacio = ?, provincia = ?, pais = ?, any_fi_revisio_medica = ?, adreca = ?, foto = ?, sexe=? WHERE id_legal = ?");
 
                 ps.setString(1, j.getNom());
                 ps.setString(2, j.getCog());
@@ -979,7 +1064,8 @@ int i=0;
                 ps.setInt(8, j.getAny_fi_rev());  
                 ps.setString(9, j.getAdreca()); 
                 ps.setString(10, j.getFoto());  
-                ps.setString(11, j.getId_legal());  
+                ps.setString(11, j.getSexe().toString());  
+                ps.setString(12, j.getId_legal());  
                 ps.executeUpdate();
                 c.commit();
             } catch (SQLException ex) {

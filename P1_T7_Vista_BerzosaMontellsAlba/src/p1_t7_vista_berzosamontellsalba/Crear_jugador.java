@@ -351,7 +351,15 @@ public class Crear_jugador {
 
                             }else{
                                 //System.out.println(outputFile.getPath());
-                                gestor.crear_jugador(ltf_nom.getText().trim(), ltf_cog.getText().trim(), Sexe_enum.H, data_naix, ltf_nif.getText().trim(), ltf_iban.getText().trim(), Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_adreca.getText().trim(), ltf_cod_postal.getText().trim(), ltf_poblacio.getText().trim(), img_path, ltf_provincia.getText().trim(), ltf_pais.getText().trim());
+                                Sexe_enum sexe;
+                                if(rbHome.isSelected()){
+                                    
+                                    sexe = Sexe_enum.H;
+                                }else{
+                                    sexe = Sexe_enum.D;
+                                    
+                                }
+                                gestor.crear_jugador(ltf_nom.getText().trim(), ltf_cog.getText().trim(), sexe, data_naix, ltf_nif.getText().trim(), ltf_iban.getText().trim(), Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_adreca.getText().trim(), ltf_cod_postal.getText().trim(), ltf_poblacio.getText().trim(), img_path, ltf_provincia.getText().trim(), ltf_pais.getText().trim());
                                
                                 try {
                                     ImageIO.write(img, "png", outputFile);

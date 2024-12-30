@@ -34,7 +34,7 @@ public class Login extends JFrame {
         mp.go();
     }
 
-    void go() {
+    JFrame go() {
         JFrame f = new JFrame("El nostre club");
 
         f.setLayout(null);
@@ -115,5 +115,7 @@ public class Login extends JFrame {
         
         f.setVisible(true);
         System.out.println("El JFrame s'ha mostrat correctament.");
+        
+        return f;
     }
 }

@@ -7,6 +7,7 @@ package p1_t7_vista_berzosamontellsalba;
 import CapaPers.GestorBDEmpresaJdbc;
 import Classes.Jugador;
 import Enums.Sexe_enum;
+import Enums.Tipus_enum;
 import Persistencia.GestorBDEmpresaException;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Font;
@@ -48,6 +49,7 @@ public class Modificar_jug {
     static private JButton bSeleccionar_img, b_endarrere;
     static private File imageFile;
     static private String img_path;
+    static private GestorBDEmpresaJdbc gestor;
     BufferedImage img = null;
     File outputFile;
 
@@ -68,6 +70,15 @@ public class Modificar_jug {
     void go(JFrame f, Jugador j) {
         
         try {
+            try {
+                System.out.println("Intent de creació de la capa...");
+                gestor = new GestorBDEmpresaJdbc();
+                System.out.println("Capa de persistència creada");
+                System.out.println(""); 
+            } catch (GestorBDEmpresaException ex) {
+                JOptionPane.showMessageDialog(f, "Error: En la capa");
+            }
+            
             Funcions.crearBarraNavegacio(f, 'j');
             
             
@@ -120,6 +131,34 @@ public class Modificar_jug {
             JRadioButton rbDona = new JRadioButton("Dona");
             rbDona.setBounds(350, 220, 60, 40);
             ButtonGroup grupSexe = new ButtonGroup();
+            
+            /*Serveix per a que quan un jugador forma part d'equips femenins i mixtes doncs que només pugui 
+            * tindre sexe femeni, igual amb el masculí. En canvi, si només forma part de mixtes/no té equip pot 
+            * tindre canvis de sexe            
+            */
+            try {
+                
+                Tipus_enum tenum = gestor.equip_mes_restrictiu_del_jug(j.getId_jug());
+                System.out.println("tenum"+tenum.toString());
+                switch (tenum) {
+                    case H:
+                        rbHome.setEnabled(true);
+                        rbDona.setEnabled(false);
+                        break;
+                    case D:
+                        rbHome.setEnabled(false);
+                        rbDona.setEnabled(true);
+                        break;
+                    default:
+                        rbHome.setEnabled(true);
+                        rbDona.setEnabled(true);
+                        break;
+                }
+            } catch (GestorBDEmpresaException ex) {
+                Logger.getLogger(Modificar_jug.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
             grupSexe.add(rbHome);
             grupSexe.add(rbDona);
             
@@ -158,6 +197,7 @@ public class Modificar_jug {
             ltf_nif = new JTextField(j.getId_legal());
             ltf_nif.setBounds(380, 305, 200, 30);
             ltf_nif.setFont(new Font("Arial", Font.PLAIN, 20));
+            ltf_nif.setEnabled(false);
             f.add(ltf_nif);
             
             
@@ -263,13 +303,8 @@ public class Modificar_jug {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     
-                    GestorBDEmpresaJdbc gestor;
                     Jugador j= null;
                     try {
-                        System.out.println("Intent de creació de la capa...");
-                        gestor = new GestorBDEmpresaJdbc();
-                        System.out.println("Capa de persistència creada");
-                        System.out.println("");
                         
                         j = gestor.agafar_jugador(ltf_nif.getText().trim().toUpperCase(), true);
                         
@@ -343,21 +378,37 @@ public class Modificar_jug {
                                 data_naix = dch_data_naix.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
                                 
                                 if(img_path == null){
-                                    //System.out.println(dch_data_naix.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString());
-                                    JOptionPane.showMessageDialog(f, "Afegeix una imatge abans de continuar");
+                                   img_path = j.getFoto();
+                                }
+                                Sexe_enum sexe;
+                                if(rbHome.isSelected()){
                                     
+                                    sexe = Sexe_enum.H;
                                 }else{
-                                    //System.out.println(outputFile.getPath());
-                                    //gestor.crear_jugador(ltf_nom.getText().trim(), ltf_cog.getText().trim(), Sexe_enum.H, data_naix, ltf_nif.getText().trim(), ltf_iban.getText().trim(), Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_adreca.getText().trim(),  Integer.parseInt(ltf_cod_postal.getText().trim()), ltf_poblacio.getText().trim(), img_path, ltf_provincia.getText().trim(), ltf_pais.getText().trim());
-                                    
-                                    try {
-                                        ImageIO.write(img, "png", outputFile);
-                                    } catch (IOException ex) {
-                                        Logger.getLogger(Crear_jugador.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
-                                    JOptionPane.showMessageDialog(f, "Jugador creat i imatge afegida");
+                                    sexe = Sexe_enum.D;
                                     
                                 }
+                                Jugador jug;
+                                try {
+                                    //System.out.println(outputFile.getPath());
+                                    //int id_jug, String adreca, int any_fi_rev, String cog, String data_naix, String foto, String iban, String id_legal, String nom, Sexe_enum sexe, String codi_postal, String poblacio, String provincia, String pais) throws Exception{
+                                    jug = new Jugador(j.getId_jug(),ltf_adreca.toString().trim(),Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_cog.toString().trim(),data_naix, img_path, ltf_iban.toString().trim(), j.getId_legal(), ltf_nom.toString().trim(), sexe, ltf_cod_postal.toString().trim(), ltf_poblacio.toString().trim(), ltf_provincia.toString().trim(),ltf_pais.toString().trim());
+                                
+                                    gestor.modificar_jugador(jug);
+                                    
+                                    if(outputFile.getPath() != null){
+                                        try {
+                                            ImageIO.write(img, "png", outputFile);
+                                        } catch (IOException ex) {
+                                            Logger.getLogger(Crear_jugador.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+
+                                    }
+                                    JOptionPane.showMessageDialog(f, "Jugador modificat");
+                                } catch (Exception ex) {
+                                    Logger.getLogger(Modificar_jug.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                
                                 
                             }else{
                                 JOptionPane.showMessageDialog(f, "Afegeix una data de naixement abans de continuar");

@@ -113,6 +113,17 @@ public class Test {
         }*/
         
         try {
+            System.out.println("Eqs del jugador 1: ");
+            List<Equip> eqs= gBD.equips_on_son_els_jug(1);
+            System.out.println("Jugador amb id: "+1);
+            for (Equip eq : eqs) {
+                System.out.println(eq.toString());
+            }
+        } catch (GestorBDEmpresaException ex) {
+            throw new GestorBDEmpresaException("Tot mal: ", ex);
+        } 
+        
+        try {
             System.out.println("Agafar jugador: ");
             j= gBD.agafar_jugador("1", false);
             System.out.println(j.getNom());
