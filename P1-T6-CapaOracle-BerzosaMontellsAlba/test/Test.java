@@ -195,7 +195,7 @@ public class Test {
         
       try {
             System.out.println("Eliminar jugador d'un equip: ");
-            gBD.eliminar_jugadors(e, j, false);
+            gBD.(e, j, false);
             
         } catch (GestorBDEmpresaException ex) {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
@@ -271,5 +271,11 @@ public class Test {
             throw new GestorBDEmpresaException("Tot mal: ", ex);
         }*/
 
+        try{
+            System.out.println("Eliminar un jugador: ");
+            gBD.eliminar_jugador(33);
+        }catch(GestorBDEmpresaException ex) {
+            throw new GestorBDEmpresaException("Tingues en compte que: ", ex);
+        }
     }
 }

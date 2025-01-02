@@ -75,7 +75,7 @@ public class Equip {
         jug_mem.remove(id_jug);
         jug_mem_titular.remove(id_jug);
     }
-    public void eliminar_jugadors(){
+    public void eliminar_jugadors_de_l_equip(){
         jug_mem.clear();
         jug_mem_titular.clear();
     }

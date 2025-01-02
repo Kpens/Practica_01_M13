@@ -4,9 +4,11 @@
  */
 package p1_t7_vista_berzosamontellsalba;
 import CapaPers.GestorBDEmpresaJdbc;
+import Classes.Equip;
 import Classes.Jugador;
 import Enums.Cate_enum;
 import Enums.Sexe_enum;
+import Persistencia.GestorBDEmpresaException;
 import com.toedter.calendar.JDateChooser;
 import p1_t7_vista_berzosamontellsalba.Funcions;
 import javax.swing.*;
@@ -16,30 +18,38 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import static p1_t7_vista_berzosamontellsalba.Gestio_equips.equip_seleccionat;
 /**
  *
  * @author Alma
  */
 public class Gestio_jugs {
     private static List<Jugador> llista_de_jugadors; 
+    private static List<Equip> llista_d_equips; 
     static private JLabel ltext,lsexe, lnif, ldata_naix, titol;
     static private JTextField ltf_nom, ltf_nif;
     static private JComboBox<String> cb_cate;
     static private JButton b_crear_jug, b_modificar_jug, b_endarrere, b_filtrar, b_exportar_dades;
-    static private JTable taula;
+    static private JTable taula_equip, taula_jug;
     static Jugador jugador_seleccionat;
     static private JDateChooser dch_data_naix;
     static JFrame f = new JFrame("Gestió de jugadors");
+    static private GestorBDEmpresaJdbc gestor;
+    
+    static private Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
     public static JFrame gestio_jugs() {
         f.setLayout(null);
-        f.setSize(1200, 800);
+        f.setSize(pantalla.width, pantalla.height);
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.setResizable(false);
         
@@ -47,7 +57,7 @@ public class Gestio_jugs {
         Funcions.crearBarraNavegacio(f, 'j');
         
         titol = new JLabel("Gestió de jugadors");
-        titol.setBounds(400,50, 600, 40);
+        titol.setBounds((f.getWidth()/2)-205,50, 285, 40);
         titol.setFont(new Font("Arial", Font.BOLD, 38));
         f.add(titol);
         
@@ -98,6 +108,16 @@ public class Gestio_jugs {
         busca_data_naix.setFont(new Font("Arial", Font.PLAIN, 16));
 
       */
+        
+        try {
+            System.out.println("Intent de creació de la capa...");
+            gestor = new GestorBDEmpresaJdbc();
+            System.out.println("Capa de persistència creada");
+            System.out.println("");
+
+        } catch (GestorBDEmpresaException ex) {
+                JOptionPane.showMessageDialog(f, "Error: En la capa");
+        }
         
         ltext = new JLabel("Nom: ");
         ltext.setBounds(50, 100, 80, 40);
@@ -223,7 +243,8 @@ public class Gestio_jugs {
             }
         });
         
-        taula(f);
+        taula_equip(f);
+        taula_jug(f);
         
         b_filtrar.addActionListener(new ActionListener() {
             @Override
@@ -266,9 +287,9 @@ public class Gestio_jugs {
                 } 
                 try {
                     // Es filtra la llista de jugadors
-                    llista_de_jugadors = new GestorBDEmpresaJdbc().llista_jugadors(sexeSeleccionat, busc_nom, busc_nif, busc_data_naix, cate_select);
+                    llista_de_jugadors = gestor.llista_jugadors(sexeSeleccionat, busc_nom, busc_nif, busc_data_naix, cate_select);
                                         
-                    actualitzarTaula(taula);
+                    actualitzar_taula_jug(taula_jug);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(f, "Error al filtrar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -292,22 +313,22 @@ public class Gestio_jugs {
         panellCercaSexe.add(new JLabel("Categories:"));
         panellCercaSexe.add(cercaBox);
         
-        JTable taula = new JTable();
-        taula.setFont(new Font("Arial", Font.PLAIN, 14));
+        JTable taula_jug = new JTable();
+        taula_jug.setFont(new Font("Arial", Font.PLAIN, 14));
 
-        //taula.setEnabled(false);
-        taula.setDefaultEditor(Object.class, null);
+        //taula_jug.setEnabled(false);
+        taula_jug.setDefaultEditor(Object.class, null);
 
-        taula.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        taula_jug.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         *//*
         * D'aquesta forma puc elegir quin jugador vull modificar
         *//*
-        taula.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        taula_jug.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    int filaSeleccionada = taula.getSelectedRow();
+                    int filaSeleccionada = taula_jug.getSelectedRow();
                     if (filaSeleccionada != -1) {
                         jugador_seleccionat = llista_de_jugadors.get(filaSeleccionada);
 
@@ -320,7 +341,7 @@ public class Gestio_jugs {
             }
         });
 
-        JScrollPane scrollTaula = new JScrollPane(taula);
+        JScrollPane scrollTaula = new JScrollPane(taula_jug);
         scrollTaula.setPreferredSize(new Dimension(600, 500));
 
         JPanel panellTaula = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -347,28 +368,36 @@ public class Gestio_jugs {
         return f;
     }
 
-    static JFrame taula(JFrame f){
-        taula = new JTable();
-        taula.setFont(new Font("Arial", Font.PLAIN, 14));
+    static JFrame taula_jug(JFrame f){
+        taula_jug = new JTable();
+        taula_jug.setFont(new Font("Arial", Font.PLAIN, 14));
 
-        //taula.setEnabled(false);
-        taula.setDefaultEditor(Object.class, null);
+        //taula_jug.setEnabled(false);
+        taula_jug.setDefaultEditor(Object.class, null);
 
-        taula.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        taula_jug.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         /*
         * D'aquesta forma puc elegir quin jugador vull modificar
         */
-        taula.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        taula_jug.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    int filaSeleccionada = taula.getSelectedRow();
+                    
+                    int filaSeleccionada = taula_jug.getSelectedRow();
                     if (filaSeleccionada != -1) {
                         jugador_seleccionat = llista_de_jugadors.get(filaSeleccionada);
-
+                        try {
+                            llista_d_equips = gestor.equips_on_son_els_jug(jugador_seleccionat.getId_jug());
+                        } catch (GestorBDEmpresaException ex) {
+                            Logger.getLogger(Gestio_equips.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        actualitzar_taula_eq(taula_equip);
                         b_modificar_jug.setEnabled(true);
                     }else{
+                        llista_d_equips = new ArrayList<>();
+                        actualitzar_taula_eq(taula_equip);
                         
                         b_modificar_jug.setEnabled(false);
                     }
@@ -376,17 +405,17 @@ public class Gestio_jugs {
             }
         });
 
-        JScrollPane scrollTaula = new JScrollPane(taula);
-        scrollTaula.setBounds(300, 170, 600, 500);
+        JScrollPane scrollTaula = new JScrollPane(taula_jug);
+        scrollTaula.setBounds(100, 170, 600, 500);
         f.add(scrollTaula);
         return f;
     }
     
     /*
-    * Anirà actualitzant la taula per cada cambi en els filtres
+    * Anirà actualitzant la taula_jug per cada cambi en els filtres
     */
     
-    private static void actualitzarTaula(JTable taula) {
+    private static void actualitzar_taula_jug(JTable taula_jug) {
          //error.setVisible(false);
             String[] columnes = {"ID_Jug", "NIF", "Nom Jugador", "Sexe", "data_naix", "Edat", "Categoria"};
             Object[][] dades = new Object[llista_de_jugadors.size()][columnes.length];
@@ -424,34 +453,113 @@ public class Gestio_jugs {
                     return false;
                 }
             };
-            taula.setModel(model);
+            taula_jug.setModel(model);
 
             TableColumn column;
 
-            column = taula.getColumnModel().getColumn(0);
+            column = taula_jug.getColumnModel().getColumn(0);
             column.setMaxWidth(50); 
             
-            column = taula.getColumnModel().getColumn(1);
+            column = taula_jug.getColumnModel().getColumn(1);
             column.setMaxWidth(100);             
-            column = taula.getColumnModel().getColumn(2);
+            column = taula_jug.getColumnModel().getColumn(2);
             column.setMaxWidth(150); 
-            column = taula.getColumnModel().getColumn(3);
+            column = taula_jug.getColumnModel().getColumn(3);
             column.setMaxWidth(40); 
             
-            column = taula.getColumnModel().getColumn(4);
+            column = taula_jug.getColumnModel().getColumn(4);
             column.setMaxWidth(150); 
-            column = taula.getColumnModel().getColumn(5);
+            column = taula_jug.getColumnModel().getColumn(5);
             column.setMaxWidth(60); 
             
-            column = taula.getColumnModel().getColumn(6);
+            column = taula_jug.getColumnModel().getColumn(6);
             column.setMaxWidth(100);
             TableCellRenderer centerRenderer = new DefaultTableCellRenderer();
             ((DefaultTableCellRenderer) centerRenderer).setHorizontalAlignment(SwingConstants.CENTER);
-            taula.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-            taula.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-            taula.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-            taula.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-            taula.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+            taula_jug.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+            taula_jug.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+            taula_jug.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+            taula_jug.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+            taula_jug.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+
+    }
+    
+    static JFrame taula_equip(JFrame f){
+        taula_equip = new JTable();
+        taula_equip.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        //taula_equip.setEnabled(false);
+        taula_equip.setDefaultEditor(Object.class, null);
+
+        taula_equip.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        /*
+        * D'aquesta forma puc elegir quin jugador vull modificar
+        */
+
+        JScrollPane scroll_taula_eq = new JScrollPane(taula_equip);
+        scroll_taula_eq.setBounds(800, 170, 600, 500);
+        f.add(scroll_taula_eq);
+        return f;
+    }
+    
+    private static void actualitzar_taula_eq(JTable taula_equip) {
+            String[] columnes = {"ID_Equip", "Nom", "Temporada", "Num. jugadors", "Categoria", "Tipus"};
+            Object[][] dades = new Object[llista_d_equips.size()][columnes.length];
+
+            String tipus;
+            for (int i = 0; i < llista_d_equips.size(); i++) {
+                Equip eq = llista_d_equips.get(i);
+                
+                switch (eq.getTipus().getValue()) {
+                    case 'D':
+                        tipus = "Femeni";
+                        break;
+                    case 'H':
+                        tipus = "Masculi";
+                        break;
+                    default:
+                        tipus="Mixte";
+                        break;
+                }
+                
+                dades[i][0] = eq.getId_equip();
+                dades[i][1] = eq.getNom();
+                dades[i][2] = eq.getAny_eq()+"/"+(Integer.toString(eq.getAny_eq()+1).substring(2, 4));
+                dades[i][3] = eq.getJug_mem().size();
+                dades[i][4] = eq.getCate();
+                dades[i][5] = tipus;
+            }
+
+            DefaultTableModel model = new DefaultTableModel(dades, columnes) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+            taula_equip.setModel(model);
+
+            TableColumn column;
+
+            column = taula_equip.getColumnModel().getColumn(0);
+            column.setMaxWidth(60); 
+            
+            column = taula_equip.getColumnModel().getColumn(1);
+            column.setMaxWidth(160);             
+            column = taula_equip.getColumnModel().getColumn(2);
+            column.setMaxWidth(120); 
+            column = taula_equip.getColumnModel().getColumn(3);
+            column.setMaxWidth(90); 
+            
+            column = taula_equip.getColumnModel().getColumn(4);
+            column.setMaxWidth(100); 
+            column = taula_equip.getColumnModel().getColumn(5);
+            column.setMaxWidth(100); 
+            TableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            ((DefaultTableCellRenderer) centerRenderer).setHorizontalAlignment(SwingConstants.CENTER);
+            taula_equip.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+            taula_equip.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+            taula_equip.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 
     }
 }

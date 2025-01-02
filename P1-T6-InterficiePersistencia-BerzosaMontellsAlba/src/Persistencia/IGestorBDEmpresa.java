@@ -93,7 +93,7 @@ public interface IGestorBDEmpresa {
     /**
      * Es podrà eliminar l'equip, encara que si té jugadors no s'eliminarà, ja que 
      * així es podrà demanar al usuari si vol eliminar tots els jugadors abans, si 
-     * diu que si es fa la funció eliminar_jugadors(), i desp aquesta
+     * diu que si es fa la funció (), i desp aquesta
      */
     void eliminar_equip(Equip e) throws GestorBDEmpresaException;//Edita BBDD, per fer
     
@@ -108,10 +108,11 @@ public interface IGestorBDEmpresa {
     Jugador agafar_jugador(String idLegal, Boolean esLegal) throws GestorBDEmpresaException;
     
     
+    void eliminar_jugador(int id_jug) throws GestorBDEmpresaException;
     /**
      * Es podràn eliminar els jugadors d'un equip en concret
-     */    
-    void eliminar_jugadors(Equip e, Jugador j,boolean tots) throws GestorBDEmpresaException;//Eliminar a BBDD, per fer
+     */
+    void eliminar_jugadors_de_l_equip(Equip e, Jugador j,boolean tots) throws GestorBDEmpresaException;//Eliminar a BBDD, per fer
     
     /**
      * Per a poder editar la informació de l'equip

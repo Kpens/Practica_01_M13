@@ -130,19 +130,19 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
 
                 }
                 int any_eq = rs.getInt("any_eq");
-                String cate = rs.getString("cate");
+                String cate = rs.getString("cate").toUpperCase();
                 Cate_enum cat =null;
-                if(Cate_enum.Alevi.toString().equals(cate)){
+                if(Cate_enum.Alevi.toString().toUpperCase().equals(cate)){
                     cat = Cate_enum.Alevi;
-                }else if(Cate_enum.Benjami.toString().equals(cate)){
+                }else if(Cate_enum.Benjami.toString().toUpperCase().equals(cate)){
                     cat = Cate_enum.Benjami;
-                }else if(Cate_enum.Cadet.toString().equals(cate)){
+                }else if(Cate_enum.Cadet.toString().toUpperCase().equals(cate)){
                     cat = Cate_enum.Cadet;
-                }else if(Cate_enum.Infantil.toString().equals(cate)){
+                }else if(Cate_enum.Infantil.toString().toUpperCase().equals(cate)){
                     cat = Cate_enum.Infantil;
-                }else if(Cate_enum.Juvenil.toString().equals(cate)){
+                }else if(Cate_enum.Juvenil.toString().toUpperCase().equals(cate)){
                     cat = Cate_enum.Juvenil;
-                }else if(Cate_enum.Senior.toString().equals(cate)){
+                }else if(Cate_enum.Senior.toString().toUpperCase().equals(cate)){
                     cat = Cate_enum.Senior;
                 }
 
@@ -559,7 +559,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     }
 
     @Override
-    public void eliminar_jugadors(Equip e, Jugador j, boolean tots) throws GestorBDEmpresaException {
+    public void eliminar_jugadors_de_l_equip(Equip e, Jugador j, boolean tots) throws GestorBDEmpresaException {
         actualitzar_equips();
         try{
             String jug = "";
@@ -972,8 +972,10 @@ where m.id_jug_mem = 1
         */
         
          try {
-            ps = c.prepareStatement("select e.* from equip e \n" +
+            ps = c.prepareStatement("select e.id_equip,e.nom, e.tipus, e.any_eq, c.nom as cate \n" +
+"from equip e\n" +
 "join membre m on m.id_equip_mem = e.id_equip\n" +
+"join categoria c on c.id_cat = e.cate\n" +
 "where m.id_jug_mem =?");
             ps.setInt(1, id_jug);
 
@@ -1005,16 +1007,16 @@ where m.id_jug_mem = 1
                     cat = Cate_enum.Infantil;
                 }else if(Cate_enum.Juvenil.toString().equals(cate)){
                     cat = Cate_enum.Juvenil;
-                }else if(Cate_enum.Senior.toString().equals(cate)){
+                }else{
                     cat = Cate_enum.Senior;
                 }
-
                 Equip eq = new Equip(id_equip, nom_e, tenum, any_eq, cat);
                 
                 equips.add(eq);
                 
             }
-            
+             aff_jugador_al_map_d_equip(equips);
+             
         }catch(SQLException ex) {
             throw new GestorBDEmpresaException("Error en el select dels equips del jugador", ex);
         } catch (Exception ex) {
@@ -1333,6 +1335,31 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
                 if (rs != null) rs.close();
             } catch (SQLException se) {
                 throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
+            }
+        }
+    }
+
+    @Override
+    public void eliminar_jugador(int id_jug) throws GestorBDEmpresaException {
+        actualitzar_equips();
+        if(!equips_on_son_els_jug(id_jug).isEmpty()){
+            throw new GestorBDEmpresaException("Error: Aquest jugador està en un equip");
+        }else{
+            try {
+                ps = c.prepareStatement("delete from jugador where id_jug = ?");
+                ps.setInt(1, id_jug);
+                ps.executeUpdate();
+                c.commit();
+                System.out.println("Eliminat");
+
+            } catch (SQLException ex) {
+                Logger.getLogger(GestorBDEmpresaJdbc.class.getName()).log(Level.SEVERE, null, ex);
+            }finally {
+                try {
+                    if (ps != null) ps.close();
+                } catch (SQLException se) {
+                    throw new GestorBDEmpresaException("Error no s'han pogut tancar: ", se);
+                }
             }
         }
     }
