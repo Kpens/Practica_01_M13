@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
@@ -28,7 +29,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-import static p1_t7_vista_berzosamontellsalba.Gestio_equips.equip_seleccionat;
 /**
  *
  * @author Alma
@@ -39,9 +39,10 @@ public class Gestio_jugs {
     static private JLabel ltext,lsexe, lnif, ldata_naix, titol;
     static private JTextField ltf_nom, ltf_nif;
     static private JComboBox<String> cb_cate;
-    static private JButton b_crear_jug, b_modificar_jug, b_endarrere, b_filtrar, b_exportar_dades;
+    static private JButton b_crear_jug, b_modificar_jug, b_eliminar_jug, b_endarrere, b_filtrar, b_exportar_dades;
     static private JTable taula_equip, taula_jug;
     static Jugador jugador_seleccionat;
+    static private JRadioButton rbHome, rbDona;
     static private JDateChooser dch_data_naix;
     static JFrame f = new JFrame("Gestió de jugadors");
     static private GestorBDEmpresaJdbc gestor;
@@ -145,9 +146,9 @@ public class Gestio_jugs {
         lsexe.setFont(new Font("Arial", Font.BOLD, 20));
         f.add(lsexe);
         
-        JRadioButton rbHome = new JRadioButton("Home");
+        rbHome = new JRadioButton("Home");
         rbHome.setBounds(550, 100, 60, 40);
-        JRadioButton rbDona = new JRadioButton("Dona");
+        rbDona = new JRadioButton("Dona");
         rbDona.setBounds(610, 100, 60, 40);
         ButtonGroup grupSexe = new ButtonGroup();
         grupSexe.add(rbHome);
@@ -189,7 +190,7 @@ public class Gestio_jugs {
         
         b_filtrar = new JButton("Filtrar");
         Funcions.boto_estil(b_filtrar);
-        b_filtrar.setBounds(f.getWidth()-150, f.getHeight()-200, 100, 30);
+        b_filtrar.setBounds(f.getWidth()-150, f.getHeight()-160, 100, 30);
         b_filtrar.setVisible(true);
         
         b_crear_jug = new JButton("Crear jugador");
@@ -202,6 +203,12 @@ public class Gestio_jugs {
         b_modificar_jug.setBounds(300, f.getHeight()-100, 180, 30);
         b_modificar_jug.setVisible(true);
         b_modificar_jug.setEnabled(false);
+        
+        b_eliminar_jug = new JButton("Eliminar jugador");
+        Funcions.boto_estil(b_eliminar_jug);
+        b_eliminar_jug.setBounds(490, f.getHeight()-100, 180, 30);
+        b_eliminar_jug.setVisible(true);
+        b_eliminar_jug.setEnabled(false);
         
         b_endarrere = new JButton("Endarrere");
         b_endarrere.setBounds(f.getWidth()-300, f.getHeight()-100, 125, 30);
@@ -226,6 +233,36 @@ public class Gestio_jugs {
                 Funcions.modificar_jug(jugador_seleccionat);
             }
         });
+        
+        b_eliminar_jug.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    //f.dispose();
+                    //Funcions.eliminar_jug(jugador_seleccionat);
+                    List<Equip> eqs = gestor.equips_on_son_els_jug(jugador_seleccionat.getId_jug());
+                    if(eqs.isEmpty()){
+                        int resposta = JOptionPane.showConfirmDialog(f, "Estàs segur d'eliminar: "+jugador_seleccionat.getNom()+" "+jugador_seleccionat.getCog()+"\n amb nif: "+jugador_seleccionat.getId_legal(), "Confirmar eliminació", JOptionPane.YES_NO_OPTION);
+
+                        if (resposta == JOptionPane.YES_OPTION) {//Si selecciona si
+                            gestor.eliminar_jugador(jugador_seleccionat.getId_jug());
+                            JOptionPane.showMessageDialog(f, "Eliminat");
+                            filtracio();
+                        } else {
+                            JOptionPane.showMessageDialog(f, "El jugador no s'ha eliminat");
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(f, "El jugador esta en "+eqs.size()+" equips");
+                        
+                    }
+                
+                } catch (GestorBDEmpresaException ex) {
+                    Logger.getLogger(Gestio_jugs.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+        
+        });
         b_endarrere.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -249,53 +286,11 @@ public class Gestio_jugs {
         b_filtrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                llista_de_jugadors = null;
-                Sexe_enum sexeSeleccionat = rbHome.isSelected() ? Sexe_enum.H : Sexe_enum.D;
-
-                Cate_enum cate_select = null;
-                for (Cate_enum val : Cate_enum.values()) {
-                    if(cb_cate.getSelectedItem().equals(val.toString())){
-                        cate_select = val;
-                    }
-                }
-                
-                /*if(cb_cate.getSelectedItem().equals(Cate_enum.Alevi.toString())){
-                    cate_select = Cate_enum.Alevi;
-                }else if(cb_cate.getSelectedItem().equals(Cate_enum.Benjami.toString())){
-                    cate_select = Cate_enum.Benjami;
-                }else if(cb_cate.getSelectedItem().equals(Cate_enum.Cadet.toString())){
-                    cate_select = Cate_enum.Cadet;
-                }else if(cb_cate.getSelectedItem().equals(Cate_enum.Infantil.toString())){
-                    cate_select = Cate_enum.Infantil;
-                }else if(cb_cate.getSelectedItem().equals(Cate_enum.Juvenil.toString())){
-                    cate_select = Cate_enum.Juvenil;
-                }else if(cb_cate.getSelectedItem().equals(Cate_enum.Senior.toString())){
-                    cate_select = Cate_enum.Senior;
-                } */
-                String busc_nom = ltf_nom.getText().trim();
-                String busc_nif = ltf_nif.getText().trim();
-                
-                String busc_data_naix ="";
-                /*
-                * Com es retorna en Date i en un format incorrecte ho passem al format correcte en string
-                */
-                Date data = dch_data_naix.getDate();
-                if (data != null) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    busc_data_naix = sdf.format(data);
-                    System.out.println("Data seleccionada: " + busc_data_naix);
-                } 
-                try {
-                    // Es filtra la llista de jugadors
-                    llista_de_jugadors = gestor.llista_jugadors(sexeSeleccionat, busc_nom, busc_nif, busc_data_naix, cate_select);
-                                        
-                    actualitzar_taula_jug(taula_jug);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(f, "Error al filtrar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                filtracio();
             }
         });
         f.add(b_modificar_jug);
+        f.add(b_eliminar_jug);
         f.add(b_filtrar);
         f.add(b_endarrere);
         f.add(b_crear_jug);
@@ -395,11 +390,13 @@ public class Gestio_jugs {
                         }
                         actualitzar_taula_eq(taula_equip);
                         b_modificar_jug.setEnabled(true);
+                        b_eliminar_jug.setEnabled(true);
                     }else{
                         llista_d_equips = new ArrayList<>();
                         actualitzar_taula_eq(taula_equip);
                         
                         b_modificar_jug.setEnabled(false);
+                        b_eliminar_jug.setEnabled(false);
                     }
                 }
             }
@@ -504,7 +501,7 @@ public class Gestio_jugs {
     }
     
     private static void actualitzar_taula_eq(JTable taula_equip) {
-            String[] columnes = {"ID_Equip", "Nom", "Temporada", "Num. jugadors", "Categoria", "Tipus"};
+            String[] columnes = {"ID_Equip", "Nom", "Temporada", "Num. jugadors", "Categoria", "Tipus", "És titular?"};
             Object[][] dades = new Object[llista_d_equips.size()][columnes.length];
 
             String tipus;
@@ -522,13 +519,21 @@ public class Gestio_jugs {
                         tipus="Mixte";
                         break;
                 }
-                
+                String titular = "No";
+                for (Map.Entry<Integer, Character> tit : eq.getJug_mem_titular().entrySet()) {
+                    if (tit.getKey().equals(jugador_seleccionat.getId_jug())) {
+                        if(tit.getValue() == 'S'){
+                           titular ="Si";
+                        }
+                    }
+                }
                 dades[i][0] = eq.getId_equip();
                 dades[i][1] = eq.getNom();
                 dades[i][2] = eq.getAny_eq()+"/"+(Integer.toString(eq.getAny_eq()+1).substring(2, 4));
                 dades[i][3] = eq.getJug_mem().size();
                 dades[i][4] = eq.getCate();
                 dades[i][5] = tipus;
+                dades[i][6] = titular;
             }
 
             DefaultTableModel model = new DefaultTableModel(dades, columnes) {
@@ -555,11 +560,61 @@ public class Gestio_jugs {
             column.setMaxWidth(100); 
             column = taula_equip.getColumnModel().getColumn(5);
             column.setMaxWidth(100); 
+            column = taula_equip.getColumnModel().getColumn(6);
+            column.setMaxWidth(100);
             TableCellRenderer centerRenderer = new DefaultTableCellRenderer();
             ((DefaultTableCellRenderer) centerRenderer).setHorizontalAlignment(SwingConstants.CENTER);
             taula_equip.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
             taula_equip.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+            taula_equip.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
             taula_equip.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 
+    }
+    
+    static void filtracio(){
+        llista_de_jugadors = null;
+        Sexe_enum sexeSeleccionat = rbHome.isSelected() ? Sexe_enum.H : Sexe_enum.D;
+
+        Cate_enum cate_select = null;
+        for (Cate_enum val : Cate_enum.values()) {
+            if(cb_cate.getSelectedItem().equals(val.toString())){
+                cate_select = val;
+            }
+        }
+
+        /*if(cb_cate.getSelectedItem().equals(Cate_enum.Alevi.toString())){
+            cate_select = Cate_enum.Alevi;
+        }else if(cb_cate.getSelectedItem().equals(Cate_enum.Benjami.toString())){
+            cate_select = Cate_enum.Benjami;
+        }else if(cb_cate.getSelectedItem().equals(Cate_enum.Cadet.toString())){
+            cate_select = Cate_enum.Cadet;
+        }else if(cb_cate.getSelectedItem().equals(Cate_enum.Infantil.toString())){
+            cate_select = Cate_enum.Infantil;
+        }else if(cb_cate.getSelectedItem().equals(Cate_enum.Juvenil.toString())){
+            cate_select = Cate_enum.Juvenil;
+        }else if(cb_cate.getSelectedItem().equals(Cate_enum.Senior.toString())){
+            cate_select = Cate_enum.Senior;
+        } */
+        String busc_nom = ltf_nom.getText().trim();
+        String busc_nif = ltf_nif.getText().trim();
+
+        String busc_data_naix ="";
+        /*
+        * Com es retorna en Date i en un format incorrecte ho passem al format correcte en string
+        */
+        Date data = dch_data_naix.getDate();
+        if (data != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            busc_data_naix = sdf.format(data);
+            System.out.println("Data seleccionada: " + busc_data_naix);
+        } 
+        try {
+            // Es filtra la llista de jugadors
+            llista_de_jugadors = gestor.llista_jugadors(sexeSeleccionat, busc_nom, busc_nif, busc_data_naix, cate_select);
+
+            actualitzar_taula_jug(taula_jug);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(f, "Error al filtrar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
