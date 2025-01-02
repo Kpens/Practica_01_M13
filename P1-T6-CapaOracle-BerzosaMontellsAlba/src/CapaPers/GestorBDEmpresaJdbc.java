@@ -166,7 +166,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 if (rs != null) rs.close();
                 if (ps != null) ps.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
         }
         
@@ -237,7 +237,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 if (rs != null) rs.close();
                 if (ps != null) ps.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
         }
         
@@ -299,7 +299,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 if (st != null) st.close();
                 if (ps != null) ps.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
         }
     }
@@ -339,7 +339,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 if (p != null) p.close();
                 if (rs != null) rs.close();
             } catch (SQLException se) {
-                se.printStackTrace();
+                throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
         }
         
@@ -386,7 +386,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
             try {
                 if (ps != null) ps.close();
             } catch (SQLException se) {
-                se.printStackTrace();
+                                throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
         }
             Equip e;
@@ -411,7 +411,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 if (rs != null) rs.close();
                 if (pss != null) pss.close();
             } catch (SQLException se) {
-                se.printStackTrace();
+                throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
         }
 
@@ -516,7 +516,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                     try {
                         if (ps != null) ps.close();
                     } catch (SQLException se) {
-                        se.printStackTrace();
+                        throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
                     }
                 }
                 e.afegir_jugador(j, tit);
@@ -552,7 +552,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 try {
                     if (ps != null) ps.close();
                 } catch (SQLException se) {
-                    se.printStackTrace();
+                    throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
                 }
             }
         }
@@ -594,7 +594,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
             try {
                 if (ps != null) ps.close();
             } catch (SQLException se) {
-                se.printStackTrace();
+                throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
         }      
     }
@@ -747,7 +747,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                         if (pss != null) pss.close();
                         if (rs != null) rs.close();
                     } catch (SQLException se) {
-                        se.printStackTrace();
+                        throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
                     }
                 }   
 
@@ -765,7 +765,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 try {
                     if (ps != null) ps.close();
                 } catch (SQLException se) {
-                    se.printStackTrace();
+                    throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
                 }
             }   
         }else{
@@ -855,7 +855,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException se) {
-                se.printStackTrace();
+                throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
         }   
 
@@ -955,7 +955,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException se) {
-                se.printStackTrace();
+                throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
         }
         
@@ -1024,7 +1024,7 @@ where m.id_jug_mem = 1
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException se) {
-                se.printStackTrace();
+                throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
         }
         
@@ -1074,7 +1074,7 @@ where m.id_jug_mem = 1
                 try {
                     if (ps != null) ps.close();
                 } catch (SQLException se) {
-                    se.printStackTrace();
+                    throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
                 }
             }
             
@@ -1083,9 +1083,9 @@ where m.id_jug_mem = 1
             } catch (Exception ex) {
                throw new GestorBDEmpresaException("Les dades són incorrectes");
             }
-                
-                actualitzar_equips();
-                return jug;
+
+            actualitzar_equips();
+            return jug;
         }else{
             throw new GestorBDEmpresaException("El jugador no existeix");
         }
@@ -1153,7 +1153,7 @@ where m.id_jug_mem = 1
                 if (pss != null) pss.close();
                 if (rss != null) rss.close();
             } catch (SQLException se) {
-                se.printStackTrace();
+                throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
         }
         return j;
@@ -1224,10 +1224,10 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
                 String foto = rs.getString("FOTO");
                 String provincia = rs.getString("PROVINCIA");
                 String pais = rs.getString("PAIS");
-                int anny = rs.getInt("anny");
-                int anyActual = (LocalDate.now().getYear())-anny;
+                int temp = rs.getInt("anny");
+                int edat = (LocalDate.now().getYear())-temp;
         
-                System.out.println("L'edat de "+nom+" "+cog+" actual és: " + (anyActual));
+                System.out.println("L'edat de "+nom+" "+cog+" actual és: " + (edat));
                 
                 
                 if(cate == null){
@@ -1238,7 +1238,7 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
 
                     ljugs.add(jug);
                 }else{
-                    if(cate.getEdatMinima()<=anyActual && anyActual <= cate.getEdatMaxima()){
+                    if(cate.getEdatMinima()<=edat && edat <= cate.getEdatMaxima()){
                     
                         Jugador jug = new Jugador(
                             id_jug, adreca, any_fi_rev, cog, data_naix, foto, iban, id_legal, nom,
@@ -1263,7 +1263,7 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException se) {
-                se.printStackTrace();
+                throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
         }
         
@@ -1298,7 +1298,7 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
                 if (ps != null) ps.close();
                 if (rs != null) rs.close();
             } catch (SQLException se) {
-                se.printStackTrace();
+                throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
         }
         return temp;
@@ -1332,9 +1332,8 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
                 if (st != null) st.close();
                 if (rs != null) rs.close();
             } catch (SQLException se) {
-                se.printStackTrace();
+                throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
         }
     }
-
 }

@@ -156,17 +156,18 @@ BEGIN
     JOIN CATEGORIA c ON e.cate = c.id_cat
     WHERE e.id_equip = :NEW.Id_equip_mem;
 
-    if :new.titular = 'S' then
+    IF :new.titular = 'S' THEN
     -- Comprovar si l'edat del jugador està dins del rang permès
-        IF v_edat_jug < v_edat_min OR v_edat_jug > v_edat_max THEN
-            RAISE_APPLICATION_ERROR(-20001, 'L''edat del jugador no correspon a la categoria de l''equip');
+        IF v_edat_jug < v_edat_min THEN
+            RAISE_APPLICATION_ERROR(-20001, 'L''edat del jugador és massa petita per l''equip. Anys dif: ' || TO_CHAR(v_edat_min - v_edat_jug));
+        ELSIF v_edat_jug > v_edat_max THEN
+            RAISE_APPLICATION_ERROR(-20002, 'L''edat del jugador és massa gran per l''equip. Anys dif: ' || TO_CHAR(v_edat_jug - v_edat_max));
         END IF;
-    else
+    ELSE
         IF v_edat_jug > v_edat_max THEN
-            RAISE_APPLICATION_ERROR(-20001, 'L''edat del jugador no correspon a la categoria de l''equip. és massa gran');
+            RAISE_APPLICATION_ERROR(-20001, 'L''edat del jugador no correspon a la categoria de l''equip. És massa gran. Anys dif: ' || TO_CHAR(v_edat_jug - v_edat_max));
         END IF;
-    
-    end if;
+    END IF;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RAISE_APPLICATION_ERROR(-20002, 'No s''han trobat dades del jugador o de l''equip');

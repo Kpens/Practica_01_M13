@@ -65,7 +65,6 @@ public class Crear_equips {
     static private JButton b_endarrere;
     static private String img_path;
     static private GestorBDEmpresaJdbc gestor;
-    static private File outputFile;
     
     public static void main(String[] args)  {
         

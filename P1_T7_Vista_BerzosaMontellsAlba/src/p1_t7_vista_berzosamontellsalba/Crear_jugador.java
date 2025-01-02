@@ -345,6 +345,12 @@ public class Crear_jugador {
                         if(dch_data_naix.getDate() != null){
                             data_naix = dch_data_naix.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
                                 
+                            if((LocalDate.now().getYear())-Integer.parseInt(data_naix.substring(0, 4))<7){
+                                System.out.println("Massa petit");
+                                return;
+                            }else{
+                                System.out.println("edat correcte");
+                            }
                             if(img_path == null){
                                 //System.out.println(dch_data_naix.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString());
                                 JOptionPane.showMessageDialog(f, "Afegeix una imatge abans de continuar");

@@ -22,21 +22,13 @@ public class Jugador {
     public Jugador(int id_jug, String adreca, int any_fi_rev, String cog, String data_naix, String foto, String iban, String id_legal, String nom, Sexe_enum sexe, String codi_postal, String poblacio, String provincia, String pais) throws Exception{        
         if(iban_valid(iban)){
             this.iban = iban;
-        }else{
-            throw new Exception("El iban és incorrecte");
-            
         }
-        try {
-            Integer.parseInt(codi_postal);
-        } catch (NumberFormatException e) {
-            throw new Exception("El codi postal no és un nombre vàlid: " + codi_postal);
+        if (!codi_postal.matches("\\d+")) {
+            throw new Exception("Codi postal invàlid: '"+codi_postal+"'");
         }
         
         if(nif_valid(id_legal)){
             this.id_legal = id_legal;
-        }else{
-            throw new Exception("El NIF/id_legal és incorrecte");
-            
         }
         this.id_jug = id_jug;
         this.adreca = adreca;

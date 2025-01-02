@@ -5,6 +5,7 @@
 package p1_t7_vista_berzosamontellsalba;
 
 import CapaPers.GestorBDEmpresaJdbc;
+import Classes.Equip;
 import Classes.Jugador;
 import Enums.Sexe_enum;
 import Enums.Tipus_enum;
@@ -21,7 +22,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -50,8 +53,9 @@ public class Modificar_jug {
     static private File imageFile;
     static private String img_path;
     static private GestorBDEmpresaJdbc gestor;
+    static private int edat_min=-1, edat_max=-1;
     BufferedImage img = null;
-    File outputFile;
+    File outputFile = new File("aaa");
 
     public JFrame Modificar_jug(Jugador j) {
         
@@ -376,6 +380,42 @@ public class Modificar_jug {
                             }
                             if(dch_data_naix.getDate() != null){
                                 data_naix = dch_data_naix.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
+                                int any_naix= Integer.parseInt(data_naix.substring(0, 4));                                
+                                List<Equip> eqs = gestor.equips_on_son_els_jug(j.getId_jug());
+                                
+                                for (Equip eq : eqs) {
+                                    System.out.println("Equip: " + eq.getNom());
+                                    for (Map.Entry<Integer, Character> entry : eq.getJug_mem_titular().entrySet()) {
+                                        Integer key = entry.getKey();
+                                        Character val = entry.getValue();
+
+                                        if (key.equals(j.getId_jug())) {
+                                            if(edat_max>eq.getCate().getEdatMaxima()||edat_max==-1){
+                                                edat_max = eq.getCate().getEdatMaxima();
+
+                                            }
+                                            int edat = (LocalDate.now().getYear())-eq.getAny_eq();
+                                            if(val=='T'){
+                                                
+                                                
+                                                if(edat_min<eq.getCate().getEdatMinima()||edat_min==-1){
+                                                    edat_min=eq.getCate().getEdatMinima();
+                                                }
+                                                System.out.println("edat: "+edat);
+                                                if(!(edat>=edat_min &&edat<=edat_max)){
+                                                    JOptionPane.showMessageDialog(f, "Edat incorrecte!");
+                                                    return;
+                                                }
+                                            }else{
+                                                if(!(edat<=edat_max)){
+                                                    JOptionPane.showMessageDialog(f, "Edat incorrecte!");
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
                                 
                                 if(img_path == null){
                                    img_path = j.getFoto();
@@ -392,11 +432,12 @@ public class Modificar_jug {
                                 try {
                                     //System.out.println(outputFile.getPath());
                                     //int id_jug, String adreca, int any_fi_rev, String cog, String data_naix, String foto, String iban, String id_legal, String nom, Sexe_enum sexe, String codi_postal, String poblacio, String provincia, String pais) throws Exception{
-                                    jug = new Jugador(j.getId_jug(),ltf_adreca.toString().trim(),Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_cog.toString().trim(),data_naix, img_path, ltf_iban.toString().trim(), j.getId_legal(), ltf_nom.toString().trim(), sexe, ltf_cod_postal.toString().trim(), ltf_poblacio.toString().trim(), ltf_provincia.toString().trim(),ltf_pais.toString().trim());
-                                
+                                    //no funciona el tostring usare gettext
+                                    jug = new Jugador(j.getId_jug(),ltf_adreca.getText().trim(),Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_cog.getText().trim(),data_naix, img_path, ltf_iban.getText().trim(), j.getId_legal(), ltf_nom.getText().trim(), sexe, ltf_cod_postal.getText().trim(), ltf_poblacio.getText().trim(), ltf_provincia.getText().trim(),ltf_pais.getText().trim());
+                                    
                                     gestor.modificar_jugador(jug);
                                     
-                                    if(outputFile.getPath() != null){
+                                    if(!"aaa".equals(outputFile.getPath())){
                                         try {
                                             ImageIO.write(img, "png", outputFile);
                                         } catch (IOException ex) {
