@@ -66,7 +66,7 @@ public class Crear_equips {
     static private String img_path;
     static private GestorBDEmpresaJdbc gestor;
     
-    public static void main(String[] args)  {
+    public JFrame Crear_equip()  {
         
         JFrame f = new JFrame("El nostre club");
 
@@ -76,6 +76,7 @@ public class Crear_equips {
         f.setResizable(false);
         
         go(f);
+        return f;
     }
 
     static void go(JFrame f) {

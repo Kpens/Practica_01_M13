@@ -4,13 +4,18 @@
  */
 package p1_t7_vista_berzosamontellsalba;
 
+import Classes.Equip;
 import Classes.Jugador;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import p1_t7_vista_berzosamontellsalba.Menu_principal;
 
@@ -46,6 +51,59 @@ public class Funcions {
     static void crear_jug(){
         Crear_jugador mp = new Crear_jugador();
         JFrame mpFrame = mp.Crear_jugador();
+        mpFrame.setVisible(true);
+    }
+    static void crear_equip(){
+        Crear_equips mp = new Crear_equips();
+        JFrame mpFrame = mp.Crear_equip();
+        mpFrame.setVisible(true);
+    }
+    
+    static boolean mirar_edat_correcte__si_es_titular_o_no(JFrame f, Jugador j, List<Equip> eqs, int any_naix){
+        
+        int edat_min=-1, edat_max=-1;
+        boolean continuar =false;
+        for (Equip eq : eqs) {
+            System.out.println("Equip: " + eq.getNom());
+            for (Map.Entry<Integer, Character> entry : eq.getJug_mem_titular().entrySet()) {
+                Integer key = entry.getKey();
+                Character val = entry.getValue();
+
+                if (key.equals(j.getId_jug())) {
+                    if(edat_max>eq.getCate().getEdatMaxima()||edat_max==-1){
+                        edat_max = eq.getCate().getEdatMaxima();
+
+                    }
+                    int edat = (LocalDate.now().getYear())-any_naix;
+                    if(val=='S'){
+
+                        if(edat_min<eq.getCate().getEdatMinima()||edat_min==-1){
+                            edat_min=eq.getCate().getEdatMinima();
+                        }
+                        System.out.println("edat: "+edat);
+                        if(!(edat>=edat_min &&edat<=edat_max)){
+                            JOptionPane.showMessageDialog(f, "Edat incorrecte!");
+                            continuar= false;
+                        }else{
+                            continuar= true;
+                        }
+                    }else{
+                        if(!(edat<=edat_max)){
+                            JOptionPane.showMessageDialog(f, "Edat incorrecte!");
+                            continuar= false;
+                        }else{
+                            continuar= true;
+                        }
+                    }
+                }
+            }
+        }
+        return continuar;
+    }
+    
+    static void afeguir_jugadors(Equip e){
+        Afeguir_jugadors mp = new Afeguir_jugadors();
+        JFrame mpFrame = mp.afeguir_jugs(e);
         mpFrame.setVisible(true);
     }
     static void gest_equips(){

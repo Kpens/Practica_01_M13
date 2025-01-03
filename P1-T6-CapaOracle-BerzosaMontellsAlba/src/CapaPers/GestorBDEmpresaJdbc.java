@@ -668,7 +668,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
             for (Equip equip : equips) {
                 if(equip.getId_equip()==id_equip){
                     for (Jugador value : equip.getJug_mem().values()) {
-                        System.out.println("Jug num:"+ value.getId_jug() + "\n\t" + value.toString());
+                        //System.out.println("Jug num:"+ value.getId_jug() + "\n\t" + value.toString());
                         jugs.add(value);
                     }
                 }

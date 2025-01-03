@@ -39,7 +39,7 @@ public class Gestio_equips {
     static private JLabel ltext,lsexe, lnif, ldata_naix, ltitol;
     static private JTextField ltf_nom, ltf_nif;
     static private JComboBox<String> cb_cate, cb_temp, cb_tipus;
-    static private JButton b_crear_equip, b_modificar_equip, b_endarrere, b_filtrar, b_exportar_dades;
+    static private JButton b_crear_equip, b_modificar_equip, b_aff_jugadors, b_endarrere, b_filtrar, b_exportar_dades;
     static private JTable taula_equip, taula_jug;
     static Equip equip_seleccionat;
     static private JDateChooser dch_data_naix;
@@ -211,6 +211,12 @@ public class Gestio_equips {
         b_modificar_equip.setVisible(true);
         b_modificar_equip.setEnabled(false);
         
+        b_aff_jugadors= new JButton("Afeguir jugadors");
+        Funcions.boto_estil(b_aff_jugadors);
+        b_aff_jugadors.setBounds(490, f.getHeight()-100, 180, 30);
+        b_aff_jugadors.setVisible(true);
+        b_aff_jugadors.setEnabled(false);
+        
         b_endarrere = new JButton("Endarrere");
         b_endarrere.setBounds(f.getWidth()-300, f.getHeight()-100, 125, 30);
         Funcions.boto_estil(b_endarrere);
@@ -224,7 +230,7 @@ public class Gestio_equips {
             @Override
             public void actionPerformed(ActionEvent e) {
                f.dispose();
-               //Funcions.crear_equip();
+               Funcions.crear_equip();
             }
         });
         b_modificar_equip.addActionListener(new ActionListener() {
@@ -232,6 +238,13 @@ public class Gestio_equips {
             public void actionPerformed(ActionEvent e) {
                f.dispose();
                //Funcions.modificar_equip(equip_seleccionat);
+            }
+        });
+        b_aff_jugadors.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               f.dispose();
+               Funcions.afeguir_jugadors(equip_seleccionat);
             }
         });
         b_endarrere.addActionListener(new ActionListener() {
@@ -324,6 +337,7 @@ public class Gestio_equips {
             }
         });
         f.add(b_modificar_equip);
+        f.add(b_aff_jugadors);
         f.add(b_filtrar);
         f.add(b_endarrere);
         f.add(b_crear_equip);
@@ -358,11 +372,13 @@ public class Gestio_equips {
                         }
                         actualitzar_taula_jug(taula_jug);
                         b_modificar_equip.setEnabled(true);
+                        b_aff_jugadors.setEnabled(true);
                     }else{
                         
                         llista_de_jugadors = new ArrayList<>();
                         actualitzar_taula_jug(taula_jug); 
                         b_modificar_equip.setEnabled(false);
+                        b_aff_jugadors.setEnabled(false);
                     }
                 }
             }
@@ -452,9 +468,6 @@ public class Gestio_equips {
                     int filaSeleccionada = taula_jug.getSelectedRow();
                     if (filaSeleccionada != -1) {
                         equip_seleccionat = llista_d_equips.get(filaSeleccionada);
-                        b_modificar_equip.setEnabled(true);
-                    }else{
-                        b_modificar_equip.setEnabled(false);
                     }
                 }
             }

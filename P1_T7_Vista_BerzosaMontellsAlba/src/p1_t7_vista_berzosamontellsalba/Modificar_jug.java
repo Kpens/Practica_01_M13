@@ -53,7 +53,6 @@ public class Modificar_jug {
     static private File imageFile;
     static private String img_path;
     static private GestorBDEmpresaJdbc gestor;
-    static private int edat_min=-1, edat_max=-1;
     BufferedImage img = null;
     File outputFile = new File("aaa");
 
@@ -386,7 +385,7 @@ public class Modificar_jug {
                                 if (dataSeleccionada.isAfter(LocalDate.now())) {//Si és més gran a la actual
                                     JOptionPane.showMessageDialog(f, "La data naix no pot ser més tard que l'actual!");
                                     return;
-                                }else if((LocalDate.now().getYear())-Integer.parseInt(data_naix.substring(0, 4))<7){
+                                }else if((LocalDate.now().getYear())-any_naix<7){
                                     JOptionPane.showMessageDialog(f, "L'edat del jugador és massa petita! \n\n Tenim un mínim de 7 anys en aquest club :D");
                                     return;
                                 }
@@ -394,38 +393,12 @@ public class Modificar_jug {
                                 
                                 List<Equip> eqs = gestor.equips_on_son_els_jug(j.getId_jug());
                                 
-                                for (Equip eq : eqs) {
-                                    System.out.println("Equip: " + eq.getNom());
-                                    for (Map.Entry<Integer, Character> entry : eq.getJug_mem_titular().entrySet()) {
-                                        Integer key = entry.getKey();
-                                        Character val = entry.getValue();
-
-                                        if (key.equals(j.getId_jug())) {
-                                            if(edat_max>eq.getCate().getEdatMaxima()||edat_max==-1){
-                                                edat_max = eq.getCate().getEdatMaxima();
-
-                                            }
-                                            int edat = (LocalDate.now().getYear())-any_naix;
-                                            if(val=='S'){
-                                                
-                                                if(edat_min<eq.getCate().getEdatMinima()||edat_min==-1){
-                                                    edat_min=eq.getCate().getEdatMinima();
-                                                }
-                                                System.out.println("edat: "+edat);
-                                                if(!(edat>=edat_min &&edat<=edat_max)){
-                                                    JOptionPane.showMessageDialog(f, "Edat incorrecte!");
-                                                    return;
-                                                }
-                                            }else{
-                                                if(!(edat<=edat_max)){
-                                                    JOptionPane.showMessageDialog(f, "Edat incorrecte!");
-                                                    return;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
+                                /*
+                                * Mira en tots els equips on és el jugador quins són els màxims i minims d'edat (tenint en compte si és tiular o no)
+                                * Pd: crec que al final no era necessàri combertir-ho en una funció externa, però per si de cas ho deixarè d'aquesta manera
+                                */
+                                boolean continuar = Funcions.mirar_edat_correcte__si_es_titular_o_no(f, j, eqs, any_naix);
+                                
                                 
                                 if(img_path == null){
                                    img_path = j.getFoto();
@@ -439,27 +412,29 @@ public class Modificar_jug {
                                     
                                 }
                                 Jugador jug;
-                                try {
-                                    //System.out.println(outputFile.getPath());
-                                    //int id_jug, String adreca, int any_fi_rev, String cog, String data_naix, String foto, String iban, String id_legal, String nom, Sexe_enum sexe, String codi_postal, String poblacio, String provincia, String pais) throws Exception{
-                                    //no funciona el tostring usare gettext
-                                    jug = new Jugador(j.getId_jug(),ltf_adreca.getText().trim(),Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_cog.getText().trim(),data_naix, img_path, ltf_iban.getText().trim(), j.getId_legal(), ltf_nom.getText().trim(), sexe, ltf_cod_postal.getText().trim(), ltf_poblacio.getText().trim(), ltf_provincia.getText().trim(),ltf_pais.getText().trim());
-                                    
-                                    gestor.modificar_jugador(jug);
-                                    
-                                    if(!"aaa".equals(outputFile.getPath())){
-                                        try {
-                                            ImageIO.write(img, "png", outputFile);
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(Crear_jugador.class.getName()).log(Level.SEVERE, null, ex);
-                                        }
-
-                                    }
-                                    JOptionPane.showMessageDialog(f, "Jugador modificat");
-                                } catch (Exception ex) {
-                                    Logger.getLogger(Modificar_jug.class.getName()).log(Level.SEVERE, null, ex);
-                                }
+                                if(continuar){
                                 
+                                    try {
+                                        //System.out.println(outputFile.getPath());
+                                        //int id_jug, String adreca, int any_fi_rev, String cog, String data_naix, String foto, String iban, String id_legal, String nom, Sexe_enum sexe, String codi_postal, String poblacio, String provincia, String pais) throws Exception{
+                                        //no funciona el tostring usare gettext
+                                        jug = new Jugador(j.getId_jug(),ltf_adreca.getText().trim(),Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_cog.getText().trim(),data_naix, img_path, ltf_iban.getText().trim(), j.getId_legal(), ltf_nom.getText().trim(), sexe, ltf_cod_postal.getText().trim(), ltf_poblacio.getText().trim(), ltf_provincia.getText().trim(),ltf_pais.getText().trim());
+
+                                        gestor.modificar_jugador(jug);
+
+                                        if(!"aaa".equals(outputFile.getPath())){
+                                            try {
+                                                ImageIO.write(img, "png", outputFile);
+                                            } catch (IOException ex) {
+                                                Logger.getLogger(Crear_jugador.class.getName()).log(Level.SEVERE, null, ex);
+                                            }
+
+                                        }
+                                        JOptionPane.showMessageDialog(f, "Jugador modificat");
+                                    } catch (Exception ex) {
+                                        Logger.getLogger(Modificar_jug.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
                                 
                             }else{
                                 JOptionPane.showMessageDialog(f, "Afegeix una data de naixement abans de continuar");
