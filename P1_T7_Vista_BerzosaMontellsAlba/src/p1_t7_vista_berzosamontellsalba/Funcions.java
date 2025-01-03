@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import p1_t7_vista_berzosamontellsalba.Menu_principal;
 
 /**
@@ -70,8 +71,10 @@ public class Funcions {
     */
     static void crearBarraNavegacio(JFrame f, char temp_eq_o_jug) {
         
-        
-        
+        JPanel barra_nav = new JPanel();
+        barra_nav.setBounds(0, 0, f.getWidth(), 45);
+        barra_nav.setBackground(Color.LIGHT_GRAY);
+
         JButton bnum1 = new JButton();
         bnum1.setBounds(10, 10, 100, 30);
         JButton bnum2 = new JButton();
@@ -143,10 +146,6 @@ public class Funcions {
         Funcions.nav_boto_estil(bnum2);
         Funcions.nav_boto_estil(bnum3);
 
-        f.add(bnum1);
-        f.add(bnum2);
-        f.add(bnum3);
-
         JButton bFiltrar = new JButton("Log out");
         bFiltrar.setBounds(f.getWidth()-120, 10, 100, 30);
         Funcions.nav_boto_estil(bFiltrar);
@@ -161,6 +160,13 @@ public class Funcions {
             
         });
 
-        f.add(bFiltrar);
+        
+        barra_nav.setLayout(null);//Així es poden posar manualment :O
+        barra_nav.add(bnum1);
+        barra_nav.add(bnum2);
+        barra_nav.add(bnum3);
+        barra_nav.add(bFiltrar);
+
+        f.add(barra_nav);
     }
 }

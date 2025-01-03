@@ -454,7 +454,7 @@ public class Gestio_jugs {
         }else{
             files =llista_de_jugadors.size();
         }
-        String[] columnes = {"ID_Jug", "NIF", "Nom Jugador", "Sexe", "data_naix", "Edat", "Categoria"};
+        String[] columnes = {"ID_Jug", "NIF", "Nom Jugador", "Cognoms", "Sexe", "data_naix", "Edat", "Categoria"};
         Object[][] dades = new Object[files][columnes.length];
 
         int edat;
@@ -477,11 +477,12 @@ public class Gestio_jugs {
             }
             dades[i][0] = jug.getId_jug(); 
             dades[i][1] = jug.getId_legal();
-            dades[i][2] = jug.getNom()+" "+jug.getCog();
-            dades[i][3] = jug.getSexe().toString();
-            dades[i][4] = jug.getData_naix().substring(0, 10);
-            dades[i][5] = edat+" anys";
-            dades[i][6] = cate;
+            dades[i][2] = jug.getNom();
+            dades[i][3] = jug.getCog();
+            dades[i][4] = jug.getSexe().toString();
+            dades[i][5] = jug.getData_naix().substring(0, 10);
+            dades[i][6] = edat+" anys";
+            dades[i][7] = cate;
         }
 
         DefaultTableModel model = new DefaultTableModel(dades, columnes) {
@@ -500,16 +501,18 @@ public class Gestio_jugs {
         column = taula_jug.getColumnModel().getColumn(1);
         column.setMaxWidth(100);             
         column = taula_jug.getColumnModel().getColumn(2);
-        column.setMaxWidth(150); 
+        column.setMaxWidth(150);     
         column = taula_jug.getColumnModel().getColumn(3);
+        column.setMaxWidth(150); 
+        column = taula_jug.getColumnModel().getColumn(4);
         column.setMaxWidth(40); 
 
-        column = taula_jug.getColumnModel().getColumn(4);
-        column.setMaxWidth(150); 
         column = taula_jug.getColumnModel().getColumn(5);
+        column.setMaxWidth(150); 
+        column = taula_jug.getColumnModel().getColumn(6);
         column.setMaxWidth(60); 
 
-        column = taula_jug.getColumnModel().getColumn(6);
+        column = taula_jug.getColumnModel().getColumn(7);
         column.setMaxWidth(100);
         TableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         ((DefaultTableCellRenderer) centerRenderer).setHorizontalAlignment(SwingConstants.CENTER);
