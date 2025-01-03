@@ -59,7 +59,7 @@ public class Gestio_jugs {
         Funcions.crearBarraNavegacio(f, 'j');
         
         titol = new JLabel("Gestió de jugadors");
-        titol.setBounds((f.getWidth()/2)-205,50, 285, 40);
+        titol.setBounds((f.getWidth()/2)-205,50, 405, 40);
         titol.setFont(new Font("Arial", Font.BOLD, 38));
         f.add(titol);
         
@@ -447,71 +447,77 @@ public class Gestio_jugs {
     */
     
     private static void actualitzar_taula_jug(JTable taula_jug) {
-         //error.setVisible(false);
-            String[] columnes = {"ID_Jug", "NIF", "Nom Jugador", "Sexe", "data_naix", "Edat", "Categoria"};
-            Object[][] dades = new Object[llista_de_jugadors.size()][columnes.length];
+        //error.setVisible(false);
+        int files;
+        if (llista_de_jugadors == null || llista_de_jugadors.isEmpty()) {
+            files =0;
+        }else{
+            files =llista_de_jugadors.size();
+        }
+        String[] columnes = {"ID_Jug", "NIF", "Nom Jugador", "Sexe", "data_naix", "Edat", "Categoria"};
+        Object[][] dades = new Object[files][columnes.length];
 
-            int edat;
-            String cate;
-            for (int i = 0; i < llista_de_jugadors.size(); i++) {
-                Jugador jug = llista_de_jugadors.get(i);
-                edat = (LocalDate.now().getYear())-Integer.parseInt(jug.getData_naix().substring(0, 4));
-                if(edat >= Cate_enum.Alevi.getEdatMinima()&& edat <= Cate_enum.Alevi.getEdatMaxima()){
-                    cate = "Alevi";
-                }else if(edat >= Cate_enum.Benjami.getEdatMinima()&& edat <= Cate_enum.Benjami.getEdatMaxima()){
-                    cate = "Benjami";
-                }else if(edat >= Cate_enum.Cadet.getEdatMinima()&& edat <= Cate_enum.Cadet.getEdatMaxima()){
-                    cate = "Cadet";
-                }else if(edat >= Cate_enum.Infantil.getEdatMinima()&& edat <= Cate_enum.Infantil.getEdatMaxima()){
-                    cate = "Infantil";
-                }else if(edat >= Cate_enum.Juvenil.getEdatMinima()&& edat <= Cate_enum.Juvenil.getEdatMaxima()){
-                    cate = "Juvenil";
-                }else{
-                    cate = "Senior";
-                }
-                dades[i][0] = jug.getId_jug(); 
-                dades[i][1] = jug.getId_legal();
-                dades[i][2] = jug.getNom()+" "+jug.getCog();
-                dades[i][3] = jug.getSexe().toString();
-                dades[i][4] = jug.getData_naix().substring(0, 10);
-                dades[i][5] = edat+" anys";
-                dades[i][6] = cate;
+        int edat;
+        String cate;
+        for (int i = 0; i < files; i++) {
+            Jugador jug = llista_de_jugadors.get(i);
+            edat = (LocalDate.now().getYear())-Integer.parseInt(jug.getData_naix().substring(0, 4));
+            if(edat >= Cate_enum.Alevi.getEdatMinima()&& edat <= Cate_enum.Alevi.getEdatMaxima()){
+                cate = "Alevi";
+            }else if(edat >= Cate_enum.Benjami.getEdatMinima()&& edat <= Cate_enum.Benjami.getEdatMaxima()){
+                cate = "Benjami";
+            }else if(edat >= Cate_enum.Cadet.getEdatMinima()&& edat <= Cate_enum.Cadet.getEdatMaxima()){
+                cate = "Cadet";
+            }else if(edat >= Cate_enum.Infantil.getEdatMinima()&& edat <= Cate_enum.Infantil.getEdatMaxima()){
+                cate = "Infantil";
+            }else if(edat >= Cate_enum.Juvenil.getEdatMinima()&& edat <= Cate_enum.Juvenil.getEdatMaxima()){
+                cate = "Juvenil";
+            }else{
+                cate = "Senior";
             }
+            dades[i][0] = jug.getId_jug(); 
+            dades[i][1] = jug.getId_legal();
+            dades[i][2] = jug.getNom()+" "+jug.getCog();
+            dades[i][3] = jug.getSexe().toString();
+            dades[i][4] = jug.getData_naix().substring(0, 10);
+            dades[i][5] = edat+" anys";
+            dades[i][6] = cate;
+        }
 
-            DefaultTableModel model = new DefaultTableModel(dades, columnes) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return false;
-                }
-            };
-            taula_jug.setModel(model);
+        DefaultTableModel model = new DefaultTableModel(dades, columnes) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        taula_jug.setModel(model);
 
-            TableColumn column;
+        TableColumn column;
 
-            column = taula_jug.getColumnModel().getColumn(0);
-            column.setMaxWidth(50); 
-            
-            column = taula_jug.getColumnModel().getColumn(1);
-            column.setMaxWidth(100);             
-            column = taula_jug.getColumnModel().getColumn(2);
-            column.setMaxWidth(150); 
-            column = taula_jug.getColumnModel().getColumn(3);
-            column.setMaxWidth(40); 
-            
-            column = taula_jug.getColumnModel().getColumn(4);
-            column.setMaxWidth(150); 
-            column = taula_jug.getColumnModel().getColumn(5);
-            column.setMaxWidth(60); 
-            
-            column = taula_jug.getColumnModel().getColumn(6);
-            column.setMaxWidth(100);
-            TableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            ((DefaultTableCellRenderer) centerRenderer).setHorizontalAlignment(SwingConstants.CENTER);
-            taula_jug.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-            taula_jug.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-            taula_jug.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-            taula_jug.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-            taula_jug.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+        column = taula_jug.getColumnModel().getColumn(0);
+        column.setMaxWidth(50); 
+
+        column = taula_jug.getColumnModel().getColumn(1);
+        column.setMaxWidth(100);             
+        column = taula_jug.getColumnModel().getColumn(2);
+        column.setMaxWidth(150); 
+        column = taula_jug.getColumnModel().getColumn(3);
+        column.setMaxWidth(40); 
+
+        column = taula_jug.getColumnModel().getColumn(4);
+        column.setMaxWidth(150); 
+        column = taula_jug.getColumnModel().getColumn(5);
+        column.setMaxWidth(60); 
+
+        column = taula_jug.getColumnModel().getColumn(6);
+        column.setMaxWidth(100);
+        TableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        ((DefaultTableCellRenderer) centerRenderer).setHorizontalAlignment(SwingConstants.CENTER);
+        taula_jug.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        taula_jug.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        taula_jug.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        taula_jug.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+        taula_jug.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 
     }
     
@@ -606,7 +612,7 @@ public class Gestio_jugs {
     }
     
     static void filtracio(){
-        llista_de_jugadors = null;
+        llista_de_jugadors = new ArrayList<>();
         Sexe_enum sexeSeleccionat = rbHome.isSelected() ? Sexe_enum.H : Sexe_enum.D;
 
         boolean rev_feta = rbSi.isSelected();
@@ -645,7 +651,7 @@ public class Gestio_jugs {
         } 
         try {
             // Es filtra la llista de jugadors
-            llista_de_jugadors = gestor.llista_jugadors(sexeSeleccionat, busc_nom, busc_nif, busc_data_naix, cate_select);
+            llista_de_jugadors = gestor.llista_jugadors(sexeSeleccionat, busc_nom, busc_nif, busc_data_naix, cate_select, rev_feta);
 
             actualitzar_taula_jug(taula_jug);
         } catch (Exception ex) {

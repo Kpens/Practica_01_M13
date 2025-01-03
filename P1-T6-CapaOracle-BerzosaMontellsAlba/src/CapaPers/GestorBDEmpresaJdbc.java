@@ -1171,7 +1171,7 @@ where m.id_jug_mem = 1
     }
 
     @Override
-    public List<Jugador> llista_jugadors(Sexe_enum sexe_j, String nom_j, String nif, String data_naix_j, Cate_enum cate) throws GestorBDEmpresaException {
+    public List<Jugador> llista_jugadors(Sexe_enum sexe_j, String nom_j, String nif, String data_naix_j, Cate_enum cate, boolean rev_feta) throws GestorBDEmpresaException {
         List<Jugador> ljugs = new ArrayList<>();
         boolean entrat=false;
         char s;
@@ -1192,7 +1192,7 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
             */
             
             ps = c.prepareStatement("SELECT ID_JUG, NOM, COGNOMS, SEXE, DATA_NAIX, ID_LEGAL, IBAN, ANY_FI_REVISIO_MEDICA, ADRECA, CODI_POSTAL, POBLACIO, FOTO, PROVINCIA, PAIS,EXTRACT(YEAR FROM DATA_NAIX) AS anny FROM jugador\n" +
-"WHERE UPPER(SEXE) LIKE ? AND UPPER(NOM) LIKE ? AND UPPER(ID_LEGAL) LIKE ? AND TO_CHAR(data_naix, 'YYYY-MM-DD') LIKE ? ORDER BY cognoms ");
+"WHERE UPPER(SEXE) LIKE ? AND UPPER(NOM) LIKE ? AND UPPER(ID_LEGAL) LIKE ? AND TO_CHAR(data_naix, 'YYYY-MM-DD') LIKE ? AND ANY_FI_REVISIO_MEDICA  "+(rev_feta ? ">= ?" : "< ?")+" ORDER BY cognoms ");
             
             ps.setString(1, "%"+s+"%");
             
@@ -1214,6 +1214,8 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
                 ps.setString(4, "%");
                 
             }
+            ps.setInt(5, LocalDate.now().getYear());
+            
             
             
             rs = ps.executeQuery();
@@ -1266,7 +1268,7 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
             }
 
         } catch (SQLException ex) {
-            throw new GestorBDEmpresaException("Error en preparar sentència psInsertProduct", ex);
+            throw new GestorBDEmpresaException("Error en preparar sentència select", ex);
         } catch (Exception ex) {
             throw new GestorBDEmpresaException("Error: ", ex);
         }finally {

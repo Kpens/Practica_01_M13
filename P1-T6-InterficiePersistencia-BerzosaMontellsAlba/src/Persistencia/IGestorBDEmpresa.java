@@ -148,7 +148,7 @@ public interface IGestorBDEmpresa {
     /**
      * Una llista de tots els jugadors, filtra per sexe i el nom de jugador
      */
-    List<Jugador> llista_jugadors(Sexe_enum sexe, String nom_j, String id_legal, String data_naix, Cate_enum cate) throws GestorBDEmpresaException;//FET
+    List<Jugador> llista_jugadors(Sexe_enum sexe, String nom_j, String id_legal, String data_naix, Cate_enum cate, boolean rev_feta) throws GestorBDEmpresaException;//FET
     /**
      * Crear una temporada (si no existeix)
      */
