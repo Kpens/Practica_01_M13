@@ -40,10 +40,10 @@ public class Afeguir_jugadors {
     static private JLabel ltext,lsexe, lnif, ldata_naix, ltitol;
     static private JTextField ltf_nom, ltf_nif;
     static private JComboBox<String> cb_cate, cb_temp, cb_tipus;
-    static private JButton b_crear_equip, b_modificar_equip, b_endarrere, b_filtrar, b_exportar_dades;
+    static private JButton b_crear_equip, b_modificar_equip, b_endarrere, b_filtrar, b_exportar_dades, b_afeguir;
     static private JTable taula_jugadors_de_l_equip, taula_jugs_que_es_poden_aff;
-    static private JRadioButton rbHome, rbDona, rbNo,rbSi;
-    static Jugador jug_seleccionat;
+    static private JRadioButton rbHome, rbDona, rbNo,rbSi, rbTit, rbAltre;
+    static Jugador jug_seleccionat,jug_seleccionat_a_aff;
     static private JDateChooser dch_data_naix;
     static JFrame f = new JFrame("Afeguir Jugadors a l'equip");
     static private GestorBDEmpresaJdbc gestor;
@@ -166,6 +166,13 @@ public class Afeguir_jugadors {
         
         f.add(rbNo);
         
+        b_afeguir = new JButton("Afeguir jugador");
+        Funcions.boto_estil(b_afeguir);
+        b_afeguir.setBounds(690,440, 140, 30);
+        b_afeguir.setVisible(true);
+        b_afeguir.setEnabled(false);
+        f.add(b_afeguir);
+        
         ldata_naix = new JLabel("Data naix: ");
         ldata_naix.setBounds(680, 150, 160, 40);
         ldata_naix.setFont(new Font("Arial", Font.BOLD, 20));
@@ -199,6 +206,30 @@ public class Afeguir_jugadors {
         cb_cate.setBounds(1050, 150, 100, 40);
         
         f.add(cb_cate);
+        
+        
+        rbTit = new JRadioButton("Titular");
+        rbTit.setBounds(690, 400, 80, 40);
+        rbAltre = new JRadioButton("Altre");
+        rbAltre.setBounds(770, 400, 60, 40);
+        ButtonGroup grup_aff_tipus = new ButtonGroup();
+        grup_aff_tipus.add(rbTit);
+        grup_aff_tipus.add(rbAltre);
+        rbTit.setEnabled(false);
+        rbAltre.setEnabled(true);
+        if(!cate_de_jug(jug_seleccionat_a_aff).equals("n")){
+            for (String cate : cates) {
+                if(cate_de_jug(jug_seleccionat_a_aff).equals(cate)){
+                    rbTit.setEnabled(true);
+                }
+            }
+        }
+        
+        f.add(rbTit);
+        
+        f.add(rbAltre);
+        
+        
         
         b_filtrar = new JButton("Filtrar");
         Funcions.boto_estil(b_filtrar);
@@ -236,6 +267,13 @@ public class Afeguir_jugadors {
             @Override
             public void actionPerformed(ActionEvent e) {
                f.dispose();
+               //Funcions.modificar_equip(equip_seleccionat);
+            }
+        });
+        
+        b_afeguir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                //Funcions.modificar_equip(equip_seleccionat);
             }
         });
@@ -373,7 +411,7 @@ public class Afeguir_jugadors {
         });
 
         JScrollPane scroll_taula_eq = new JScrollPane(taula_jugadors_de_l_equip);
-        scroll_taula_eq.setBounds(100, 200, 600, 500);//la psocició de la taula_jugadors_de_l_equip
+        scroll_taula_eq.setBounds(80, 200, 600, 500);//la psocició de la taula_jugadors_de_l_equip
         f.add(scroll_taula_eq);
         return f;
     }
@@ -481,14 +519,17 @@ public class Afeguir_jugadors {
                 if (!e.getValueIsAdjusting()) {
                     int filaSeleccionada = taula_jugs_que_es_poden_aff.getSelectedRow();
                     if (filaSeleccionada != -1) {
-                        jug_seleccionat = llista_de_jugadors_en_l_equip.get(filaSeleccionada);
+                        jug_seleccionat_a_aff = llista_de_jugadors_en_l_equip.get(filaSeleccionada);
+                        b_afeguir.setEnabled(true);
+                    }else{
+                        b_afeguir.setEnabled(false);
                     }
                 }
             }
         });
 
         JScrollPane scroll_taula_eq = new JScrollPane(taula_jugs_que_es_poden_aff);
-        scroll_taula_eq.setBounds(800, 200, 600, 500);
+        scroll_taula_eq.setBounds(840, 200, 600, 500);
         f.add(scroll_taula_eq);
         return f;
     }
@@ -503,19 +544,8 @@ public class Afeguir_jugadors {
         for (int i = 0; i < llista_de_jugadors_possibles.size(); i++) {
             Jugador jug = llista_de_jugadors_possibles.get(i);
             edat = (LocalDate.now().getYear())-Integer.parseInt(jug.getData_naix().substring(0, 4));
-            if(edat >= Cate_enum.Alevi.getEdatMinima()&& edat <= Cate_enum.Alevi.getEdatMaxima()){
-                cate = "Alevi";
-            }else if(edat >= Cate_enum.Benjami.getEdatMinima()&& edat <= Cate_enum.Benjami.getEdatMaxima()){
-                cate = "Benjami";
-            }else if(edat >= Cate_enum.Cadet.getEdatMinima()&& edat <= Cate_enum.Cadet.getEdatMaxima()){
-                cate = "Cadet";
-            }else if(edat >= Cate_enum.Infantil.getEdatMinima()&& edat <= Cate_enum.Infantil.getEdatMaxima()){
-                cate = "Infantil";
-            }else if(edat >= Cate_enum.Juvenil.getEdatMinima()&& edat <= Cate_enum.Juvenil.getEdatMaxima()){
-                cate = "Juvenil";
-            }else{
-                cate = "Senior";
-            }
+
+            cate = cate_de_jug(jug);
             dades[i][0] = jug.getId_jug(); 
             dades[i][1] = jug.getId_legal();
             dades[i][2] = jug.getNom();
@@ -563,5 +593,28 @@ public class Afeguir_jugadors {
         taula.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
         taula.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 
+    }
+    static String cate_de_jug(Jugador jug){
+        String cate;
+        if(jug!=null){
+            int edat = (LocalDate.now().getYear())-Integer.parseInt(jug.getData_naix().substring(0, 4));
+            if(edat >= Cate_enum.Alevi.getEdatMinima()&& edat <= Cate_enum.Alevi.getEdatMaxima()){
+                cate = "Alevi";
+            }else if(edat >= Cate_enum.Benjami.getEdatMinima()&& edat <= Cate_enum.Benjami.getEdatMaxima()){
+                cate = "Benjami";
+            }else if(edat >= Cate_enum.Cadet.getEdatMinima()&& edat <= Cate_enum.Cadet.getEdatMaxima()){
+                cate = "Cadet";
+            }else if(edat >= Cate_enum.Infantil.getEdatMinima()&& edat <= Cate_enum.Infantil.getEdatMaxima()){
+                cate = "Infantil";
+            }else if(edat >= Cate_enum.Juvenil.getEdatMinima()&& edat <= Cate_enum.Juvenil.getEdatMaxima()){
+                cate = "Juvenil";
+            }else{
+                cate = "Senior";
+            }
+        }else{
+            cate="n";
+        }
+        
+        return cate;
     }
 }
