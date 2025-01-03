@@ -380,7 +380,18 @@ public class Modificar_jug {
                             }
                             if(dch_data_naix.getDate() != null){
                                 data_naix = dch_data_naix.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
-                                int any_naix= Integer.parseInt(data_naix.substring(0, 4));                                
+                                int any_naix= Integer.parseInt(data_naix.substring(0, 4)); 
+                               
+                                LocalDate dataSeleccionada = dch_data_naix.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                                if (dataSeleccionada.isAfter(LocalDate.now())) {//Si és més gran a la actual
+                                    JOptionPane.showMessageDialog(f, "La data naix no pot ser més tard que l'actual!");
+                                    return;
+                                }else if((LocalDate.now().getYear())-Integer.parseInt(data_naix.substring(0, 4))<7){
+                                    JOptionPane.showMessageDialog(f, "L'edat del jugador és massa petita! \n\n Tenim un mínim de 7 anys en aquest club :D");
+                                    return;
+                                }
+                                
+                                
                                 List<Equip> eqs = gestor.equips_on_son_els_jug(j.getId_jug());
                                 
                                 for (Equip eq : eqs) {

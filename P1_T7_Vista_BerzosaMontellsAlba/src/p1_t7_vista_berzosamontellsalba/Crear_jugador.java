@@ -346,10 +346,8 @@ public class Crear_jugador {
                             data_naix = dch_data_naix.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
                                 
                             if((LocalDate.now().getYear())-Integer.parseInt(data_naix.substring(0, 4))<7){
-                                System.out.println("Massa petit");
+                                JOptionPane.showMessageDialog(f, "L'edat del jugador és massa petita! \n\n Tenim un mínim de 7 anys en aquest club :D");
                                 return;
-                            }else{
-                                System.out.println("edat correcte");
                             }
                             if(img_path == null){
                                 //System.out.println(dch_data_naix.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString());
