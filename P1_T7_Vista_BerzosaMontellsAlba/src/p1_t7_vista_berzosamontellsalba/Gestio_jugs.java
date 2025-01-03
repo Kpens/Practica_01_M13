@@ -16,6 +16,7 @@ import java.awt.*;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class Gestio_jugs {
     static private JButton b_crear_jug, b_modificar_jug, b_eliminar_jug, b_endarrere, b_filtrar, b_exportar_dades;
     static private JTable taula_equip, taula_jug;
     static Jugador jugador_seleccionat;
-    static private JRadioButton rbHome, rbDona;
+    static private JRadioButton rbHome, rbDona, rbNo,rbSi;
     static private JDateChooser dch_data_naix;
     static JFrame f = new JFrame("Gestió de jugadors");
     static private GestorBDEmpresaJdbc gestor;
@@ -159,6 +160,24 @@ public class Gestio_jugs {
         
         f.add(rbDona);
         
+        ltext = new JLabel("Revisió feta: ");
+        ltext.setBounds(1180, 100, 160, 40);
+        ltext.setFont(new Font("Arial", Font.BOLD, 20));
+        f.add(ltext);
+        
+        
+        rbSi = new JRadioButton("Si");
+        rbSi.setBounds(1310, 100, 40, 40);
+        rbNo = new JRadioButton("No");
+        rbNo.setBounds(1350, 100, 60, 40);
+        ButtonGroup grup_rev_feta = new ButtonGroup();
+        grup_rev_feta.add(rbSi);
+        grup_rev_feta.add(rbNo);
+        rbSi.setSelected(true);
+        
+        f.add(rbSi);
+        
+        f.add(rbNo);
         
         ldata_naix = new JLabel("Data naix: ");
         ldata_naix.setBounds(680, 100, 160, 40);
@@ -244,8 +263,23 @@ public class Gestio_jugs {
                     if(eqs.isEmpty()){
                         int resposta = JOptionPane.showConfirmDialog(f, "Estàs segur d'eliminar: "+jugador_seleccionat.getNom()+" "+jugador_seleccionat.getCog()+"\n amb nif: "+jugador_seleccionat.getId_legal(), "Confirmar eliminació", JOptionPane.YES_NO_OPTION);
 
-                        if (resposta == JOptionPane.YES_OPTION) {//Si selecciona si
+                        if (resposta == JOptionPane.YES_OPTION) {//Si selecciona 'si' s'elimina el jugador i la seva foto
                             gestor.eliminar_jugador(jugador_seleccionat.getId_jug());
+                            
+                            String rutaFoto = "D:/jugador/" + jugador_seleccionat.getId_legal() + ".png";
+
+                            jugador_seleccionat = null;
+                            File foto = new File(rutaFoto);
+
+                            if (foto.exists()) {
+                                if (foto.delete()) {
+                                    System.out.println("Foto eliminada");
+                                } else {
+                                    System.out.println("No s'ha eliminat la foto del jugador");
+                                }
+                            } else {
+                                System.out.println("La foto no existeix a la ruta: " + rutaFoto);
+                            }
                             JOptionPane.showMessageDialog(f, "Eliminat");
                             filtracio();
                         } else {
@@ -575,6 +609,7 @@ public class Gestio_jugs {
         llista_de_jugadors = null;
         Sexe_enum sexeSeleccionat = rbHome.isSelected() ? Sexe_enum.H : Sexe_enum.D;
 
+        boolean rev_feta = rbSi.isSelected();
         Cate_enum cate_select = null;
         for (Cate_enum val : Cate_enum.values()) {
             if(cb_cate.getSelectedItem().equals(val.toString())){

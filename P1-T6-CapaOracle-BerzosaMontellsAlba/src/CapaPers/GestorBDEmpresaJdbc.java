@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Properties;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -1054,7 +1055,7 @@ where m.id_jug_mem = 1
             //UPDATE Jugador SET nom = 'NouNom', cognoms = 'NousCognoms', IBAN = 'ES9121000418450200051332', codi_postal = 08700, poblacio = 'NovaPoblacio', provincia = 'NovaProvincia', pais = 'NouPais', any_fi_revisio_medica = 2026, adreca = 'C/ nova adreça', foto = 'C:\nova_ruta\persona.jpg' WHERE id_legal = 'ID02';
             Jugador jug=null;
             try {
-                ps = c.prepareStatement("UPDATE Jugador SET nom = ?, cognoms = ?, IBAN = ?, codi_postal = ?, poblacio = ?, provincia = ?, pais = ?, any_fi_revisio_medica = ?, adreca = ?, foto = ?, sexe=? WHERE id_legal = ?");
+                ps = c.prepareStatement("UPDATE Jugador SET nom = ?, cognoms = ?, IBAN = ?, codi_postal = ?, poblacio = ?, provincia = ?, pais = ?, any_fi_revisio_medica = ?, adreca = ?, foto = ?, sexe=?, data_naix = TO_DATE(?, 'YYYY-MM-DD') WHERE id_legal = ?");
 
                 ps.setString(1, j.getNom());
                 ps.setString(2, j.getCog());
@@ -1067,9 +1068,17 @@ where m.id_jug_mem = 1
                 ps.setString(9, j.getAdreca()); 
                 ps.setString(10, j.getFoto());  
                 ps.setString(11, j.getSexe().toString());  
-                ps.setString(12, j.getId_legal());  
-                ps.executeUpdate();
-                c.commit();
+                ps.setString(12, j.getData_naix());  
+                ps.setString(13, j.getId_legal());  
+                int rowsAffected =ps.executeUpdate();
+                
+                if (rowsAffected > 0) {
+                    c.commit();
+                    System.out.println("Jugador modificat");
+                } else {
+                    System.out.println("No s'ha trobat");
+                }
+                
             } catch (SQLException ex) {
                 System.out.println("Error: no es pot crear el jugador "+ex.getMessage());
             }finally {

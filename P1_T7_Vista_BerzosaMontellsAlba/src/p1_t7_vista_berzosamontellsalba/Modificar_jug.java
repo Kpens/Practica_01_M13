@@ -394,9 +394,8 @@ public class Modificar_jug {
                                                 edat_max = eq.getCate().getEdatMaxima();
 
                                             }
-                                            int edat = (LocalDate.now().getYear())-eq.getAny_eq();
-                                            if(val=='T'){
-                                                
+                                            int edat = (LocalDate.now().getYear())-any_naix;
+                                            if(val=='S'){
                                                 
                                                 if(edat_min<eq.getCate().getEdatMinima()||edat_min==-1){
                                                     edat_min=eq.getCate().getEdatMinima();
