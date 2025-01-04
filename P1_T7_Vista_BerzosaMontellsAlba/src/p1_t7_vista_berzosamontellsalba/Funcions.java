@@ -102,8 +102,8 @@ public class Funcions {
     }
     
     static void afeguir_jugadors(Equip e){
-        Afeguir_jugadors mp = new Afeguir_jugadors();
-        JFrame mpFrame = mp.afeguir_jugs(e);
+        Jugadors_en_l_equip mp = new Jugadors_en_l_equip();
+        JFrame mpFrame = mp.jugadors_en_equip(e);
         mpFrame.setVisible(true);
     }
     static void gest_equips(){

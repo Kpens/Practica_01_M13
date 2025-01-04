@@ -35,12 +35,12 @@ import javax.swing.table.TableColumn;
  *
  * @author Alma
  */
-public class Afeguir_jugadors {
+public class Jugadors_en_l_equip {
     private static List<Jugador> llista_de_jugadors_en_l_equip = null, llista_de_jugadors_possibles = null;
     static private JLabel ltext,lsexe, lnif, ldata_naix, ltitol;
     static private JTextField ltf_nom, ltf_nif;
     static private JComboBox<String> cb_cate, cb_temp, cb_tipus;
-    static private JButton b_crear_equip, b_modificar_equip, b_endarrere, b_filtrar, b_exportar_dades, b_afeguir;
+    static private JButton b_crear_equip, b_modificar_equip, b_endarrere, b_filtrar, b_exportar_dades, b_afeguir, b_eliminar_jug;
     static private JTable taula_jugadors_de_l_equip, taula_jugs_que_es_poden_aff;
     static private JRadioButton rbHome, rbDona, rbNo,rbSi, rbTit, rbAltre;
     static Jugador jug_seleccionat,jug_seleccionat_a_aff;
@@ -50,7 +50,7 @@ public class Afeguir_jugadors {
     
     static private Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
     
-    public JFrame afeguir_jugs(Equip eq) {
+    public JFrame jugadors_en_equip(Equip eq) {
      
         f.setLayout(null);
         
@@ -168,7 +168,7 @@ public class Afeguir_jugadors {
         
         b_afeguir = new JButton("Afeguir jugador");
         Funcions.boto_estil(b_afeguir);
-        b_afeguir.setBounds(690,440, 140, 30);
+        b_afeguir.setBounds(690,400, 140, 30);
         b_afeguir.setVisible(true);
         b_afeguir.setEnabled(false);
         f.add(b_afeguir);
@@ -209,26 +209,24 @@ public class Afeguir_jugadors {
         
         
         rbTit = new JRadioButton("Titular");
-        rbTit.setBounds(690, 400, 80, 40);
+        rbTit.setBounds(690, 360, 80, 40);
         rbAltre = new JRadioButton("Altre");
-        rbAltre.setBounds(770, 400, 60, 40);
+        rbAltre.setBounds(770, 360, 60, 40);
         ButtonGroup grup_aff_tipus = new ButtonGroup();
         grup_aff_tipus.add(rbTit);
         grup_aff_tipus.add(rbAltre);
         rbTit.setEnabled(false);
         rbAltre.setEnabled(true);
-        if(!cate_de_jug(jug_seleccionat_a_aff).equals("n")){
-            for (String cate : cates) {
-                if(cate_de_jug(jug_seleccionat_a_aff).equals(cate)){
-                    rbTit.setEnabled(true);
-                }
-            }
-        }
         
         f.add(rbTit);
         
         f.add(rbAltre);
         
+        b_eliminar_jug = new JButton("Eliminar jugador");
+        Funcions.boto_estil(b_eliminar_jug);
+        b_eliminar_jug.setBounds(690, 460, 180, 30);
+        b_eliminar_jug.setVisible(true);
+        b_eliminar_jug.setEnabled(false);
         
         
         b_filtrar = new JButton("Filtrar");
@@ -270,18 +268,38 @@ public class Afeguir_jugadors {
                //Funcions.modificar_equip(equip_seleccionat);
             }
         });
+        b_eliminar_jug.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    //f.dispose();
+                    gestor.eliminar_jugadors_de_l_equip(eq, jug_seleccionat, false);
+                    filtracio(eq);
+                    jug_seleccionat = null;
+                } catch (GestorBDEmpresaException ex) {
+                    Logger.getLogger(Jugadors_en_l_equip.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
         
         b_afeguir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               //Funcions.modificar_equip(equip_seleccionat);
+                try {
+                    gestor.afegir_jugadors(eq, jug_seleccionat_a_aff, rbTit.isSelected());
+                    filtracio(eq);
+                    jug_seleccionat_a_aff=null;
+                } catch (GestorBDEmpresaException ex) {
+                    Logger.getLogger(Jugadors_en_l_equip.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
             }
         });
         b_endarrere.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                f.dispose();
-                Funcions.agafar_menu_principal();
+                Funcions.gest_equips();
             }
         });
         
@@ -295,76 +313,16 @@ public class Afeguir_jugadors {
         });
         
         taula_jugadors_de_l_equip(f);
-        taula_jugs_que_es_poden_aff(f);
+        taula_jugs_que_es_poden_aff(f, eq);
         b_filtrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                llista_de_jugadors_possibles = new ArrayList<>();
-                List<Jugador> ab_filtrar = new ArrayList<>();
-                Sexe_enum sexeSeleccionat = rbHome.isSelected() ? Sexe_enum.H : Sexe_enum.D;
-
-                boolean rev_feta = rbSi.isSelected();
-                Cate_enum cate_select = null;
-                for (Cate_enum val : Cate_enum.values()) {
-                    if(cb_cate.getSelectedItem().equals(val.toString())){
-                        cate_select = val;
-                    }
-                }
-
-                /*if(cb_cate.getSelectedItem().equals(Cate_enum.Alevi.toString())){
-                    cate_select = Cate_enum.Alevi;
-                }else if(cb_cate.getSelectedItem().equals(Cate_enum.Benjami.toString())){
-                    cate_select = Cate_enum.Benjami;
-                }else if(cb_cate.getSelectedItem().equals(Cate_enum.Cadet.toString())){
-                    cate_select = Cate_enum.Cadet;
-                }else if(cb_cate.getSelectedItem().equals(Cate_enum.Infantil.toString())){
-                    cate_select = Cate_enum.Infantil;
-                }else if(cb_cate.getSelectedItem().equals(Cate_enum.Juvenil.toString())){
-                    cate_select = Cate_enum.Juvenil;
-                }else if(cb_cate.getSelectedItem().equals(Cate_enum.Senior.toString())){
-                    cate_select = Cate_enum.Senior;
-                } */
-                String busc_nom = ltf_nom.getText().trim();
-                String busc_nif = ltf_nif.getText().trim();
-
-                String busc_data_naix ="";
-                /*
-                * Com es retorna en Date i en un format incorrecte ho passem al format correcte en string
-                */
-                Date data = dch_data_naix.getDate();
-                if (data != null) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    busc_data_naix = sdf.format(data);
-                    System.out.println("Data seleccionada: " + busc_data_naix);
-                } 
-                try {
-                    llista_de_jugadors_en_l_equip = gestor.mostrar_jugadors_per_equip(eq.getId_equip());
-                    actualitzar_taula_jugadors_de_l_equip(taula_jugadors_de_l_equip, eq);
-                    // Es filtra la llista de jugadors
-                    ab_filtrar = gestor.llista_jugadors(sexeSeleccionat, busc_nom, busc_nif, busc_data_naix, cate_select, rev_feta);
-
-                    if(!(ab_filtrar.isEmpty()||ab_filtrar==null)){
-                        int edat;
-                        for (Jugador jug : ab_filtrar) {
-                            edat = LocalDate.now().getYear()- Integer.parseInt(jug.getData_naix().substring(0, 4));
-
-                            if(edat<= eq.getCate().getEdatMaxima()){
-                                llista_de_jugadors_possibles.add(jug);
-                            }
-                        }  
-                    }else{
-                        llista_de_jugadors_possibles=new ArrayList<>();
-                    }
-                    
-                    
-                    actualitzar_taula_jugs_que_es_poden_aff(taula_jugs_que_es_poden_aff);
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(f, "Error al filtrar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                filtracio(eq);
             }
             
         });
         f.add(b_modificar_equip);
+        f.add(b_eliminar_jug);
         f.add(b_filtrar);
         f.add(b_endarrere);
         f.add(b_crear_equip);
@@ -397,12 +355,13 @@ public class Afeguir_jugadors {
                         /*try {
                             llista_de_jugadors_possibles = gestor.llista_jugadors(Sexe_enum.H, nom_j, nif, data_naix_j, Cate_enum.Cadet, true);
                         } catch (GestorBDEmpresaException ex) {
-                            Logger.getLogger(Afeguir_jugadors.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(Jugadors_en_l_equip.class.getName()).log(Level.SEVERE, null, ex);
                         }*/
                         actualitzar_taula_jugs_que_es_poden_aff(taula_jugs_que_es_poden_aff);
                         b_modificar_equip.setEnabled(true);
+                        b_eliminar_jug.setEnabled(true);
                     }else{
-                        
+                        b_eliminar_jug.setEnabled(false);
                         llista_de_jugadors_en_l_equip = new ArrayList<>();
                         actualitzar_taula_jugs_que_es_poden_aff(taula_jugs_que_es_poden_aff); 
                     }
@@ -501,7 +460,7 @@ public class Afeguir_jugadors {
 
 
     }
-    static JFrame taula_jugs_que_es_poden_aff(JFrame f){
+    static JFrame taula_jugs_que_es_poden_aff(JFrame f, Equip eq){
         taula_jugs_que_es_poden_aff = new JTable();
         taula_jugs_que_es_poden_aff.setFont(new Font("Arial", Font.PLAIN, 14));
 
@@ -519,7 +478,17 @@ public class Afeguir_jugadors {
                 if (!e.getValueIsAdjusting()) {
                     int filaSeleccionada = taula_jugs_que_es_poden_aff.getSelectedRow();
                     if (filaSeleccionada != -1) {
-                        jug_seleccionat_a_aff = llista_de_jugadors_en_l_equip.get(filaSeleccionada);
+                        jug_seleccionat_a_aff = llista_de_jugadors_possibles.get(filaSeleccionada);
+                        
+                        if(!cate_de_jug(jug_seleccionat_a_aff).equals("n")){
+                            System.out.println(cate_de_jug(jug_seleccionat_a_aff).toUpperCase());
+                            System.out.println(eq.getCate().toString().toUpperCase());
+                            if(cate_de_jug(jug_seleccionat_a_aff).toUpperCase().trim().equals(eq.getCate().toString().toUpperCase().trim())){
+                                rbTit.setEnabled(true);
+                            }else{
+                                rbTit.setEnabled(false);
+                            }
+                        }
                         b_afeguir.setEnabled(true);
                     }else{
                         b_afeguir.setEnabled(false);
@@ -616,5 +585,82 @@ public class Afeguir_jugadors {
         }
         
         return cate;
+    }
+    static void filtracio(Equip eq){
+        llista_de_jugadors_possibles = new ArrayList<>();
+        List<Jugador> ab_filtrar = new ArrayList<>();
+        Sexe_enum sexeSeleccionat = rbHome.isSelected() ? Sexe_enum.H : Sexe_enum.D;
+
+        boolean rev_feta = rbSi.isSelected();
+        Cate_enum cate_select = null;
+        for (Cate_enum val : Cate_enum.values()) {
+            if(cb_cate.getSelectedItem().equals(val.toString())){
+                cate_select = val;
+            }
+        }
+
+        /*if(cb_cate.getSelectedItem().equals(Cate_enum.Alevi.toString())){
+            cate_select = Cate_enum.Alevi;
+        }else if(cb_cate.getSelectedItem().equals(Cate_enum.Benjami.toString())){
+            cate_select = Cate_enum.Benjami;
+        }else if(cb_cate.getSelectedItem().equals(Cate_enum.Cadet.toString())){
+            cate_select = Cate_enum.Cadet;
+        }else if(cb_cate.getSelectedItem().equals(Cate_enum.Infantil.toString())){
+            cate_select = Cate_enum.Infantil;
+        }else if(cb_cate.getSelectedItem().equals(Cate_enum.Juvenil.toString())){
+            cate_select = Cate_enum.Juvenil;
+        }else if(cb_cate.getSelectedItem().equals(Cate_enum.Senior.toString())){
+            cate_select = Cate_enum.Senior;
+        } */
+        String busc_nom = ltf_nom.getText().trim();
+        String busc_nif = ltf_nif.getText().trim();
+
+        String busc_data_naix ="";
+        /*
+        * Com es retorna en Date i en un format incorrecte ho passem al format correcte en string
+        */
+        Date data = dch_data_naix.getDate();
+        if (data != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            busc_data_naix = sdf.format(data);
+            System.out.println("Data seleccionada: " + busc_data_naix);
+        } 
+        try {
+            
+            llista_de_jugadors_en_l_equip = gestor.mostrar_jugadors_per_equip(eq.getId_equip());
+            actualitzar_taula_jugadors_de_l_equip(taula_jugadors_de_l_equip, eq);
+            // Es filtra la llista de jugadors
+            ab_filtrar = gestor.llista_jugadors(sexeSeleccionat, busc_nom, busc_nif, busc_data_naix, cate_select, rev_feta);
+
+            boolean en_l_equip =false;
+            if(!(ab_filtrar.isEmpty()||ab_filtrar==null)){
+                int edat;
+                for (Jugador jug : ab_filtrar) {
+                    edat = LocalDate.now().getYear()- Integer.parseInt(jug.getData_naix().substring(0, 4));
+
+                    en_l_equip=false;
+                    if(edat<= eq.getCate().getEdatMaxima()){
+                        for (Jugador jugador : llista_de_jugadors_en_l_equip) {
+                            if(jug.getId_legal().equals(jugador.getId_legal())){
+                                en_l_equip = true;
+                                                           
+                                break; 
+                            }
+                        }    
+                        if(!en_l_equip){
+                            llista_de_jugadors_possibles.add(jug);
+                        }
+                        
+                    }
+                }  
+            }else{
+                llista_de_jugadors_possibles=new ArrayList<>();
+            }
+
+
+            actualitzar_taula_jugs_que_es_poden_aff(taula_jugs_que_es_poden_aff);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(f, "Error al filtrar: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

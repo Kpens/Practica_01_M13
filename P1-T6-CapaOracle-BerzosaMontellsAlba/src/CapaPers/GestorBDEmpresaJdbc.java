@@ -564,13 +564,13 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
         actualitzar_equips();
         try{
             String jug = "";
-             if(tots){
+             if(!tots){
                  jug =" AND Id_jug_mem = ?";
              }
             ps = c.prepareStatement("DELETE FROM MEMBRE\n" +
 "WHERE Id_equip_mem = ?"+jug);
             ps.setInt(1, e.getId_equip());
-            if(tots){
+            if(!tots){
                  ps.setInt(2, j.getId_jug());
             }
             
@@ -579,9 +579,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
             if(!tots){
                 e.eliminar_jugador(j.getId_jug());
             }else{
-                for (Jugador jugs : e.getJug_mem().values()) {
-                    e.eliminar_jugador(jugs.getId_jug());
-                }                
+                e.eliminar_jugadors_de_l_equip();
             }            
             c.commit();
             actualitzar_equips();
@@ -869,10 +867,12 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
         Statement q = null;
         llista_equips = null;
         try {
+            System.out.println("ab statement");
             q = c.createStatement();
             String query = "select id_equip, nom, tipus, any_eq, cate from equip";
             rs = q.executeQuery(query);
 
+            System.out.println("ab rs");
             while (rs.next()) {
                 /*int num =0;*/
                 Tipus_enum tenum;
@@ -909,9 +909,10 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 
                 lequips.add(eq);
             }
-            
+            System.out.println("desp rs");
+            System.out.println("ab aff jug al map");
             aff_jugador_al_map_d_equip(lequips);
-            
+            System.out.println("desp aff al map");
             llista_equips = lequips;
             return lequips;
         } catch (SQLException ex) {
@@ -941,10 +942,12 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 while (rs.next()) {
 
                     Jugador j = agafar_jugador(rs.getString("id_jug_mem"), false);
-                    String titular = rs.getString("titular");
-                    eq.afegir_jugador(j, titular.charAt(0));
-                    llista_jugs_eq.add(j);
-                    i++;
+                    if(!eq.getJug_mem().containsKey(j.getId_jug())){
+                        String titular = rs.getString("titular");
+                        eq.afegir_jugador(j, titular.charAt(0));
+                        llista_jugs_eq.add(j);
+                        i++; 
+                    }
                 }
             }
         }catch(SQLException ex) {
