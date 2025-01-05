@@ -54,7 +54,6 @@ public class Jugadors_en_l_equip {
      
         f.setLayout(null);
         
-        // Configura la mida del JFrame segons les dimensions de la pantalla
         f.setSize(pantalla.width, pantalla.height);
         
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -207,7 +206,7 @@ public class Jugadors_en_l_equip {
         
         f.add(cb_cate);
         
-        
+                
         rbTit = new JRadioButton("Titular");
         rbTit.setBounds(690, 360, 80, 40);
         rbAltre = new JRadioButton("Altre");
@@ -376,7 +375,7 @@ public class Jugadors_en_l_equip {
     }
     
     private static void actualitzar_taula_jugadors_de_l_equip(JTable taula_jugs_actuals, Equip eq) {
-            //error.setVisible(false);
+        //error.setVisible(false);
         String[] columnes = {"ID_Jug", "NIF", "Nom Jugador","Cognoms", "Sexe", "data_naix", "Edat", "Categoria", "Titular"};
         Object[][] dades = new Object[llista_de_jugadors_en_l_equip.size()][columnes.length+1];
 

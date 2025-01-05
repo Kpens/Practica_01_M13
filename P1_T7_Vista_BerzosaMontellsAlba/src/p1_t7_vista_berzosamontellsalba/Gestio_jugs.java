@@ -234,7 +234,7 @@ public class Gestio_jugs {
         Funcions.boto_estil(b_endarrere);
         
         b_exportar_dades = new JButton("Exportar dades");
-        b_exportar_dades.setBounds(f.getWidth()-200, f.getHeight()-100, 125, 30);
+        b_exportar_dades.setBounds(f.getWidth()-470, f.getHeight()-100, 160, 30);
         Funcions.boto_estil(b_exportar_dades);
         
         
@@ -309,8 +309,7 @@ public class Gestio_jugs {
             @Override
             public void actionPerformed(ActionEvent e) {
                f.dispose();
-               //JDom --> exportar XML
-               //JOptionPane.showMessageDialog(f, "S'han exportat les dades \n\n");
+               Funcions.exportar_dades();
             }
         });
         
@@ -324,6 +323,7 @@ public class Gestio_jugs {
             }
         });
         f.add(b_modificar_jug);
+        f.add(b_exportar_dades);
         f.add(b_eliminar_jug);
         f.add(b_filtrar);
         f.add(b_endarrere);

@@ -57,6 +57,7 @@ public class Gestio_temporades {
         ltemp.setBounds(100, 100, 300, 40);
         ltemp.setFont(new Font("Arial", Font.BOLD, 20));
         f.add(ltemp);
+        
         missatge = new JLabel();
         missatge.setBounds(20, 200, 300, 40);
         missatge.setForeground(Color.red);

@@ -59,6 +59,12 @@ public class Funcions {
         mpFrame.setVisible(true);
     }
     
+    static void exportar_dades(){
+        Exportacio mp = new Exportacio();
+        JFrame mpFrame = mp.exportar_dades();
+        mpFrame.setVisible(true);
+    }
+    
     static boolean mirar_edat_correcte__si_es_titular_o_no(JFrame f, Jugador j, List<Equip> eqs, int any_naix){
         
         int edat_min=-1, edat_max=-1;

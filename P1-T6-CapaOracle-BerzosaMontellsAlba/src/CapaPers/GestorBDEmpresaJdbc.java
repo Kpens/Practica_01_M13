@@ -174,13 +174,13 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     }
 
     @Override
-    public List<Jugador> llista_jugadors_ant(Sexe_enum sexe_j, String nom_j) throws GestorBDEmpresaException {
+    public List<Jugador> llista_jugadors_ant(String sexe_j, String nom_j) throws GestorBDEmpresaException {
         List<Jugador> ljugs = new ArrayList<>();
         boolean entrat=false;
         char s;
-        if(sexe_j == Sexe_enum.D){
+        if(sexe_j == Sexe_enum.D.toString()){
             s='D';
-        }else if(sexe_j == Sexe_enum.H){
+        }else if(sexe_j == Sexe_enum.H.toString()){
             s='H';
         }else{
             s='%';
@@ -534,10 +534,10 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     }
 
     @Override
-    public void eliminar_equip(Equip e) throws GestorBDEmpresaException {
+    public boolean eliminar_equip(Equip e) throws GestorBDEmpresaException {
         actualitzar_equips();
         if(!e.getJug_mem().isEmpty()){
-            throw new GestorBDEmpresaException("Error: Aquest equip conté jugadors");
+            return false;
         }else{
             try {
                 ps = c.prepareStatement("DELETE FROM equip\n" +
@@ -556,6 +556,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                     throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
                 }
             }
+            return true;
         }
     }
 

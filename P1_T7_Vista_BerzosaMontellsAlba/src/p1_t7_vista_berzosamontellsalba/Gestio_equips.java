@@ -39,7 +39,7 @@ public class Gestio_equips {
     static private JLabel ltext,lsexe, lnif, ldata_naix, ltitol;
     static private JTextField ltf_nom, ltf_nif;
     static private JComboBox<String> cb_cate, cb_temp, cb_tipus;
-    static private JButton b_crear_equip, b_modificar_equip, b_aff_jugadors, b_endarrere, b_filtrar, b_exportar_dades;
+    static private JButton b_crear_equip, b_modificar_equip, b_eliminar_eq, b_aff_jugadors, b_endarrere, b_filtrar, b_exportar_dades;
     static private JTable taula_equip, taula_jug;
     static Equip equip_seleccionat;
     static private JDateChooser dch_data_naix;
@@ -51,7 +51,6 @@ public class Gestio_equips {
      
         f.setLayout(null);
         
-        // Configura la mida del JFrame segons les dimensions de la pantalla
         f.setSize(pantalla.width, pantalla.height);
         
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -217,6 +216,14 @@ public class Gestio_equips {
         b_aff_jugadors.setVisible(true);
         b_aff_jugadors.setEnabled(false);
         
+        
+        b_eliminar_eq= new JButton("Eliminar Equip");
+        Funcions.boto_estil(b_eliminar_eq);
+        b_eliminar_eq.setBounds(700, f.getHeight()-100, 180, 30);
+        b_eliminar_eq.setVisible(true);
+        b_eliminar_eq.setEnabled(false);
+        
+        
         b_endarrere = new JButton("Endarrere");
         b_endarrere.setBounds(f.getWidth()-300, f.getHeight()-100, 125, 30);
         Funcions.boto_estil(b_endarrere);
@@ -240,6 +247,37 @@ public class Gestio_equips {
                //Funcions.modificar_equip(equip_seleccionat);
             }
         });
+        b_eliminar_eq.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               
+                try {
+                    if(!gestor.eliminar_equip(equip_seleccionat)){
+                        int resposta = JOptionPane.showConfirmDialog(f, "L'equip conté jugadors, éstà segur d'eliminar els seus jugadors i aquest?: "+equip_seleccionat.getNom()+" "+equip_seleccionat.getAny_eq(), "Confirmar eliminació", JOptionPane.YES_NO_OPTION);
+
+                        if (resposta == JOptionPane.YES_OPTION) {//Si selecciona 'si' s'elimina el jugador i la seva foto
+                            Jugador j = null;
+                            gestor.eliminar_jugadors_de_l_equip(equip_seleccionat, j, true);
+                           
+                            if(!gestor.eliminar_equip(equip_seleccionat)){
+                                
+                                JOptionPane.showMessageDialog(f, "No s'han eliminat els jugadors");
+                            }else{
+                                
+                                JOptionPane.showMessageDialog(f, "Eliminats els jugadors i l'equip");
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(f, "El jugador no s'ha eliminat");
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(f, "Equip eliminat");
+                    }
+                } catch (GestorBDEmpresaException ex) {
+                    Logger.getLogger(Gestio_equips.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
         b_aff_jugadors.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -337,6 +375,7 @@ public class Gestio_equips {
             }
         });
         f.add(b_modificar_equip);
+        f.add(b_eliminar_eq);
         f.add(b_aff_jugadors);
         f.add(b_filtrar);
         f.add(b_endarrere);
@@ -372,6 +411,7 @@ public class Gestio_equips {
                         }
                         actualitzar_taula_jug(taula_jug);
                         b_modificar_equip.setEnabled(true);
+                        b_eliminar_eq.setEnabled(true);
                         b_aff_jugadors.setEnabled(true);
                     }else{
                         
@@ -379,6 +419,7 @@ public class Gestio_equips {
                         actualitzar_taula_jug(taula_jug); 
                         b_modificar_equip.setEnabled(false);
                         b_aff_jugadors.setEnabled(false);
+                        b_eliminar_eq.setEnabled(false);
                     }
                 }
             }

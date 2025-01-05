@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Jugadors>
+  <Jugador id="1">
+    <Nom>Lara</Nom>
+    <Cognoms>Blanco</Cognoms>
+    <Adreca>C/ carrer 1</Adreca>
+    <DataNaix>2018-06-10 00:00:00</DataNaix>
+    <Sexe>D</Sexe>
+    <Equips>
+      <Equip id="2">
+        <Nom>Benjami Femeni</Nom>
+        <Any>2026</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+      <Equip id="3">
+        <Nom>Benjami Mixte</Nom>
+        <Any>2026</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+      <Equip id="5">
+        <Nom>Benjami Femeni</Nom>
+        <Any>2025</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="2">
+    <Nom>Clara</Nom>
+    <Cognoms>Sanz</Cognoms>
+    <Adreca>C/ carrer 2</Adreca>
+    <DataNaix>2018-08-15 00:00:00</DataNaix>
+    <Sexe>D</Sexe>
+    <Equips>
+      <Equip id="2">
+        <Nom>Benjami Femeni</Nom>
+        <Any>2026</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+      <Equip id="3">
+        <Nom>Benjami Mixte</Nom>
+        <Any>2026</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+      <Equip id="5">
+        <Nom>Benjami Femeni</Nom>
+        <Any>2025</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="3">
+    <Nom>Sara</Nom>
+    <Cognoms>Vidal</Cognoms>
+    <Adreca>C/ carrer 3</Adreca>
+    <DataNaix>2018-07-20 00:00:00</DataNaix>
+    <Sexe>D</Sexe>
+    <Equips>
+      <Equip id="2">
+        <Nom>Benjami Femeni</Nom>
+        <Any>2026</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+      <Equip id="3">
+        <Nom>Benjami Mixte</Nom>
+        <Any>2026</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+      <Equip id="5">
+        <Nom>Benjami Femeni</Nom>
+        <Any>2025</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="4">
+    <Nom>Mia</Nom>
+    <Cognoms>Torres</Cognoms>
+    <Adreca>C/ carrer 4</Adreca>
+    <DataNaix>2018-01-05 00:00:00</DataNaix>
+    <Sexe>D</Sexe>
+    <Equips>
+      <Equip id="2">
+        <Nom>Benjami Femeni</Nom>
+        <Any>2026</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+      <Equip id="5">
+        <Nom>Benjami Femeni</Nom>
+        <Any>2025</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="5">
+    <Nom>Nora</Nom>
+    <Cognoms>Morales</Cognoms>
+    <Adreca>C/ carrer 5</Adreca>
+    <DataNaix>2018-03-30 00:00:00</DataNaix>
+    <Sexe>D</Sexe>
+    <Equips>
+      <Equip id="2">
+        <Nom>Benjami Femeni</Nom>
+        <Any>2026</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+      <Equip id="3">
+        <Nom>Benjami Mixte</Nom>
+        <Any>2026</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+      <Equip id="5">
+        <Nom>Benjami Femeni</Nom>
+        <Any>2025</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="6">
+    <Nom>Julio</Nom>
+    <Cognoms>Morales</Cognoms>
+    <Adreca>C/ carrer 5</Adreca>
+    <DataNaix>2018-03-30 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="3">
+        <Nom>Benjami Mixte</Nom>
+        <Any>2026</Any>
+        <Categoria>Benjami</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="7">
+    <Nom>Oscar</Nom>
+    <Cognoms>Garcia</Cognoms>
+    <Adreca>C/ carrer 6</Adreca>
+    <DataNaix>2014-04-10 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="12">
+        <Nom>Alevi Mixte</Nom>
+        <Any>2025</Any>
+        <Categoria>Alevi</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+      <Equip id="15">
+        <Nom>Infantil Mixte</Nom>
+        <Any>2026</Any>
+        <Categoria>Infantil</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+      <Equip id="18">
+        <Nom>Infantil Mixte</Nom>
+        <Any>2025</Any>
+        <Categoria>Infantil</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="8">
+    <Nom>Lucas</Nom>
+    <Cognoms>Cruz</Cognoms>
+    <Adreca>C/ carrer 7</Adreca>
+    <DataNaix>2014-10-05 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="12">
+        <Nom>Alevi Mixte</Nom>
+        <Any>2025</Any>
+        <Categoria>Alevi</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+      <Equip id="15">
+        <Nom>Infantil Mixte</Nom>
+        <Any>2026</Any>
+        <Categoria>Infantil</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+      <Equip id="18">
+        <Nom>Infantil Mixte</Nom>
+        <Any>2025</Any>
+        <Categoria>Infantil</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="9">
+    <Nom>Noah</Nom>
+    <Cognoms>Hernandez</Cognoms>
+    <Adreca>C/ carrer 8</Adreca>
+    <DataNaix>2014-02-15 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="15">
+        <Nom>Infantil Mixte</Nom>
+        <Any>2026</Any>
+        <Categoria>Infantil</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+      <Equip id="18">
+        <Nom>Infantil Mixte</Nom>
+        <Any>2025</Any>
+        <Categoria>Infantil</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="10">
+    <Nom>Luca</Nom>
+    <Cognoms>Ramirez</Cognoms>
+    <Adreca>C/ carrer 9</Adreca>
+    <DataNaix>2013-05-22 00:00:00</DataNaix>
+    <Sexe>D</Sexe>
+    <Equips>
+      <Equip id="15">
+        <Nom>Infantil Mixte</Nom>
+        <Any>2026</Any>
+        <Categoria>Infantil</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+      <Equip id="18">
+        <Nom>Infantil Mixte</Nom>
+        <Any>2025</Any>
+        <Categoria>Infantil</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="11">
+    <Nom>Elena</Nom>
+    <Cognoms>Fernandez</Cognoms>
+    <Adreca>C/ carrer 10</Adreca>
+    <DataNaix>2013-09-18 00:00:00</DataNaix>
+    <Sexe>D</Sexe>
+    <Equips>
+      <Equip id="15">
+        <Nom>Infantil Mixte</Nom>
+        <Any>2026</Any>
+        <Categoria>Infantil</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+      <Equip id="18">
+        <Nom>Infantil Mixte</Nom>
+        <Any>2025</Any>
+        <Categoria>Infantil</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="12">
+    <Nom>Alex</Nom>
+    <Cognoms>Perez</Cognoms>
+    <Adreca>C/ carrer 11</Adreca>
+    <DataNaix>2014-11-30 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="19">
+        <Nom>Cadet Masculi</Nom>
+        <Any>2026</Any>
+        <Categoria>Cadet</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+      <Equip id="22">
+        <Nom>Cadet Masculi</Nom>
+        <Any>2025</Any>
+        <Categoria>Cadet</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="13">
+    <Nom>Mateo</Nom>
+    <Cognoms>Serrano</Cognoms>
+    <Adreca>C/ carrer 12</Adreca>
+    <DataNaix>2011-05-25 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="19">
+        <Nom>Cadet Masculi</Nom>
+        <Any>2026</Any>
+        <Categoria>Cadet</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+      <Equip id="22">
+        <Nom>Cadet Masculi</Nom>
+        <Any>2025</Any>
+        <Categoria>Cadet</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="14">
+    <Nom>Dani</Nom>
+    <Cognoms>Moreno</Cognoms>
+    <Adreca>C/ carrer 13</Adreca>
+    <DataNaix>2011-02-10 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="19">
+        <Nom>Cadet Masculi</Nom>
+        <Any>2026</Any>
+        <Categoria>Cadet</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+      <Equip id="22">
+        <Nom>Cadet Masculi</Nom>
+        <Any>2025</Any>
+        <Categoria>Cadet</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="15">
+    <Nom>Adrian</Nom>
+    <Cognoms>Navarro</Cognoms>
+    <Adreca>C/ carrer 14</Adreca>
+    <DataNaix>2011-08-14 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="19">
+        <Nom>Cadet Masculi</Nom>
+        <Any>2026</Any>
+        <Categoria>Cadet</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+      <Equip id="22">
+        <Nom>Cadet Masculi</Nom>
+        <Any>2025</Any>
+        <Categoria>Cadet</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="16">
+    <Nom>Toni</Nom>
+    <Cognoms>Camps</Cognoms>
+    <Adreca>C/ carrer 15</Adreca>
+    <DataNaix>2012-12-02 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="19">
+        <Nom>Cadet Masculi</Nom>
+        <Any>2026</Any>
+        <Categoria>Cadet</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+      <Equip id="22">
+        <Nom>Cadet Masculi</Nom>
+        <Any>2025</Any>
+        <Categoria>Cadet</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="17">
+    <Nom>Xavi</Nom>
+    <Cognoms>Bermidez</Cognoms>
+    <Adreca>C/ carrer 16</Adreca>
+    <DataNaix>2010-01-11 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="25">
+        <Nom>Juvenil Masculi</Nom>
+        <Any>2026</Any>
+        <Categoria>Juvenil</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="18">
+    <Nom>Ruben</Nom>
+    <Cognoms>Lopez</Cognoms>
+    <Adreca>C/ carrer 17</Adreca>
+    <DataNaix>2010-04-15 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="25">
+        <Nom>Juvenil Masculi</Nom>
+        <Any>2026</Any>
+        <Categoria>Juvenil</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="19">
+    <Nom>Pablo</Nom>
+    <Cognoms>Roca</Cognoms>
+    <Adreca>C/ carrer 18</Adreca>
+    <DataNaix>2010-10-20 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="25">
+        <Nom>Juvenil Masculi</Nom>
+        <Any>2026</Any>
+        <Categoria>Juvenil</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="20">
+    <Nom>Victor</Nom>
+    <Cognoms>Martinez</Cognoms>
+    <Adreca>C/ carrer 19</Adreca>
+    <DataNaix>2009-07-30 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="25">
+        <Nom>Juvenil Masculi</Nom>
+        <Any>2026</Any>
+        <Categoria>Juvenil</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="21">
+    <Nom>Liam</Nom>
+    <Cognoms>Salas</Cognoms>
+    <Adreca>C/ carrer 20</Adreca>
+    <DataNaix>2009-09-25 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="25">
+        <Nom>Juvenil Masculi</Nom>
+        <Any>2026</Any>
+        <Categoria>Juvenil</Categoria>
+        <Tipus>H</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="22">
+    <Nom>Elisa</Nom>
+    <Cognoms>Dominguez</Cognoms>
+    <Adreca>C/ carrer 21</Adreca>
+    <DataNaix>2006-03-22 00:00:00</DataNaix>
+    <Sexe>D</Sexe>
+    <Equips>
+      <Equip id="32">
+        <Nom>Senior Femeni</Nom>
+        <Any>2026</Any>
+        <Categoria>Senior</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+      <Equip id="35">
+        <Nom>Senior Femeni</Nom>
+        <Any>2025</Any>
+        <Categoria>Senior</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="23">
+    <Nom>Julia</Nom>
+    <Cognoms>Gonzalez</Cognoms>
+    <Adreca>C/ carrer 22</Adreca>
+    <DataNaix>2006-10-10 00:00:00</DataNaix>
+    <Sexe>D</Sexe>
+    <Equips>
+      <Equip id="32">
+        <Nom>Senior Femeni</Nom>
+        <Any>2026</Any>
+        <Categoria>Senior</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+      <Equip id="35">
+        <Nom>Senior Femeni</Nom>
+        <Any>2025</Any>
+        <Categoria>Senior</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="24">
+    <Nom>Laura</Nom>
+    <Cognoms>Vidal</Cognoms>
+    <Adreca>C/ carrer 23</Adreca>
+    <DataNaix>2005-05-18 00:00:00</DataNaix>
+    <Sexe>D</Sexe>
+    <Equips>
+      <Equip id="32">
+        <Nom>Senior Femeni</Nom>
+        <Any>2026</Any>
+        <Categoria>Senior</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+      <Equip id="35">
+        <Nom>Senior Femeni</Nom>
+        <Any>2025</Any>
+        <Categoria>Senior</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="25">
+    <Nom>Carmen</Nom>
+    <Cognoms>Sanchez</Cognoms>
+    <Adreca>C/ carrer 24</Adreca>
+    <DataNaix>2005-02-14 00:00:00</DataNaix>
+    <Sexe>D</Sexe>
+    <Equips>
+      <Equip id="32">
+        <Nom>Senior Femeni</Nom>
+        <Any>2026</Any>
+        <Categoria>Senior</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+      <Equip id="35">
+        <Nom>Senior Femeni</Nom>
+        <Any>2025</Any>
+        <Categoria>Senior</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="26">
+    <Nom>Valeria</Nom>
+    <Cognoms>Romero</Cognoms>
+    <Adreca>C/ carrer 25</Adreca>
+    <DataNaix>2006-11-30 00:00:00</DataNaix>
+    <Sexe>D</Sexe>
+    <Equips>
+      <Equip id="32">
+        <Nom>Senior Femeni</Nom>
+        <Any>2026</Any>
+        <Categoria>Senior</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+      <Equip id="35">
+        <Nom>Senior Femeni</Nom>
+        <Any>2025</Any>
+        <Categoria>Senior</Categoria>
+        <Tipus>D</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="27">
+    <Nom>Maria</Nom>
+    <Cognoms>Lopez</Cognoms>
+    <Adreca>C/ carrer 6</Adreca>
+    <DataNaix>2016-04-10 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="9">
+        <Nom>Alevi Mixte</Nom>
+        <Any>2026</Any>
+        <Categoria>Alevi</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+      <Equip id="12">
+        <Nom>Alevi Mixte</Nom>
+        <Any>2025</Any>
+        <Categoria>Alevi</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="28">
+    <Nom>Joana</Nom>
+    <Cognoms>Dominguez</Cognoms>
+    <Adreca>C/ carrer 6</Adreca>
+    <DataNaix>2015-10-02 00:00:00</DataNaix>
+    <Sexe>D</Sexe>
+    <Equips>
+      <Equip id="9">
+        <Nom>Alevi Mixte</Nom>
+        <Any>2026</Any>
+        <Categoria>Alevi</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+      <Equip id="12">
+        <Nom>Alevi Mixte</Nom>
+        <Any>2025</Any>
+        <Categoria>Alevi</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="29">
+    <Nom>Rita</Nom>
+    <Cognoms>Sanchez</Cognoms>
+    <Adreca>C/ carrer 6</Adreca>
+    <DataNaix>2016-01-13 00:00:00</DataNaix>
+    <Sexe>D</Sexe>
+    <Equips />
+  </Jugador>
+  <Jugador id="30">
+    <Nom>Sebastian</Nom>
+    <Cognoms>Pozo</Cognoms>
+    <Adreca>C/ carrer 6</Adreca>
+    <DataNaix>2015-11-29 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips>
+      <Equip id="9">
+        <Nom>Alevi Mixte</Nom>
+        <Any>2026</Any>
+        <Categoria>Alevi</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+      <Equip id="12">
+        <Nom>Alevi Mixte</Nom>
+        <Any>2025</Any>
+        <Categoria>Alevi</Categoria>
+        <Tipus>M</Tipus>
+      </Equip>
+    </Equips>
+  </Jugador>
+  <Jugador id="31">
+    <Nom>Manolo</Nom>
+    <Cognoms>Seguro</Cognoms>
+    <Adreca>C/ carrer 6</Adreca>
+    <DataNaix>2015-11-11 00:00:00</DataNaix>
+    <Sexe>H</Sexe>
+    <Equips />
+  </Jugador>
+</Jugadors>

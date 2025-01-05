@@ -91,11 +91,11 @@ public interface IGestorBDEmpresa {
     void afegir_jugadors(Equip e, Jugador j, boolean t) throws GestorBDEmpresaException;//FET
     
     /**
-     * Es podrà eliminar l'equip, encara que si té jugadors no s'eliminarà, ja que 
+     * Es podrà eliminar l'equip, encara que si té jugadors no s'eliminarà retornant un false, ja que 
      * així es podrà demanar al usuari si vol eliminar tots els jugadors abans, si 
      * diu que si es fa la funció (), i desp aquesta
      */
-    void eliminar_equip(Equip e) throws GestorBDEmpresaException;//Edita BBDD, per fer
+    boolean eliminar_equip(Equip e) throws GestorBDEmpresaException;//Edita BBDD, per fer
     
     /**
      * Es retorna l'equip que sigui de la temporada especificada, i el nom espec.
@@ -143,7 +143,7 @@ public interface IGestorBDEmpresa {
     /**
      * Una llista de tots els jugadors, filtra per sexe i el nom de jugador
      */
-    List<Jugador> llista_jugadors_ant(Sexe_enum sexe, String nom) throws GestorBDEmpresaException;//FET 
+    List<Jugador> llista_jugadors_ant(String sexe, String nom) throws GestorBDEmpresaException;//FET 
     
     /**
      * Una llista de tots els jugadors, filtra per sexe i el nom de jugador
