@@ -178,7 +178,7 @@ public class Gestio_equips {
             f.add(cb_temp);
             
         } else {
-            System.out.println("La llista de temporades és buida.");
+            JOptionPane.showConfirmDialog(f, "La llista de temporades és buida.");
         }        
         String[] cates = new String[Cate_enum.values().length +1];
         int i=1;
@@ -332,13 +332,13 @@ public class Gestio_equips {
                     cate_select=null;
                 }*/
                 //System.out.println(cate_select);
-                String selectedItem = (String) cb_temp.getSelectedItem();
+                String temp_select = (String) cb_temp.getSelectedItem();
                 int temporada;
                 //System.out.println(cb_temp.getSelectedItem());
                 if(cb_temp.getSelectedItem().equals("Qualsevol")){
                     temporada=0;
                 }else{
-                    temporada = Integer.parseInt(selectedItem.substring(0, 4));
+                    temporada = Integer.parseInt(temp_select.substring(0, 4));
                 }
                 char tipus_eq;
                 if(cb_tipus.getSelectedItem().equals("Femeni")){
@@ -453,7 +453,7 @@ public class Gestio_equips {
                 
                 dades[i][0] = jug.getId_equip();
                 dades[i][1] = jug.getNom();
-                dades[i][2] = jug.getAny_eq()+"/"+(Integer.toString(jug.getAny_eq()+1).substring(2, 4));
+                dades[i][2] = jug.getTemporada();
                 dades[i][3] = jug.getJug_mem().size();
                 dades[i][4] = jug.getCate();
                 dades[i][5] = tipus;

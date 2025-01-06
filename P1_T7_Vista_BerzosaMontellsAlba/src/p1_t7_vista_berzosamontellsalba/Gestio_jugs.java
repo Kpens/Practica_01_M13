@@ -572,7 +572,7 @@ public class Gestio_jugs {
                 }
                 dades[i][0] = eq.getId_equip();
                 dades[i][1] = eq.getNom();
-                dades[i][2] = eq.getAny_eq()+"/"+(Integer.toString(eq.getAny_eq()+1).substring(2, 4));
+                dades[i][2] = eq.getTemporada();
                 dades[i][3] = eq.getJug_mem().size();
                 dades[i][4] = eq.getCate();
                 dades[i][5] = tipus;

@@ -121,12 +121,18 @@ public class Equip {
     public Cate_enum getCate() {
         return cate;
     }
+    
+    public String getTemporada(){
+        return any_eq+"/"+(Integer.toString(any_eq+1).substring(2, 4));
+    }
 
-        
     @Override
     public String toString() {
-        return "Equip{" + "id_equip=" + id_equip + ", nom=" + nom + ", tipus=" + tipus + '}';
+        return "Equip{" + "id_equip=" + id_equip + ", nom=" + nom + ", tipus=" + tipus + ", temporada=" + getTemporada() + ", cate=" + cate + ", qt_jugadors=" + jug_mem.size() + '}';
     }
+
+        
+    
     
     
 }

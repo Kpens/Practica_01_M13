@@ -45,7 +45,7 @@ public class Exportacio {
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         f.setResizable(false);
        
-        Funcions.crearBarraNavegacio(f, 'n');
+        Funcions.crearBarraNavegacio(f, 'j');
 
         titol = new JLabel("Exportar dades");
         titol.setFont(new Font("Arial", Font.BOLD, 38));
@@ -136,28 +136,28 @@ public class Exportacio {
                     Exportar_amb_xml.exportarJugadors(jugs, ruta, f);
 
                 }else{
-                   try (FileWriter csvWriter = new FileWriter(ruta)) {
+                   try (FileWriter csv_muntat = new FileWriter(ruta)) {
 
-                    csvWriter.append("ID_Jugador,Nom,Cognoms,Adreça,Codi_Postal,Població,Provincia,Pais,Data_Naixament,Sexe,IBAN,ID_Legal,Equips\n");
+                    csv_muntat.append("ID_Jugador,Nom,Cognoms,Adreça,Codi_Postal,Població,Provincia,Pais,Data_Naixament,Sexe,IBAN,ID_Legal,Equips\n");
 
                     for (Jugador jugador : jugs) {
 
-                        csvWriter.append(jugador.getId_jug() + ",");
-                        csvWriter.append(jugador.getNom() + ",");
-                        csvWriter.append(jugador.getCog() + ",");
-                        csvWriter.append(jugador.getAdreca() + ",");
-                        csvWriter.append(jugador.getCodi_postal() + ",");
-                        csvWriter.append(jugador.getPoblacio() + ",");
-                        csvWriter.append(jugador.getProvincia() + ",");
-                        csvWriter.append(jugador.getPais() + ",");
-                        csvWriter.append(jugador.getData_naix().substring(0, 10) + ",");
-                        csvWriter.append(jugador.getSexe() + ",");
-                        csvWriter.append(jugador.getIban() + ",");
-                        csvWriter.append(jugador.getId_legal() + ",");
+                        csv_muntat.append(jugador.getId_jug() + ",");
+                        csv_muntat.append(jugador.getNom() + ",");
+                        csv_muntat.append(jugador.getCog() + ",");
+                        csv_muntat.append(jugador.getAdreca() + ",");
+                        csv_muntat.append(jugador.getCodi_postal() + ",");
+                        csv_muntat.append(jugador.getPoblacio() + ",");
+                        csv_muntat.append(jugador.getProvincia() + ",");
+                        csv_muntat.append(jugador.getPais() + ",");
+                        csv_muntat.append(jugador.getData_naix().substring(0, 10) + ",");
+                        csv_muntat.append(jugador.getSexe() + ",");
+                        csv_muntat.append(jugador.getIban() + ",");
+                        csv_muntat.append(jugador.getId_legal() + ",");
 
                         List<Equip> equips = gestor.equips_on_son_els_jug(jugador.getId_jug());
                         if (equips.isEmpty()) {
-                            csvWriter.append("Sense equips\n");
+                            csv_muntat.append("Sense equips\n");
                         } else {
                             StringBuilder equipsStr = new StringBuilder();
                             for (Equip equip : equips) {
@@ -166,7 +166,7 @@ public class Exportacio {
                                         .append(equip.getJug_mem_titular().get(jugador.getId_jug()).charValue()+"").append("), ");
                             }
                             equipsStr.setLength(equipsStr.length() - 2);
-                            csvWriter.append("\"").append(equipsStr).append("\"\n");
+                            csv_muntat.append("\"").append(equipsStr).append("\"\n");
                         }
                     }
                     System.out.println("Fitxer CSV exportat correctament a: " + ruta);
