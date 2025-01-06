@@ -287,7 +287,7 @@ public class Crear_jugador {
                             try {
                                 img = ImageIO.read(imageFile);
                                 String nif = ltf_nif.getText();
-                                outputFile = new File("D:/jugador/" + nif + ".png");
+                                outputFile = new File("C:/jugadors/" + nif + ".png");
                                 img_path = outputFile.getPath();
                             } catch (IOException ex) {
                                 JOptionPane.showMessageDialog(f, "Error: No s'ha pogut guardar la imatge");
@@ -326,6 +326,35 @@ public class Crear_jugador {
                     */
                     if (!ltf_nom.getText().trim().isEmpty() && !ltf_cog.getText().trim().isEmpty() && !ltf_nif.getText().trim().isEmpty() && grupSexe.getSelection() != null && dch_data_naix.getDate() != null && !ltf_iban.getText().trim().isEmpty() && cb_anys.getSelectedItem() != null && !ltf_adreca.getText().trim().isEmpty() && !ltf_cod_postal.getText().trim().isEmpty() && !ltf_poblacio.getText().trim().isEmpty() && !ltf_provincia.getText().trim().isEmpty() && !ltf_pais.getText().trim().isEmpty()) {
 
+                        if(ltf_nom.getText().trim().length()<4){
+                            JOptionPane.showMessageDialog(f, "El nom hauria de ser mínim 4 lletres");
+                            return;
+                        }
+                        
+                        if(ltf_cog.getText().trim().length()<4){
+                            JOptionPane.showMessageDialog(f, "El cognom hauria de ser mínim 4 lletres");
+                            return;
+                        }
+                        
+                        if(ltf_adreca.getText().trim().length()<4){
+                            JOptionPane.showMessageDialog(f, "L'adreça hauria de ser mínim 4 lletres");
+                            return;
+                        }
+                        
+                        if(ltf_poblacio.getText().trim().length()<4){
+                            JOptionPane.showMessageDialog(f, "La població hauria de ser mínim 4 lletres");
+                            return;
+                        }
+                        
+                        if(ltf_provincia.getText().trim().length()<4){
+                            JOptionPane.showMessageDialog(f, "La provincia hauria de ser mínim 4 lletres");
+                            return;
+                        }
+                        
+                        if(ltf_pais.getText().trim().length()<4){
+                            JOptionPane.showMessageDialog(f, "El pais hauria de ser mínim 4 lletres");
+                            return;
+                        }
                         
                         if(!Jugador.nif_valid(ltf_nif.getText().trim())){
                             JOptionPane.showMessageDialog(f, "NIF incorrecte!");
@@ -339,7 +368,8 @@ public class Crear_jugador {
                         try {
                             int cod_postal = Integer.parseInt(ltf_cod_postal.getText().trim());
                         } catch (NumberFormatException nfe) {
-                            throw new GestorBDEmpresaException("El codi postal no és un nombre vàlid");
+                            JOptionPane.showMessageDialog(f, "El codi postal no és un nombre vàlid");
+                            return;
                         }
                         
                         if(dch_data_naix.getDate() != null){

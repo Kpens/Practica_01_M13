@@ -92,7 +92,7 @@ public class Reports {
     
     
     static private Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
-    public static void main(String[] args) {
+    public JFrame jasper_rep() {
     
                 
         f.setLayout(null);
@@ -110,7 +110,7 @@ public class Reports {
         f.add(titol);
         
         go(f);
-        //return f;
+        return f;
     }
 
     private static void go(JFrame f) {

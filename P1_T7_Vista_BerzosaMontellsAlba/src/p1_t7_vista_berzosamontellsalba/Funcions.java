@@ -65,45 +65,51 @@ public class Funcions {
         mpFrame.setVisible(true);
     }
     
+    
     static boolean mirar_edat_correcte__si_es_titular_o_no(JFrame f, Jugador j, List<Equip> eqs, int any_naix){
         
         int edat_min=-1, edat_max=-1;
         boolean continuar =false;
-        for (Equip eq : eqs) {
-            System.out.println("Equip: " + eq.getNom());
-            for (Map.Entry<Integer, Character> entry : eq.getJug_mem_titular().entrySet()) {
-                Integer key = entry.getKey();
-                Character val = entry.getValue();
+        if(eqs==null){
+            continuar = true;
+        }else{
+            for (Equip eq : eqs) {
+                System.out.println("Equip: " + eq.getNom());
+                for (Map.Entry<Integer, Character> entry : eq.getJug_mem_titular().entrySet()) {
+                    Integer key = entry.getKey();
+                    Character val = entry.getValue();
 
-                if (key.equals(j.getId_jug())) {
-                    if(edat_max>eq.getCate().getEdatMaxima()||edat_max==-1){
-                        edat_max = eq.getCate().getEdatMaxima();
+                    if (key.equals(j.getId_jug())) {
+                        if(edat_max>eq.getCate().getEdatMaxima()||edat_max==-1){
+                            edat_max = eq.getCate().getEdatMaxima();
 
-                    }
-                    int edat = (LocalDate.now().getYear())-any_naix;
-                    if(val=='S'){
-
-                        if(edat_min<eq.getCate().getEdatMinima()||edat_min==-1){
-                            edat_min=eq.getCate().getEdatMinima();
                         }
-                        System.out.println("edat: "+edat);
-                        if(!(edat>=edat_min &&edat<=edat_max)){
-                            JOptionPane.showMessageDialog(f, "Edat incorrecte!");
-                            continuar= false;
+                        int edat = (LocalDate.now().getYear())-any_naix;
+                        if(val=='S'){
+
+                            if(edat_min<eq.getCate().getEdatMinima()||edat_min==-1){
+                                edat_min=eq.getCate().getEdatMinima();
+                            }
+                            System.out.println("edat: "+edat);
+                            if(!(edat>=edat_min &&edat<=edat_max)){
+                                JOptionPane.showMessageDialog(f, "Edat incorrecte!");
+                                continuar= false;
+                            }else{
+                                continuar= true;
+                            }
                         }else{
-                            continuar= true;
-                        }
-                    }else{
-                        if(!(edat<=edat_max)){
-                            JOptionPane.showMessageDialog(f, "Edat incorrecte!");
-                            continuar= false;
-                        }else{
-                            continuar= true;
+                            if(!(edat<=edat_max)){
+                                JOptionPane.showMessageDialog(f, "Edat incorrecte!");
+                                continuar= false;
+                            }else{
+                                continuar= true;
+                            }
                         }
                     }
                 }
             }
         }
+        
         return continuar;
     }
     
@@ -112,6 +118,12 @@ public class Funcions {
         JFrame mpFrame = mp.jugadors_en_equip(e);
         mpFrame.setVisible(true);
     }
+    static void jasper_rep(){
+        Reports mp = new Reports();
+        JFrame mpFrame = mp.jasper_rep();
+        mpFrame.setVisible(true);
+    }
+    
     static void gest_equips(){
         Gestio_equips mp = new Gestio_equips();
         JFrame mpFrame = mp.gestio_equips();

@@ -306,18 +306,8 @@ public class Modificar_jug {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     
-                    Jugador j= null;
-                    try {
                         
-                        j = gestor.agafar_jugador(ltf_nif.getText().trim().toUpperCase(), true);
-                        
-                        if(j!=null){
-                            
-                            JOptionPane.showMessageDialog(f, "Error: El jugador ja existeix");
-                            return;
-                        }
-                        
-                        if(!"".equals(ltf_nif.getText().trim()) && j==null){
+                        if(!"".equals(ltf_nif.getText().trim())){
                             JFileChooser fileChooser = new JFileChooser();
                             fileChooser.setDialogTitle("Seleccionar una imagen");
                             fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Imágenes", "jpg", "png", "jpeg", "gif"));
@@ -329,7 +319,7 @@ public class Modificar_jug {
                                 try {
                                     img = ImageIO.read(imageFile);
                                     String nif = ltf_nif.getText();
-                                    outputFile = new File("D:/jugador/" + nif + ".png");
+                                    outputFile = new File("C:/jugadors/" + nif + ".png");
                                     img_path = outputFile.getPath();
                                 } catch (IOException ex) {
                                     JOptionPane.showMessageDialog(f, "Error: No s'ha pogut guardar la imatge");
@@ -341,9 +331,6 @@ public class Modificar_jug {
                             
                         }
                         
-                    } catch (GestorBDEmpresaException ex) {
-                        JOptionPane.showMessageDialog(f, "Error: En la capa");
-                    }
                     
 
                 }
@@ -367,14 +354,49 @@ public class Modificar_jug {
                         * Reviso que s'haguin omplert tots els espais abans de revisar si són correctes
                         */
                         if (!ltf_nom.getText().trim().isEmpty() && !ltf_cog.getText().trim().isEmpty() && !ltf_nif.getText().trim().isEmpty() && grupSexe.getSelection() != null && dch_data_naix.getDate() != null && !ltf_iban.getText().trim().isEmpty() && cb_anys.getSelectedItem() != null && !ltf_adreca.getText().trim().isEmpty() && !ltf_cod_postal.getText().trim().isEmpty() && !ltf_poblacio.getText().trim().isEmpty() && !ltf_provincia.getText().trim().isEmpty() && !ltf_pais.getText().trim().isEmpty()) {
-                            
-                            
+
+                            if(ltf_nom.getText().trim().length()<4){
+                                JOptionPane.showMessageDialog(f, "El nom hauria de ser mínim 4 lletres");
+                                return;
+                            }
+
+                            if(ltf_cog.getText().trim().length()<4){
+                                JOptionPane.showMessageDialog(f, "El cognom hauria de ser mínim 4 lletres");
+                                return;
+                            }
+
+                            if(ltf_adreca.getText().trim().length()<4){
+                                JOptionPane.showMessageDialog(f, "L'adreça hauria de ser mínim 4 lletres");
+                                return;
+                            }
+
+                            if(ltf_poblacio.getText().trim().length()<4){
+                                JOptionPane.showMessageDialog(f, "La població hauria de ser mínim 4 lletres");
+                                return;
+                            }
+
+                            if(ltf_provincia.getText().trim().length()<4){
+                                JOptionPane.showMessageDialog(f, "La provincia hauria de ser mínim 4 lletres");
+                                return;
+                            }
+
+                            if(ltf_pais.getText().trim().length()<4){
+                                JOptionPane.showMessageDialog(f, "El pais hauria de ser mínim 4 lletres");
+                                return;
+                            }
+
                             if(!Jugador.nif_valid(ltf_nif.getText().trim())){
                                 JOptionPane.showMessageDialog(f, "NIF incorrecte!");
                                 return;
                             }
                             if(!Jugador.iban_valid(ltf_iban.getText().trim())){
                                 JOptionPane.showMessageDialog(f, "Iban incorrecte!");
+                                return;
+                            }
+                            try {
+                                int cod_postal = Integer.parseInt(ltf_cod_postal.getText().trim());
+                            } catch (NumberFormatException nfe) {
+                                JOptionPane.showMessageDialog(f, "El codi postal no és un nombre vàlid");
                                 return;
                             }
                             if(dch_data_naix.getDate() != null){
@@ -420,7 +442,9 @@ public class Modificar_jug {
                                         //no funciona el tostring usare gettext
                                         jug = new Jugador(j.getId_jug(),ltf_adreca.getText().trim(),Integer.parseInt(cb_anys.getSelectedItem().toString()), ltf_cog.getText().trim(),data_naix, img_path, ltf_iban.getText().trim(), j.getId_legal(), ltf_nom.getText().trim(), sexe, ltf_cod_postal.getText().trim(), ltf_poblacio.getText().trim(), ltf_provincia.getText().trim(),ltf_pais.getText().trim());
 
+                                        System.out.println("juga ab mod");
                                         gestor.modificar_jugador(jug);
+                                        System.out.println("jug desp mod");
 
                                         if(!"aaa".equals(outputFile.getPath())){
                                             try {

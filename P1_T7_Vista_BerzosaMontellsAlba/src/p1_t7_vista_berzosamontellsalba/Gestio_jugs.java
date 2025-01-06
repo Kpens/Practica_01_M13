@@ -266,7 +266,7 @@ public class Gestio_jugs {
                         if (resposta == JOptionPane.YES_OPTION) {//Si selecciona 'si' s'elimina el jugador i la seva foto
                             gestor.eliminar_jugador(jugador_seleccionat.getId_jug());
                             
-                            String rutaFoto = "D:/jugador/" + jugador_seleccionat.getId_legal() + ".png";
+                            String rutaFoto = "C:/jugadors/" + jugador_seleccionat.getId_legal() + ".png";
 
                             jugador_seleccionat = null;
                             File foto = new File(rutaFoto);
