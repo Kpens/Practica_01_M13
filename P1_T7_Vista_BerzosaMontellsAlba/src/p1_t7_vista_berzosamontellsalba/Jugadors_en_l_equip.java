@@ -40,7 +40,7 @@ public class Jugadors_en_l_equip {
     static private JLabel ltext,lsexe, lnif, ldata_naix, ltitol;
     static private JTextField ltf_nom, ltf_nif;
     static private JComboBox<String> cb_cate, cb_temp, cb_tipus;
-    static private JButton b_crear_equip, b_modificar_equip, b_endarrere, b_filtrar, b_exportar_dades, b_afeguir, b_eliminar_jug;
+    static private JButton b_endarrere, b_filtrar, b_exportar_dades, b_afeguir, b_eliminar_jug;
     static private JTable taula_jugadors_de_l_equip, taula_jugs_que_es_poden_aff;
     static private JRadioButton rbHome, rbDona, rbNo,rbSi, rbTit, rbAltre;
     static Jugador jug_seleccionat,jug_seleccionat_a_aff;
@@ -229,7 +229,7 @@ public class Jugadors_en_l_equip {
         
         b_eliminar_jug = new JButton("Eliminar jugador");
         Funcions.boto_estil(b_eliminar_jug);
-        b_eliminar_jug.setBounds(690, 460, 180, 30);
+        b_eliminar_jug.setBounds(690, 460, 140, 30);
         b_eliminar_jug.setVisible(true);
         b_eliminar_jug.setEnabled(false);
         
@@ -238,18 +238,7 @@ public class Jugadors_en_l_equip {
         Funcions.boto_estil(b_filtrar);
         b_filtrar.setBounds(f.getWidth()-150, f.getHeight()-160, 100, 30);
         b_filtrar.setVisible(true);
-        
-        b_crear_equip = new JButton("Crear Equip");
-        Funcions.boto_estil(b_crear_equip);
-        b_crear_equip.setBounds(110, f.getHeight()-100, 180, 30);
-        b_crear_equip.setVisible(true);
-        
-        b_modificar_equip = new JButton("Modificar Equip");
-        Funcions.boto_estil(b_modificar_equip);
-        b_modificar_equip.setBounds(300, f.getHeight()-100, 180, 30);
-        b_modificar_equip.setVisible(true);
-        b_modificar_equip.setEnabled(false);
-        
+       
         b_endarrere = new JButton("Endarrere");
         b_endarrere.setBounds(f.getWidth()-300, f.getHeight()-100, 125, 30);
         Funcions.boto_estil(b_endarrere);
@@ -258,21 +247,6 @@ public class Jugadors_en_l_equip {
         b_exportar_dades.setBounds(f.getWidth()-200, f.getHeight()-100, 125, 30);
         Funcions.boto_estil(b_exportar_dades);
         
-        
-        b_crear_equip.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               f.dispose();
-               Funcions.crear_equip();
-            }
-        });
-        b_modificar_equip.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               f.dispose();
-               //Funcions.modificar_equip(equip_seleccionat);
-            }
-        });
         b_eliminar_jug.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -326,11 +300,10 @@ public class Jugadors_en_l_equip {
             }
             
         });
-        f.add(b_modificar_equip);
+        
         f.add(b_eliminar_jug);
         f.add(b_filtrar);
         f.add(b_endarrere);
-        f.add(b_crear_equip);
         
         return f;
     }
@@ -363,7 +336,6 @@ public class Jugadors_en_l_equip {
                             Logger.getLogger(Jugadors_en_l_equip.class.getName()).log(Level.SEVERE, null, ex);
                         }*/
                         actualitzar_taula_jugs_que_es_poden_aff(taula_jugs_que_es_poden_aff);
-                        b_modificar_equip.setEnabled(true);
                         b_eliminar_jug.setEnabled(true);
                     }else{
                         b_eliminar_jug.setEnabled(false);

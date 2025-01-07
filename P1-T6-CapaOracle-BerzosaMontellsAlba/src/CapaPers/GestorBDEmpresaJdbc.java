@@ -308,8 +308,8 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
 
     @Override
     public Equip crear_equip(String nom, char t, int any_eq, String cate) throws GestorBDEmpresaException {
-        actualitzar_equips();
         
+        actualitzar_equips();
         for (Equip eq : llista_equips) {
             if(eq.getNom().toUpperCase().equals(nom.toUpperCase()) && eq.getAny_eq() == any_eq ){
                 throw new GestorBDEmpresaException("Aquest equip ja existeix");
@@ -756,7 +756,13 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                     System.out.println("Creat");
                 } catch (Exception ex) {
                     System.out.println("No es pot afegir el nou jugador");
-                }
+                }finally {
+                    try {
+                        if (ps != null) ps.close();
+                    } catch (SQLException se) {
+                        throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
+                    }
+                }  
 
                 //llista.add(j);
             } catch (SQLException ex) {
@@ -868,12 +874,10 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
         Statement q = null;
         llista_equips = null;
         try {
-            System.out.println("ab statement");
             q = c.createStatement();
             String query = "select id_equip, nom, tipus, any_eq, cate from equip";
             rs = q.executeQuery(query);
 
-            System.out.println("ab rs");
             while (rs.next()) {
                 /*int num =0;*/
                 Tipus_enum tenum;
@@ -910,10 +914,7 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
                 
                 lequips.add(eq);
             }
-            System.out.println("desp rs");
-            System.out.println("ab aff jug al map");
             aff_jugador_al_map_d_equip(lequips);
-            System.out.println("desp aff al map");
             llista_equips = lequips;
             return lequips;
         } catch (SQLException ex) {
@@ -933,18 +934,20 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
     *   Els afegeixo externament perquè és més útil en el gestor d'equips (m'asseguro que tenen tots els jugadors)
     */
     void aff_jugador_al_map_d_equip(List<Equip> equip) throws GestorBDEmpresaException{
+        PreparedStatement pps=null;
+        ResultSet rrs=null;
         try {
             for (Equip eq : equip) {
-                ps = c.prepareStatement("select titular, ID_JUG_MEM, ID_EQUIP_MEM from membre where ID_EQUIP_MEM = ?");
-                ps.setInt(1, eq.getId_equip());
+                pps = c.prepareStatement("select titular, ID_JUG_MEM, ID_EQUIP_MEM from membre where ID_EQUIP_MEM = ?");
+                pps.setInt(1, eq.getId_equip());
 
-                rs = ps.executeQuery();
+                rrs = pps.executeQuery();
                 int i=0;
-                while (rs.next()) {
+                while (rrs.next()) {
 
-                    Jugador j = agafar_jugador(rs.getString("id_jug_mem"), false);
+                    Jugador j = agafar_jugador(rrs.getString("id_jug_mem"), false);
                     if(!eq.getJug_mem().containsKey(j.getId_jug())){
-                        String titular = rs.getString("titular");
+                        String titular = rrs.getString("titular");
                         eq.afegir_jugador(j, titular.charAt(0));
                         llista_jugs_eq.add(j);
                         i++; 
@@ -957,8 +960,8 @@ public class GestorBDEmpresaJdbc implements IGestorBDEmpresa{
             throw new GestorBDEmpresaException("Actualitzar els usuaris dins de l'equip fan una excepció: ", ex);
         }  finally {
             try {
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
+                if (pps != null) pps.close();
+                if (rrs != null) rrs.close();
             } catch (SQLException se) {
                 throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
@@ -1107,14 +1110,14 @@ where m.id_jug_mem = 1
     }
 
     @Override
-    public Jugador agafar_jugador(String idLegal, Boolean esLegal) throws GestorBDEmpresaException {
+    public Jugador agafar_jugador(String id_legal, Boolean es_legal) throws GestorBDEmpresaException {
         String where = null;
         int id_j = 0;
-        if(esLegal){
+        if(es_legal){
             where = "where upper(id_legal) like ?";
         }else{
             where = "where id_jug = ?";
-            id_j = Integer.parseInt(idLegal);
+            id_j = Integer.parseInt(id_legal);
             
         }
         
@@ -1124,8 +1127,8 @@ where m.id_jug_mem = 1
         try {
             
             pss = c.prepareStatement("select ID_JUG ,NOM ,COGNOMS,SEXE,DATA_NAIX ,ID_LEGAL ,IBAN,ANY_FI_REVISIO_MEDICA ,ADRECA ,CODI_POSTAL ,POBLACIO ,FOTO ,PROVINCIA, PAIS from jugador "+where+" order by id_jug ");            
-            if(esLegal){
-                pss.setString(1, idLegal);
+            if(es_legal){
+                pss.setString(1, id_legal);
             }else{
                 pss.setInt(1, id_j);
             }
@@ -1139,7 +1142,7 @@ where m.id_jug_mem = 1
                 String sexeStr = rss.getString("SEXE");
                 Sexe_enum sexe = Sexe_enum.valueOf(sexeStr); // Assumint que el sexe és D, M o H.
                 String data_naix = rss.getString("DATA_NAIX");
-                String id_legal = rss.getString("ID_LEGAL");
+                String id_legall = rss.getString("ID_LEGAL");
                 String iban = rss.getString("IBAN");
                 int any_fi_rev = rss.getInt("ANY_FI_REVISIO_MEDICA");
                 String adreca = rss.getString("ADRECA");
@@ -1152,7 +1155,7 @@ where m.id_jug_mem = 1
                 try {
                     // Creació del jugador
                     j = new Jugador(
-                            id_jug, adreca, any_fi_rev, cog, data_naix, foto, iban, id_legal, nom,
+                            id_jug, adreca, any_fi_rev, cog, data_naix, foto, iban, id_legall, nom,
                             sexe, codi_postal, poblacio, provincia, pais
                     );
                 } catch (Exception ex) {
@@ -1187,7 +1190,8 @@ where m.id_jug_mem = 1
             s='%';
         }
 
-        
+        PreparedStatement pss=null;
+        ResultSet rss=null;
         try {
             
             /*SELECT ID_JUG, NOM, COGNOMS, SEXE, DATA_NAIX, ID_LEGAL, IBAN, ANY_FI_REVISIO_MEDICA, ADRECA, CODI_POSTAL, POBLACIO, FOTO, PROVINCIA, PAIS,EXTRACT(YEAR FROM DATA_NAIX) AS anny FROM jugador
@@ -1195,53 +1199,53 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
             
             */
             
-            ps = c.prepareStatement("SELECT ID_JUG, NOM, COGNOMS, SEXE, DATA_NAIX, ID_LEGAL, IBAN, ANY_FI_REVISIO_MEDICA, ADRECA, CODI_POSTAL, POBLACIO, FOTO, PROVINCIA, PAIS,EXTRACT(YEAR FROM DATA_NAIX) AS anny FROM jugador\n" +
+            pss = c.prepareStatement("SELECT ID_JUG, NOM, COGNOMS, SEXE, DATA_NAIX, ID_LEGAL, IBAN, ANY_FI_REVISIO_MEDICA, ADRECA, CODI_POSTAL, POBLACIO, FOTO, PROVINCIA, PAIS,EXTRACT(YEAR FROM DATA_NAIX) AS anny FROM jugador\n" +
 "WHERE UPPER(SEXE) LIKE ? AND UPPER(NOM) LIKE ? AND UPPER(ID_LEGAL) LIKE ? AND TO_CHAR(data_naix, 'YYYY-MM-DD') LIKE ? AND ANY_FI_REVISIO_MEDICA  "+(rev_feta ? ">= ?" : "< ?")+" ORDER BY cognoms ");
             
-            ps.setString(1, "%"+s+"%");
+            pss.setString(1, "%"+s+"%");
             
             if(!nom_j.equals("") || !nom_j.equals(" ") ){
-                ps.setString(2, "%"+nom_j.toUpperCase()+"%");
+                pss.setString(2, "%"+nom_j.toUpperCase()+"%");
             }else{
-                ps.setString(2, "%%");
+                pss.setString(2, "%%");
                 
             }
             if(!nif.equals("") || !nif.equals(" ") ){
-                ps.setString(3, "%"+nif.toUpperCase()+"%");
+                pss.setString(3, "%"+nif.toUpperCase()+"%");
             }else{
-                ps.setString(3, "%");
+                pss.setString(3, "%");
                 
             }
             if(!data_naix_j.equals("") || !data_naix_j.equals(" ") ){
-                ps.setString(4, "%"+data_naix_j.toUpperCase()+"%");
+                pss.setString(4, "%"+data_naix_j.toUpperCase()+"%");
             }else{
-                ps.setString(4, "%");
+                pss.setString(4, "%");
                 
             }
-            ps.setInt(5, LocalDate.now().getYear());
+            pss.setInt(5, LocalDate.now().getYear());
             
             
             
-            rs = ps.executeQuery();
+            rss = pss.executeQuery();
 
-            while(rs.next()){
+            while(rss.next()){
                 entrat=true;
-                int id_jug = rs.getInt("ID_JUG");
-                String nom = rs.getString("NOM");
-                String cog = rs.getString("COGNOMS");
-                String sexeStr = rs.getString("SEXE");
+                int id_jug = rss.getInt("ID_JUG");
+                String nom = rss.getString("NOM");
+                String cog = rss.getString("COGNOMS");
+                String sexeStr = rss.getString("SEXE");
                 Sexe_enum sexe = Sexe_enum.valueOf(sexeStr); // Assumint que el sexe és D, M o H.
-                String data_naix = rs.getString("DATA_NAIX");
-                String id_legal = rs.getString("ID_LEGAL");
-                String iban = rs.getString("IBAN");
-                int any_fi_rev = rs.getInt("ANY_FI_REVISIO_MEDICA");
-                String adreca = rs.getString("ADRECA");
-                String codi_postal = rs.getString("CODI_POSTAL");
-                String poblacio = rs.getString("POBLACIO");
-                String foto = rs.getString("FOTO");
-                String provincia = rs.getString("PROVINCIA");
-                String pais = rs.getString("PAIS");
-                int temp = rs.getInt("anny");
+                String data_naix = rss.getString("DATA_NAIX");
+                String id_legal = rss.getString("ID_LEGAL");
+                String iban = rss.getString("IBAN");
+                int any_fi_rev = rss.getInt("ANY_FI_REVISIO_MEDICA");
+                String adreca = rss.getString("ADRECA");
+                String codi_postal = rss.getString("CODI_POSTAL");
+                String poblacio = rss.getString("POBLACIO");
+                String foto = rss.getString("FOTO");
+                String provincia = rss.getString("PROVINCIA");
+                String pais = rss.getString("PAIS");
+                int temp = rss.getInt("anny");
                 int edat = (LocalDate.now().getYear())-temp;
         
                 System.out.println("L'edat de "+nom+" "+cog+" actual és: " + (edat));
@@ -1277,8 +1281,8 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
             throw new GestorBDEmpresaException("Error: ", ex);
         }finally {
             try {
-                if (ps != null) ps.close();
-                if (rs != null) rs.close();
+                if (pss != null) pss.close();
+                if (rss != null) rss.close();
             } catch (SQLException se) {
                 throw new GestorBDEmpresaException("Error no s'han pogut tancar: ");
             }
@@ -1306,6 +1310,7 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
                 pss.executeUpdate();
                 c.commit();
                 System.out.println("Temporada creada");
+                temp = new Temporada(anny);
             }
 
         }catch(SQLException ex){
@@ -1336,7 +1341,7 @@ WHERE UPPER(SEXE) LIKE 'H' AND UPPER(NOM) LIKE '%' AND UPPER(ID_LEGAL) LIKE '%'A
                 temp.add(new Temporada(rs.getInt("anny")));
             }
 
-        return temp;
+            return temp;
         } catch (Exception ex) {
             try {
                 c.rollback();

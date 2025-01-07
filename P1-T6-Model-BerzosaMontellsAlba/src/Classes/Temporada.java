@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class Temporada {
     int anny;
-    Map<Integer, Equip> equips = new HashMap<>();
+    //Map<Integer, Equip> equips = new HashMap<>();
 
     public Temporada(int anny){
         if(anny >=1900){
@@ -28,7 +28,7 @@ public class Temporada {
     }
     
         
-    public void mostrar_equips() {
+    /*public void mostrar_equips() {
         Iterator<Integer> it_equips = equips.keySet().iterator();
         List<Equip> eqs = new ArrayList<>();
         while(it_equips.hasNext()){
@@ -42,8 +42,8 @@ public class Temporada {
         for (Equip equi : eqs) {
             System.out.println(equi);
         }
-    }
-
+    }*/
+    
     public int getAnny() {
         return anny;
     }
@@ -51,6 +51,10 @@ public class Temporada {
     public void setAnny(int anny) {
         this.anny = anny;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Temporada{" + "anny=" + anny + '}';
+    }
     
 }
