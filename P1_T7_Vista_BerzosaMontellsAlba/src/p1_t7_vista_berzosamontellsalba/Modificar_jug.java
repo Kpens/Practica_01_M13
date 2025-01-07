@@ -58,6 +58,11 @@ public class Modificar_jug {
 
     public JFrame Modificar_jug(Jugador j) {
         
+        if(j == null){
+            
+            Funcions.agafar_gest_jugs();
+            return null;
+        }
         JFrame f = new JFrame("El nostre club");
 
         f.setLayout(null);

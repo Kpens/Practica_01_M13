@@ -384,11 +384,35 @@ public class Reports {
     
     private static void informeJRS(int temp, int cate, int id_equip) throws IOException {
         int BUFFER_SIZE = 4096;
+        boolean entrat = false;
         String url = urlJRS + "FitxaEquip.pdf";
         //+ "?Temporada="+"&?Categoria="+"&?Equip="
         // Emplenem el paràmetre "codi" de l'informe
         // Si hi ha més paràmetres a passar, cal concatenar-los com "&" com:
         // + "&nomParametre=valor&nomParametre=valor..."
+        
+        if(temp!=-1){
+            if(entrat){
+                url = url +"&";
+            }
+            url = url +"?Temporada="+temp;
+            entrat=true;
+        }
+        if(cate!=-1){
+            if(entrat){
+                url = url +"&";
+            }
+            url = url +"?Categoria="+cate;
+            entrat=true;
+        }
+        if(id_equip!=-1){
+            if(entrat){
+                url = url +"&";
+            }
+            url = url +"?Equip="+id_equip;
+            entrat=true;
+        }
+        
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");

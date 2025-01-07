@@ -188,6 +188,12 @@ INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (12, 7, 'N');
 INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (12, 8, 'N');
 INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (12, 9, 'N'); 
 INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (12, 12, 'N');
+INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (12, 27, 'S'); 
+INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (12, 28, 'S'); 
+INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (12, 29, 'N'); 
+INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (12, 30, 'S');
+INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (12, 31, 'S');   
+
 
 
 INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (15, 7, 'N'); 
@@ -246,11 +252,5 @@ INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (9, 28, 'S');
 INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (9, 29, 'N'); 
 INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (9, 30, 'S');  
 INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (9, 31, 'S'); 
-
-INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (12, 27, 'S'); 
-INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (12, 28, 'S'); 
-INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (12, 29, 'N'); 
-INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (12, 30, 'S');
-INSERT INTO MEMBRE (Id_equip_mem, Id_jug_mem, titular) VALUES (12, 31, 'S');   
 
 COMMIT;

@@ -52,6 +52,12 @@ public class Jugadors_en_l_equip {
     
     public JFrame jugadors_en_equip(Equip eq) {
      
+        if(eq == null){
+            
+            Funcions.gest_equips();
+            return null;
+        }
+        
         f.setLayout(null);
         
         f.setSize(pantalla.width, pantalla.height);
